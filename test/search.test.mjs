@@ -138,3 +138,10 @@ test('without any key or credits, search still works via Wikipedia', async () =>
   assert.equal(r.provider, 'wikipedia');
   assert.match(r.items[0].description, /Lumo/);
 });
+
+test('run-together names are split only when they end in an acronym', async () => {
+  const { keywords } = await import('../lib/portai-search.mjs');
+  assert.deepEqual(keywords('What is LumoAI'), ['lumo', 'ai']);
+  assert.deepEqual(keywords('latest iPhone'), ['iphone']);
+  assert.deepEqual(keywords('ProtonMail vs Gmail'), ['protonmail', 'gmail']);
+});
