@@ -87,6 +87,10 @@ passphrase ─PBKDF2-SHA256 (600k)─▶ master ─HKDF─┬─ "id"   → acco
 
 **Setting up D1 for your own deployment:** create a database with `npx wrangler d1 create portai-db`, put its id in `wrangler.toml`, then run `npx wrangler d1 execute portai-db --remote --file migrations/0001_accounts.sql`. The Node server (`server.js`) does not support accounts. It reports `accounts: false`, and the UI hides the feature.
 
+## Reading shared links
+
+When a message contains a link, PortAI reads that page automatically, like Lumo does ("Extracting page content"). It needs no opt-in, because sharing a link is the request. It reads at most 2 links per message, up to 1.5 MB and 8 s per page. Only public http(s) pages are fetched; private and local addresses are blocked. The page's main content goes to the model as untrusted text, and the page is listed under Sources. Set `PORTAI_READ_LINKS = "0"` to turn this off.
+
 ## Web search (opt-in)
 
 The **🌐 Web** toggle lets people ground answers in live results, as Lumo does. It's off by default.
