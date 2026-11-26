@@ -6,7 +6,7 @@ import fs from 'node:fs';
 
 const root = new URL('../', import.meta.url);
 export function renderKnowledgeModule(md) {
-  return `// GENERATED from MULTIPORT_KNOWLEDGE.md by scripts/build-knowledge.mjs. Do not edit by hand.\n// Run \`npm run knowledge\` after changing the Markdown file.\nexport const MULTIPORT_KNOWLEDGE = ${JSON.stringify(md.trim())};\n`;
+  return `/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/. */\n\n// GENERATED from MULTIPORT_KNOWLEDGE.md by scripts/build-knowledge.mjs. Do not edit by hand.\n// Run \`npm run knowledge\` after changing the Markdown file.\nexport const MULTIPORT_KNOWLEDGE = ${JSON.stringify(md.trim())};\n`;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -1,3 +1,5 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 /* Inter (SIL Open Font License, see /fonts/Inter-LICENSE.txt), self-hosted so no third party sees visitors. */
 @font-face {
   font-family: 'Inter';
@@ -293,3 +295,28 @@ body.ghost .main { background: color-mix(in srgb, var(--ghost) 6%, var(--bg)); }
   .passphrase-box input { flex: 1 1 100%; font-size: 14px; letter-spacing: .02em; }
   .passphrase-box .btn { flex: 1; }
 }
+
+/* Live activity steps (Claude-style) */
+.steps { display: flex; flex-direction: column; gap: 4px; margin: 2px 0 8px; font-size: 13.5px; color: var(--muted); }
+.step { display: flex; align-items: center; gap: 8px; min-height: 22px; }
+.step-icon { width: 16px; flex: none; text-align: center; font-size: 14px; line-height: 1; }
+.step.done .step-icon { color: var(--accent); }
+.step.active .step-icon { color: #d97757; font-size: 16px; }
+.step-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.step-time { font-variant-numeric: tabular-nums; font-size: 12px; opacity: .75; }
+.step.active .step-label { color: var(--text); font-weight: 500; }
+.shimmer {
+  background: linear-gradient(90deg, var(--muted) 0%, var(--text) 40%, var(--muted) 80%);
+  background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent !important;
+  animation: shimmer 1.6s linear infinite;
+}
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+.steps-summary { margin: 0 0 6px; font-size: 13px; color: var(--muted); }
+.steps-summary > summary { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none; padding: 2px 8px 2px 4px; border-radius: 8px; }
+.steps-summary > summary::-webkit-details-marker { display: none; }
+.steps-summary > summary::after { content: '›'; transition: transform .15s; }
+.steps-summary[open] > summary::after { transform: rotate(90deg); }
+.steps-summary > summary:hover { background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text); }
+.steps-summary > summary .step-icon { color: var(--accent); }
+.steps-summary .steps { margin: 6px 0 4px 6px; padding-left: 10px; border-left: 2px solid var(--border); }
+@media (prefers-reduced-motion: reduce) { .shimmer { animation: none; color: var(--text) !important; background: none; } }

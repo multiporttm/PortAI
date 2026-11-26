@@ -1,6 +1,9 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 import { Vault } from './vault.js';
 import * as Account from './account.js';
 import { friendlyError } from './errors.js';
+import { LiveSteps, renderTrace, mentionsMultiport } from './status.js';
 import { renderMarkdown } from './markdown.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -308,6 +311,10 @@ function messageNode(m) {
   } else {
     bubble.textContent = m.content;
   }
+  if (m.role === 'assistant' && m.trace) {
+    const summary = renderTrace(m.trace);
+    if (summary) wrap.append(summary);
+  }
   wrap.append(bubble);
   if (m.role === 'assistant' && !m.pending) {
     const actions = document.createElement('div');
@@ -359,7 +366,13 @@ async function send(text) {
   const node = messageNode(reply);
   node.classList.add('streaming');
   const bubble = node.querySelector('.bubble');
-  bubble.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+  bubble.hidden = true; // shown when the first word arrives
+  const stepsHost = document.createElement('div');
+  node.prepend(stepsHost);
+  const modelLabel = state.models.find((m) => m.id === chat.model)?.label || 'PortAI';
+  const live = new LiveSteps(stepsHost, { model: modelLabel });
+  live.start('connecting', `Connecting to ${modelLabel}`, `Connected to ${modelLabel}`);
+  let outcome = 'done';
   $('#messages').append(node);
   scrollToBottom(true);
 
@@ -405,12 +418,19 @@ async function send(text) {
         let msg;
         try { msg = JSON.parse(data); } catch { continue; }
         if (msg.error) throw Object.assign(new Error(friendlyError({ message: msg.error })), { friendly: true });
-        if (msg.delta) reply.content += msg.delta;
+        if (msg.status === 'thinking' && live.phase === 'connecting') {
+          live.start('thinking', 'Thinking', 'Thought');
+          if (mentionsMultiport(text)) live.note('knowledge', 'Checked Multiport knowledge');
+        }
+        if (msg.delta) {
+          if (live.phase !== 'writing') { live.start('writing', 'Writing', 'Wrote reply'); bubble.hidden = false; }
+          reply.content += msg.delta;
+        }
       }
       if (!frame) {
         frame = requestAnimationFrame(() => {
           frame = 0;
-          bubble.innerHTML = renderMarkdown(reply.content) || '<span class="typing"><i></i><i></i><i></i></span>';
+          bubble.innerHTML = renderMarkdown(reply.content);
           scrollToBottom();
         });
       }
@@ -418,13 +438,16 @@ async function send(text) {
     if (!reply.content) reply.content = '_(The model returned an empty response.)_';
   } catch (err) {
     if (err.name === 'AbortError') {
+      outcome = 'stopped';
       if (!reply.content) reply.content = '_(Stopped.)_';
     } else {
+      outcome = 'error';
       reply.error = !reply.content;
       reply.content = (reply.content ? reply.content + '\n\n' : '') + `⚠️ ${err.friendly ? err.message : friendlyError({ status: err instanceof TypeError ? 0 : undefined, message: err.message })}`;
     }
   } finally {
     delete reply.pending;
+    reply.trace = live.finish(reply.content, outcome);
     state.streaming = null;
     setStreamingUi(false);
     // Only keep the reply if this chat is still active (user may have switched).
