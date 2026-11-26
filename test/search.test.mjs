@@ -65,3 +65,48 @@ test('chat with search: status events, results in the system prompt, per-person 
   events = await chat(false); // toggle off -> no search at all
   assert.ok(!events.some((e) => e.status === 'searching'));
 });
+
+function routerAI(decision, searchItems) {
+  const calls = [];
+  let streamInput;
+  return {
+    calls,
+    get streamInput() { return streamInput; },
+    websearch: async () => new Response(JSON.stringify({ items: searchItems })),
+    async run(model, input) {
+      calls.push({ model, stream: !!input.stream });
+      if (!input.stream) return { response: decision }; // the router
+      streamInput = input;
+      return new ReadableStream({ start(c) { c.enqueue(new TextEncoder().encode('data: {"response":"ok"}\n\ndata: [DONE]\n\n')); c.close(); } });
+    },
+  };
+}
+const autoChat = async (AI, search, content) => {
+  const env = { AI, PORTAI_MODELS: '@cf/a/regular,@cf/ibm-granite/granite-4.0-h-micro', PORTAI_HEDGE_MS: '0' };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ search, messages: [{ role: 'user', content }] }) });
+  const text = await (await onRequestPost({ request: req, env, waitUntil: () => {} })).text();
+  return text.split('\n\n').filter((e) => e.startsWith('data: {')).map((e) => JSON.parse(e.slice(6)));
+};
+
+test('auto mode: searches by itself when the router says the question needs it', async () => {
+  const AI = routerAI('SEARCH: Lumo AI Proton assistant', [{ url: 'https://lumo.proton.me/', title: 'Lumo', description: 'Proton’s private AI assistant.' }]);
+  const events = await autoChat(AI, 'auto', 'Is Lumo AI a good choice?');
+  assert.equal(AI.calls[0].model, '@cf/ibm-granite/granite-4.0-h-micro', 'cheap router model decides');
+  const searching = events.find((e) => e.status === 'searching');
+  assert.equal(searching.query, 'Lumo AI Proton assistant');
+  assert.match(AI.streamInput.messages[0].content, /Proton’s private AI assistant/);
+});
+
+test('auto mode: no search for things the model already knows', async () => {
+  const AI = routerAI('NO', []);
+  const events = await autoChat(AI, 'auto', 'Hello! How are you?');
+  assert.ok(!events.some((e) => e.status === 'searching'));
+  assert.ok(events.some((e) => e.delta === 'ok'));
+});
+
+test('search off: no router call and no search', async () => {
+  const AI = routerAI('SEARCH: x', []);
+  const events = await autoChat(AI, false, 'Is Lumo AI a good choice?');
+  assert.ok(!AI.calls.some((c) => !c.stream), 'router not called');
+  assert.ok(!events.some((e) => e.status === 'searching'));
+});

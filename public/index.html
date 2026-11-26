@@ -69,7 +69,7 @@
           <ul id="model-menu" role="listbox" aria-label="Choose a model" hidden></ul>
         </div>
         <div class="spacer"></div>
-        <button type="button" id="web-toggle" class="web-pill" aria-pressed="false" hidden title="Search the web for up-to-date answers. Only your search query is sent to the search provider.">🌐 Web</button>
+        <button type="button" id="web-toggle" class="web-pill" aria-pressed="false" hidden title="Web search">🌐 Auto</button>
         <label class="ghost-toggle" title="Ghost mode: this chat is never saved, not even encrypted">
           <input type="checkbox" id="ghost-toggle">
           <span class="ghost-pill">👻 Ghost</span>
@@ -142,7 +142,7 @@
           <li><strong>Open models, zero retention.</strong> PortAI only uses open-source models, hosted by Cloudflare under a zero-data-retention policy: prompts and replies are not stored or used for training.</li>
           <li><strong>Zero-knowledge accounts.</strong> Your passphrase is turned into keys inside your browser. The server only stores encrypted chats it cannot read, and it never sees your passphrase.</li>
           <li><strong>Links you share.</strong> When you paste a link, PortAI's server reads that page for you, so the website never sees your IP address, cookies or chat. Only public web pages are opened.</li>
-          <li><strong>Opt-in web search.</strong> Off by default. When you turn on 🌐 Web, only your search query (never your IP, cookies or chat history) is sent to Cloudflare's search provider, which has zero data retention, or to Wikipedia as a free fallback.</li>
+          <li><strong>Automatic web search.</strong> When a question needs up-to-date information, PortAI searches the web for you. Only a short search query is sent, never your IP, cookies or chat history. It goes to Cloudflare's search provider, which has zero data retention, or to Wikipedia as a free fallback. Turn it off any time with the 🌐 button.</li>
           <li><strong>Ghost mode.</strong> Chats that are never written to storage at all.</li>
         </ul>
       </details>
