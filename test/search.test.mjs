@@ -148,3 +148,10 @@ test('free search merges DuckDuckGo instant answers (quick facts) with Wikipedia
   assert.match(r.items[0].description, /Quick facts: Developer\(s\): Proton AG · Initial release: July 23, 2025/);
   assert.ok(r.items.some((it) => it.title === 'Proton AG'), 'Wikipedia results are added too');
 });
+
+test('irrelevant search results (e.g. Heathrow for a chatbot question) are dropped', async () => {
+  const { isRelevant, keywords } = await import('../lib/portai-search.mjs');
+  const w = keywords('What is the best online AI chatbot for privacy?');
+  assert.equal(isRelevant({ title: 'Heathrow Airport', description: 'The main airport serving London.' }, w), false);
+  assert.equal(isRelevant({ title: 'Lumo (AI assistant)', description: 'An AI chatbot by Proton focused on privacy.' }, w), true);
+});
