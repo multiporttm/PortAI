@@ -95,3 +95,12 @@ test('proxies to an OpenAI-compatible upstream without forwarding client headers
     assert.equal(seen.body.model, 'swiss-ai/apertus-v1.5-70b');
   } finally { server.close(); upstream.close(); }
 });
+
+test('apple-touch-icon is embedded in the page and matches the file', () => {
+  const fs = require('node:fs');
+  const html = fs.readFileSync(require('node:path').join(__dirname, '../public/index.html'), 'utf8');
+  const m = html.match(/rel="apple-touch-icon"[^>]*href="data:image\/png;base64,([^"]+)"/);
+  assert.ok(m, 'embedded apple-touch-icon missing');
+  const file = fs.readFileSync(require('node:path').join(__dirname, '../public/apple-touch-icon.png')).toString('base64');
+  assert.equal(m[1], file, 'embedded icon is out of date with public/apple-touch-icon.png');
+});
