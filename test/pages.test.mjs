@@ -136,3 +136,19 @@ test('Workers AI calls disable thinking and allow long replies', async () => {
   assert.deepEqual(input.chat_template_kwargs, { enable_thinking: false });
   assert.equal(input.max_tokens, 2048);
 });
+
+test('Workers AI numeric tokens (older models send digits as numbers) are kept', async () => {
+  const AI = {
+    async run() {
+      const enc = new TextEncoder();
+      return new ReadableStream({ start(c) {
+        c.enqueue(enc.encode('data: {"response":"UseX "}\n\ndata: {"response":1}\n\ndata: {"response":"."}\n\ndata: {"response":0}\n\ndata: {"response":" s[::-"}\n\ndata: {"response":1}\n\ndata: {"response":"]"}\n\ndata: [DONE]\n\n'));
+        c.close();
+      } });
+    },
+  };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }) });
+  const text = await (await onRequestPost(ctx(req, { AI, PORTAI_MODELS: '@cf/qwen/qwen2.5-coder-32b-instruct' }))).text();
+  const out = text.split('\n\n').filter((e) => e.startsWith('data: {"delta"')).map((e) => JSON.parse(e.slice(6)).delta).join('');
+  assert.equal(out, 'UseX 1.0 s[::-1]');
+});
