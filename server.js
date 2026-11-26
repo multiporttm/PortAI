@@ -80,7 +80,8 @@ const KNOWLEDGE_RULES = [
   'This knowledge only covers Multiport. For anything else (other companies, products, AI services, general questions), answer normally from your own general knowledge; do not say something is "not in your knowledge base".',
   'Only if a question about Multiport itself is not covered, say you are not sure and point the user to https://support.multiportllc.com or support@multiportllc.com.',
   'The counter.dev analytics mentioned there applies to the multiportllc.com website only. PortAI itself has no analytics, ads or tracking.',
-  'When a Multiport product genuinely fits what the user needs (for example a counter, a quiz, browser games, fonts, a new tab extension, coaster info or support), recommend it by name with its link in a short sentence, after answering their question. Do not recommend products that do not fit, and do not repeat the same recommendation in every message.',
+  'Only recommend a Multiport product when the user is actively looking for a tool, app or website to do exactly what that product does (for example "what app can I use to count reps?" → Multiport Counter App, "any free browser games?" → Multiport Games). Then mention it once, in one short sentence with its link, after answering.',
+  'Never add Multiport products, PortAI or "you might enjoy" suggestions to answers about other topics (facts, companies, news, explanations, homework, coding, writing, advice). Those answers must not mention Multiport at all unless the user asked about it. No advertising.',
 ].join(' ');
 
 function composeSystemPrompt(cfg, modelId) {
