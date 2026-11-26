@@ -69,6 +69,7 @@
           <ul id="model-menu" role="listbox" aria-label="Choose a model" hidden></ul>
         </div>
         <div class="spacer"></div>
+        <button type="button" id="web-toggle" class="web-pill" aria-pressed="false" hidden title="Search the web for up-to-date answers. Only your search query is sent to the search provider.">🌐 Web</button>
         <label class="ghost-toggle" title="Ghost mode: this chat is never saved, not even encrypted">
           <input type="checkbox" id="ghost-toggle">
           <span class="ghost-pill">👻 Ghost</span>
@@ -140,6 +141,7 @@
           <li><strong>Minimal forwarding.</strong> Only the conversation text and model settings are sent to the model provider — not your IP, cookies or browser details.</li>
           <li><strong>Open models, zero retention.</strong> PortAI only uses open-source models, hosted by Cloudflare under a zero-data-retention policy: prompts and replies are not stored or used for training.</li>
           <li><strong>Zero-knowledge accounts.</strong> Your passphrase is turned into keys inside your browser. The server only stores encrypted chats it cannot read, and it never sees your passphrase.</li>
+          <li><strong>Opt-in web search.</strong> Off by default. When you turn on 🌐 Web, only your search query (never your IP, cookies or chat history) is sent to Cloudflare's search provider, which has zero data retention, or to Wikipedia as a free fallback.</li>
           <li><strong>Ghost mode.</strong> Chats that are never written to storage at all.</li>
         </ul>
       </details>

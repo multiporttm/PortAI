@@ -36,6 +36,15 @@ PORTAI_MODEL_LIMITS = "60/500,60/500,60/500,15/100,20/150"
 PORTAI_FALLBACK_MODELS = "@cf/zai-org/glm-4.7-flash,@cf/google/gemma-4-26b-a4b-it"
 PORTAI_HEDGE_MS = "5000"
 
+# Opt-in web search (the 🌐 Web toggle). Uses Cloudflare Web Search API with Ceramic.ai
+# (zero data retention, $0.25 per 1,000 searches, paid from AI Gateway credits) and falls
+# back to free Wikipedia search when that isn't available. Only the query is sent.
+PORTAI_SEARCH = "1"
+PORTAI_SEARCH_PROVIDER = "ceramic"
+PORTAI_SEARCH_LIMITS = "10/50"   # searches per person: per minute / per day
+# Wikipedia asks apps for contact details in requests; set e.g. "https://your-site; you@example.com"
+PORTAI_SEARCH_CONTACT = ""
+
 # Apertus (Swiss open model) - switch back when Cloudflare gives your account
 # access (it currently returns error 5018):
 #   PORTAI_MODELS = "@cf/swiss-ai/apertus-v1.5-8b"

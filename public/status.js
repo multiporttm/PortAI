@@ -106,6 +106,9 @@ export class LiveSteps {
     this.current = null;
   }
 
+  /** Change the label the current step gets when it finishes (e.g. with a result count). */
+  relabel(doneLabel) { if (this.current) this.current.doneLabel = doneLabel; }
+
   get phase() { return this.current?.kind; }
 
   /** Stop the spinner and return a serialisable trace for the summary. */

@@ -26,7 +26,7 @@ const state = {
 // ---------------------------------------------------------------------------
 
 function loadSettings() {
-  try { return { theme: 'system', temperature: 0.7, model: null, ...JSON.parse(localStorage.getItem('portai.settings') || '{}') }; }
+  try { return { theme: 'system', temperature: 0.7, model: null, webSearch: false, ...JSON.parse(localStorage.getItem('portai.settings') || '{}') }; }
   catch { return { theme: 'system', temperature: 0.7, model: null }; }
 }
 function saveSettings() {
@@ -129,6 +129,7 @@ async function loadConfig() {
     const cfg = await res.json();
     state.models = cfg.models || [];
     state.accounts = !!cfg.accounts;
+    state.searchAvailable = !!cfg.search;
   } catch {
     state.models = [];
   }
@@ -136,7 +137,19 @@ async function loadConfig() {
   sel.replaceChildren(...state.models.map((m) => new Option(m.label, m.id)));
   if (state.settings.model && state.models.some((m) => m.id === state.settings.model)) sel.value = state.settings.model;
   renderModelMenu();
+  syncWebToggle();
 }
+
+function syncWebToggle() {
+  const btn = $('#web-toggle');
+  btn.hidden = !state.searchAvailable;
+  btn.setAttribute('aria-pressed', String(!!state.settings.webSearch));
+}
+$('#web-toggle').addEventListener('click', () => {
+  state.settings.webSearch = !state.settings.webSearch;
+  saveSettings();
+  syncWebToggle();
+});
 
 // ---------------------------------------------------------------------------
 // Model picker: alias in bold, real model name underneath (a native <select>
@@ -391,6 +404,7 @@ function messageNode(m) {
     if (summary) wrap.append(summary);
   }
   wrap.append(bubble);
+  if (m.role === 'assistant' && m.sources?.length) wrap.append(sourcesNode(m.sources));
   if (m.role === 'assistant' && !m.pending) {
     const actions = document.createElement('div');
     actions.className = 'msg-actions';
@@ -402,6 +416,38 @@ function messageNode(m) {
     wrap.append(actions);
   }
   return wrap;
+}
+
+function sourcesNode(sources) {
+  const box = document.createElement('div');
+  box.className = 'sources';
+  const label = document.createElement('span');
+  label.className = 'sources-label';
+  label.textContent = 'Sources';
+  box.append(label);
+  sources.forEach((src, i) => {
+    let host = '';
+    try { host = new URL(src.url).hostname.replace(/^www\./, ''); } catch { return; }
+    if (!/^https?:/.test(src.url)) return;
+    const a = document.createElement('a');
+    a.className = 'source';
+    a.href = src.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer nofollow';
+    a.title = src.title;
+    const n = document.createElement('span');
+    n.className = 'source-n';
+    n.textContent = String(i + 1);
+    const t = document.createElement('span');
+    t.className = 'source-title';
+    t.textContent = src.title;
+    const h = document.createElement('span');
+    h.className = 'source-host';
+    h.textContent = host;
+    a.append(n, t, h);
+    box.append(a);
+  });
+  return box;
 }
 
 function copyText(text, btn) {
@@ -465,6 +511,7 @@ async function send(text) {
       body: JSON.stringify({
         model: chat.model,
         temperature: state.settings.temperature,
+        search: !!(state.searchAvailable && state.settings.webSearch),
         messages: chat.messages.filter((m) => !m.error).map(({ role, content }) => ({ role, content })),
       }),
       signal: controller.signal,
@@ -493,7 +540,18 @@ async function send(text) {
         let msg;
         try { msg = JSON.parse(data); } catch { continue; }
         if (msg.error) throw Object.assign(new Error(friendlyError({ message: msg.error })), { friendly: true });
-        if (msg.status === 'thinking' && live.phase === 'connecting') {
+        if (msg.status === 'searching') {
+          live.start('searching', `Searching the web for “${msg.query.length > 60 ? msg.query.slice(0, 57) + '…' : msg.query}”`, 'Searched the web');
+        }
+        if (msg.status === 'searched') {
+          reply.sources = msg.sources;
+          live.relabel(`Searched the web · ${msg.sources.length} source${msg.sources.length === 1 ? '' : 's'}${msg.provider === 'wikipedia' ? ' (Wikipedia)' : ''}`);
+        }
+        if (msg.status === 'search_skipped') {
+          if (live.phase === 'searching') live.relabel(`Web search skipped · ${msg.reason}`);
+          else live.note('search', `Web search skipped · ${msg.reason}`);
+        }
+        if (msg.status === 'thinking' && (live.phase === 'connecting' || live.phase === 'searching')) {
           live.start('thinking', 'Thinking', 'Thought');
           if (mentionsMultiport(text)) live.note('knowledge', 'Checked Multiport knowledge');
         }

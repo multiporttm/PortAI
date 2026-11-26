@@ -87,6 +87,14 @@ passphrase ─PBKDF2-SHA256 (600k)─▶ master ─HKDF─┬─ "id"   → acco
 
 **Setting up D1 for your own deployment:** create a database with `npx wrangler d1 create portai-db`, put its id in `wrangler.toml`, then run `npx wrangler d1 execute portai-db --remote --file migrations/0001_accounts.sql`. The Node server (`server.js`) does not support accounts. It reports `accounts: false`, and the UI hides the feature.
 
+## Web search (opt-in)
+
+The **🌐 Web** toggle lets people ground answers in live results, as Lumo does. It's off by default.
+
+- PortAI first tries Cloudflare's **Web Search API**, using provider **Ceramic.ai** with zero data retention at **$0.25 per 1,000 searches**. It's paid from **AI Gateway credits**: Cloudflare dashboard → **AI** → **AI Gateway** → **Credits**. If there are no credits, or that search fails, PortAI falls back to free **Wikipedia** search.
+- Only the search query is sent. No IP address, cookies or chat history go with it. Results go into the system prompt with a prompt-injection guard, and the answer cites sources as `[1]`, `[2]`, which are shown as links under the reply.
+- Settings in `wrangler.toml`: `PORTAI_SEARCH` turns it on or off, `PORTAI_SEARCH_PROVIDER` picks `ceramic`, `linkup` or `wikipedia`, `PORTAI_SEARCH_LIMITS` sets searches per person per minute and per day, and `PORTAI_SEARCH_CONTACT` is the contact info Wikipedia asks API clients to send.
+
 ## Multiport knowledge (grounding)
 
 `MULTIPORT_KNOWLEDGE.md` holds facts about Multiport and its products. PortAI adds it to every conversation's system prompt with rules: use it as the source of truth, don't invent products or URLs, and point to support when unsure. That's how PortAI can answer questions about Multiport accurately.
