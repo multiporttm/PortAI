@@ -95,8 +95,11 @@ When a message contains a link, PortAI reads that page automatically, like Lumo 
 
 Web search is **automatic** by default, like Lumo. Before answering, a small, cheap model (Mini, IBM Granite) decides whether the question needs the web, for example news, prices, recent events or newer products like Lumo. If it does, PortAI searches with that model's query; if not, it answers right away. The **🌐 Auto / Off** button turns searching off. Set `PORTAI_SEARCH_ROUTER` to pick a different decision model.
 
-- PortAI first tries Cloudflare's **Web Search API**, using provider **Ceramic.ai** with zero data retention at **$0.25 per 1,000 searches**. It's paid from **AI Gateway credits**: Cloudflare dashboard → **AI** → **AI Gateway** → **Credits**. If there are no credits, or that search fails, PortAI falls back to free **Wikipedia** search.
-- Only the search query is sent. No IP address, cookies or chat history go with it. Results go into the system prompt with a prompt-injection guard, and the answer cites sources as `[1]`, `[2]`, which are shown as links under the reply.
+- **Providers**, tried in order (`PORTAI_SEARCH_PROVIDERS`):
+  1. **Brave Search API**: full web from an independent index, with a free $5 monthly credit (about 1,000 searches). Sign up at brave.com/search/api, then add the key as the Pages secret `BRAVE_SEARCH_API_KEY`.
+  2. **Cloudflare Web Search API** (Ceramic.ai): zero data retention, $0.25 per 1,000 searches, paid from AI Gateway credits.
+  3. **Wikipedia**: free, no signup. It runs a full-text search inside articles and returns the matching paragraphs. For example, it finds Lumo inside the "Proton AG" article.
+- Only the search query is sent. No IP address, cookies or chat history go with it.
 - Settings in `wrangler.toml`: `PORTAI_SEARCH` turns it on or off, `PORTAI_SEARCH_PROVIDER` picks `ceramic`, `linkup` or `wikipedia`, `PORTAI_SEARCH_LIMITS` sets searches per person per minute and per day, and `PORTAI_SEARCH_CONTACT` is the contact info Wikipedia asks API clients to send.
 
 ## Multiport knowledge (grounding)
