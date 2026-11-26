@@ -98,7 +98,7 @@ Web search is **automatic** by default, like Lumo. Before answering, a small, ch
 - **Providers**, tried in order (`PORTAI_SEARCH_PROVIDERS`):
   1. **Brave Search API**: full web from an independent index, with a free $5 monthly credit (about 1,000 searches). Sign up at brave.com/search/api, then add the key as the Pages secret `BRAVE_SEARCH_API_KEY`.
   2. **Cloudflare Web Search API** (Ceramic.ai): zero data retention, $0.25 per 1,000 searches, paid from AI Gateway credits.
-  3. **Wikipedia**: free, no signup. It runs a full-text search inside articles and returns the matching paragraphs. For example, it finds Lumo inside the "Proton AG" article.
+  3. **Free, no signup**: **DuckDuckGo Instant Answers** (summaries and quick facts) together with **Wikipedia**. It runs a full-text search inside articles and returns the matching paragraphs. For example, it finds Lumo inside the "Proton AG" article.
 - Only the search query is sent. No IP address, cookies or chat history go with it.
 - Settings in `wrangler.toml`: `PORTAI_SEARCH` turns it on or off, `PORTAI_SEARCH_PROVIDER` picks `ceramic`, `linkup` or `wikipedia`, `PORTAI_SEARCH_LIMITS` sets searches per person per minute and per day, and `PORTAI_SEARCH_CONTACT` is the contact info Wikipedia asks API clients to send.
 
@@ -107,6 +107,8 @@ Web search is **automatic** by default, like Lumo. Before answering, a small, ch
 `MULTIPORT_KNOWLEDGE.md` holds facts about Multiport and its products. PortAI adds it to every conversation's system prompt with rules: use it as the source of truth, don't invent products or URLs, and point to support when unsure. That's how PortAI can answer questions about Multiport accurately.
 
 The file has two parts. Everything above the `<!-- DETAILS BELOW … -->` line (about Multiport and its products) is always sent. Everything below it (the PortAI user guide, troubleshooting, privacy basics and other privacy services) is only sent when a question is about PortAI, Multiport, privacy or help. This keeps everyday chats fast and the free allowance from being used up.
+
+Below the `<!-- LIBRARY BELOW … -->` line is a **knowledge library**: `##` sections, each with a `<!-- topics: word, phrase, … -->` line. For each question, only the 1–3 sections whose topics appear in it are sent. Add as many sections as you like and they won't slow normal chats down. Run `npm run knowledge` afterwards.
 
 After editing the file, run **`npm run knowledge`**. Cloudflare Pages can't import `.md`, so this regenerates `lib/multiport-knowledge.mjs`, and `npm test` fails if you forget. The Node server reads the Markdown file directly.
 

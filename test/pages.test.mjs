@@ -230,3 +230,16 @@ test('detailed PortAI/help knowledge is only sent when the question needs it', a
   assert.equal(needsDetails([{ role: 'user', content: 'Can you write me a poem?' }]), false);
   assert.equal(needsDetails([{ role: 'user', content: 'Is Lumo better than PortAI?' }]), true);
 });
+
+test('knowledge library: only matching topic sections are sent', async () => {
+  const { pickLibrary, composeSystemPrompt, buildConfig } = await import('../lib/portai-core.mjs');
+  const { parseLibrary } = await import('../scripts/build-knowledge.mjs');
+  const lib = parseLibrary('## Passwords\n<!-- topics: password, password manager -->\nUse a manager.\n\n## VPNs\n<!-- topics: vpn -->\nVPNs hide your IP.\n');
+  assert.deepEqual(lib.map((s) => [s.title, s.topics]), [['Passwords', ['password', 'password manager']], ['VPNs', ['vpn']]]);
+  assert.deepEqual(pickLibrary([{ role: 'user', content: 'Which password manager is best?' }], lib).map((s) => s.title), ['Passwords']);
+  assert.deepEqual(pickLibrary([{ role: 'user', content: 'Explain photosynthesis' }], lib), []);
+  const cfg = buildConfig({});
+  const sys = composeSystemPrompt(cfg, cfg.models[0].id, undefined, [{ role: 'user', content: 'Should I use Signal or WhatsApp?' }]);
+  assert.match(sys, /Knowledge library \(relevant sections\)[\s\S]*Encrypted messaging apps/);
+  assert.doesNotMatch(composeSystemPrompt(cfg, cfg.models[0].id, undefined, [{ role: 'user', content: 'Write a poem about the sea' }]), /Knowledge library/);
+});
