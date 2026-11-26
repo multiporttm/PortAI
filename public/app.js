@@ -540,18 +540,28 @@ async function send(text) {
         let msg;
         try { msg = JSON.parse(data); } catch { continue; }
         if (msg.error) throw Object.assign(new Error(friendlyError({ message: msg.error })), { friendly: true });
+        if (msg.status === 'reading') {
+          live.start('reading', `Extracting page content from ${msg.host}`, `Read ${msg.host}`);
+        }
+        if (msg.status === 'read') {
+          reply.sources = [...(reply.sources || []), { title: msg.title || msg.host, url: msg.url }];
+        }
+        if (msg.status === 'read_failed') {
+          live.relabel(`Couldn't read ${msg.host}`);
+        }
+        if (msg.status === 'read_skipped') live.note('reading', `Link not read · ${msg.reason}`);
         if (msg.status === 'searching') {
           live.start('searching', `Searching the web for “${msg.query.length > 60 ? msg.query.slice(0, 57) + '…' : msg.query}”`, 'Searched the web');
         }
         if (msg.status === 'searched') {
-          reply.sources = msg.sources;
+          reply.sources = [...(reply.sources || []), ...msg.sources];
           live.relabel(`Searched the web · ${msg.sources.length} source${msg.sources.length === 1 ? '' : 's'}${msg.provider === 'wikipedia' ? ' (Wikipedia)' : ''}`);
         }
         if (msg.status === 'search_skipped') {
           if (live.phase === 'searching') live.relabel(`Web search skipped · ${msg.reason}`);
           else live.note('search', `Web search skipped · ${msg.reason}`);
         }
-        if (msg.status === 'thinking' && (live.phase === 'connecting' || live.phase === 'searching')) {
+        if (msg.status === 'thinking' && ['connecting', 'searching', 'reading'].includes(live.phase)) {
           live.start('thinking', 'Thinking', 'Thought');
           if (mentionsMultiport(text)) live.note('knowledge', 'Checked Multiport knowledge');
         }
