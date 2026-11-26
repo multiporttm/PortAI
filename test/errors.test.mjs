@@ -28,3 +28,8 @@ test('keeps clean human messages and maps common cases', () => {
   assert.match(friendlyError({ status: 413 }), /too long/);
   assert.match(friendlyError({ message: '3036: You have used up your daily free allocation' }), /free AI allowance/);
 });
+
+test('per-model rate limits name the model and suggest switching', () => {
+  assert.equal(friendlyError({ status: 429, model: 'UseX 1.0 Pro', retryAfter: '20' }), 'Rate limit hit for UseX 1.0 Pro. Try again in 20 seconds, or switch to another model.');
+  assert.match(friendlyError({ status: 429, model: 'UseX 1.0 Pro', limit: 'day' }), /Daily limit for UseX 1\.0 Pro reached/);
+});

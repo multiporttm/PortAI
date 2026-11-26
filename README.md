@@ -60,7 +60,9 @@ When the allowance runs out, users see "Today's free AI allowance has been used 
 
 > When `wrangler.toml` exists, Cloudflare uses it for bindings and plain variables. Secrets are still set in the dashboard.
 
-**Rate limits:** each person gets 60 messages per minute and 500 per day by default (`PORTAI_RATE_LIMIT` and `PORTAI_DAILY_LIMIT` in `wrangler.toml`). These limits are counted in D1, so every Cloudflare server shares them. The table is in `migrations/0002_rate_limits.sql`. IPs are stored only as salted SHA-256 hashes and deleted after their window. An extra WAF rule is optional.
+**Models:** `PORTAI_MODELS` lists the models. `PORTAI_MODEL_LABELS` sets the aliases shown in the menu, and `PORTAI_MODEL_BASES` sets the real model name shown under each alias. `PORTAI_MODEL_LIMITS` gives each model its own per-person limit as `perMinute/perDay`, so expensive models can get lower limits.
+
+**Rate limits:** each person also gets 60 messages per minute and 500 per day across all models by default (`PORTAI_RATE_LIMIT` and `PORTAI_DAILY_LIMIT` in `wrangler.toml`). These limits are counted in D1, so every Cloudflare server shares them. The table is in `migrations/0002_rate_limits.sql`. IPs are stored only as salted SHA-256 hashes and deleted after their window. An extra WAF rule is optional.
 
 **Speed:** thinking mode is turned off (`chat_template_kwargs.enable_thinking = false`), so replies start in about a second instead of 5–7 seconds. Set `PORTAI_THINKING = "1"` to turn it back on.
 

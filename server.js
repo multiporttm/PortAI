@@ -49,7 +49,7 @@ function buildConfig(env = process.env) {
     host: env.HOST || '127.0.0.1',
     apiBase: (env.PORTAI_API_BASE || 'https://api.publicai.co/v1').replace(/\/+$/, ''),
     apiKey: env.PORTAI_API_KEY || '',
-    models: models.map((id, i) => ({ id, label: labels[i] || prettyModelName(id) })),
+    models: models.map((id, i) => ({ id, label: labels[i] || prettyModelName(id), base: list(env.PORTAI_MODEL_BASES)[i] || prettyModelName(id) })),
     rateLimit: Number(env.PORTAI_RATE_LIMIT) || 30,
     hsts: env.PORTAI_HSTS === '1',
     trustProxy: env.PORTAI_TRUST_PROXY === '1',

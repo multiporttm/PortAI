@@ -28,8 +28,14 @@ function looksFriendly(text) {
  * @param {string} [p.message]     message from the server / stream / exception
  * @param {string} [p.retryAfter]  Retry-After header value (seconds)
  */
-export function friendlyError({ status, message, retryAfter } = {}) {
+export function friendlyError({ status, message, retryAfter, model, limit } = {}) {
   const text = String(message || '');
+  if (status === 429 && model) { // a per-model limit: suggest switching models
+    if (limit === 'day') return `Daily limit for ${model} reached. Try another model, or come back after midnight UTC.`;
+    const s = Number(retryAfter);
+    const wait = Number.isFinite(s) && s > 0 ? (s < 90 ? `in ${Math.ceil(s)} seconds` : `in about ${Math.ceil(s / 60)} minutes`) : 'in a moment';
+    return `Rate limit hit for ${model}. Try again ${wait}, or switch to another model.`;
+  }
   if (status === 429 || /rate.?limit|too many requests|\b1015\b/i.test(text)) return rateLimitMessage(retryAfter);
   if (/free AI allowance|daily free allocation|\b3036\b/i.test(text)) return "Today's free AI allowance has been used up. It resets at midnight UTC.";
   if (status === 0 || /failed to fetch|networkerror|load failed|offline/i.test(text)) return 'You appear to be offline. Check your connection and try again.';

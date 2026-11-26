@@ -25,8 +25,11 @@ database_id = "09b2911a-bcea-4995-aaa9-4f28d00b18a9"
 # FREE + PRIVATE: open models hosted by Cloudflare Workers AI on the free plan,
 # with zero data retention. No API key needed. The first model is the default.
 PORTAI_MODELS = "@cf/google/gemma-4-26b-a4b-it,@cf/zai-org/glm-4.7-flash,@cf/qwen/qwen2.5-coder-32b-instruct,@cf/openai/gpt-oss-120b"
-# UseX 1.0 = Gemma 4 (default) · UseX 1.0 Lite = GLM-4.7 Flash · UseX 1.0 Alt = Qwen 2.5 Coder 32B · UseX 1.0 Pro = gpt-oss-120b
-PORTAI_MODEL_LABELS = "UseX 1.0,UseX 1.0 Lite,UseX 1.0 Alt,UseX 1.0 Pro"
+# Same order as PORTAI_MODELS: alias shown in the menu, real model name shown under it,
+# and each model's per-person limit as "messages per minute/messages per day".
+PORTAI_MODEL_LABELS = "UseX 1.0,UseX 1.0 Lite,UseX 1.0 Coder,UseX 1.0 Pro"
+PORTAI_MODEL_BASES = "Gemma 4 26B,GLM-4.7 Flash,Qwen 2.5 Coder 32B,gpt-oss-120b"
+PORTAI_MODEL_LIMITS = "60/500,60/500,15/100,20/150"
 
 # Apertus (Swiss open model) - switch back when Cloudflare gives your account
 # access (it currently returns error 5018):
@@ -38,5 +41,5 @@ PORTAI_MODEL_LABELS = "UseX 1.0,UseX 1.0 Lite,UseX 1.0 Alt,UseX 1.0 Pro"
 PORTAI_API_BASE = "https://api.publicai.co/v1"
 
 # Per-person limits (counted in D1, shared by all Cloudflare servers; IPs stored only as hashes).
-PORTAI_RATE_LIMIT = "60"    # messages per minute (1 per second; only bots hit this)
-PORTAI_DAILY_LIMIT = "500"  # messages per day (resets at midnight UTC)
+PORTAI_RATE_LIMIT = "60"    # messages per minute across all models (1 per second; only bots hit this)
+PORTAI_DAILY_LIMIT = "500"  # messages per day across all models (resets at midnight UTC)
