@@ -27,7 +27,7 @@ database_id = "09b2911a-bcea-4995-aaa9-4f28d00b18a9"
 PORTAI_MODELS = "@cf/google/gemma-4-26b-a4b-it,@cf/zai-org/glm-4.7-flash,@cf/ibm-granite/granite-4.0-h-micro,@cf/qwen/qwen2.5-coder-32b-instruct,@cf/openai/gpt-oss-120b"
 # Same order as PORTAI_MODELS: alias shown in the menu, real model name shown under it,
 # and each model's per-person limit as "messages per minute/messages per day".
-PORTAI_MODEL_LABELS = "UseX 1.0,UseX 1.0 Lite,UseX 1.0 Mini,UseX 1.0 Coder,UseX 1.0 Pro"
+PORTAI_MODEL_LABELS = "Regular,Lite,Mini,Coder,Pro"
 PORTAI_MODEL_BASES = "Gemma 4 26B,GLM-4.7 Flash,IBM Granite 4.0 Micro,Qwen 2.5 Coder 32B,gpt-oss-120b"
 PORTAI_MODEL_LIMITS = "60/500,60/500,60/500,15/100,20/150"
 
