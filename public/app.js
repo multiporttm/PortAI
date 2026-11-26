@@ -497,6 +497,9 @@ async function send(text) {
           live.start('thinking', 'Thinking', 'Thought');
           if (mentionsMultiport(text)) live.note('knowledge', 'Checked Multiport knowledge');
         }
+        if (msg.status === 'switched') {
+          live.note('switch', `${msg.from} was ${msg.reason === 'busy' ? 'busy' : 'unavailable'}, switched to ${msg.to}`);
+        }
         if (msg.delta) {
           if (live.phase !== 'writing') { live.start('writing', 'Writing', 'Wrote reply'); bubble.hidden = false; }
           reply.content += msg.delta;
