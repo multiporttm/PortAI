@@ -106,6 +106,8 @@ Web search is **automatic** by default, like Lumo. Before answering, a small, ch
 
 `MULTIPORT_KNOWLEDGE.md` holds facts about Multiport and its products. PortAI adds it to every conversation's system prompt with rules: use it as the source of truth, don't invent products or URLs, and point to support when unsure. That's how PortAI can answer questions about Multiport accurately.
 
+The file has two parts. Everything above the `<!-- DETAILS BELOW … -->` line (about Multiport and its products) is always sent. Everything below it (the PortAI user guide, troubleshooting, privacy basics and other privacy services) is only sent when a question is about PortAI, Multiport, privacy or help. This keeps everyday chats fast and the free allowance from being used up.
+
 After editing the file, run **`npm run knowledge`**. Cloudflare Pages can't import `.md`, so this regenerates `lib/multiport-knowledge.mjs`, and `npm test` fails if you forget. The Node server reads the Markdown file directly.
 
 ## Choosing an Apertus provider

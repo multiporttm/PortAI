@@ -216,3 +216,16 @@ test('knowledge rules tell the model to answer non-Multiport questions normally'
   const { KNOWLEDGE_RULES } = await import('../lib/portai-core.mjs');
   assert.match(KNOWLEDGE_RULES, /answer normally from your own general knowledge/);
 });
+
+test('detailed PortAI/help knowledge is only sent when the question needs it', async () => {
+  const { composeSystemPrompt, buildConfig, needsDetails } = await import('../lib/portai-core.mjs');
+  const cfg = buildConfig({});
+  const general = composeSystemPrompt(cfg, cfg.models[0].id, undefined, [{ role: 'user', content: 'Explain photosynthesis' }]);
+  const help = composeSystemPrompt(cfg, cfg.models[0].id, undefined, [{ role: 'user', content: 'How do I sync my chats to my phone?' }]);
+  assert.match(general, /Multiport Counter App/, 'product list is always there (for recommendations)');
+  assert.doesNotMatch(general, /PortAI user guide/);
+  assert.match(help, /PortAI user guide[\s\S]*Accounts and sync/);
+  assert.ok(help.length > general.length + 5000);
+  assert.equal(needsDetails([{ role: 'user', content: 'Can you write me a poem?' }]), false);
+  assert.equal(needsDetails([{ role: 'user', content: 'Is Lumo better than PortAI?' }]), true);
+});
