@@ -46,7 +46,11 @@ export function renderTrace(trace) {
   const parts = [];
   if (trace.outcome === 'stopped') parts.push('Stopped');
   else if (trace.outcome === 'error') parts.push('Failed');
-  else if (thought) parts.push(`Thought for ${formatSeconds(thought.ms)}`);
+  else if (thought && thought.ms >= 300) parts.push(`Thought for ${formatSeconds(thought.ms)}`);
+  else {
+    const total = trace.steps.reduce((sum, st) => sum + (st.ms || 0), 0);
+    if (total) parts.push(`Answered in ${formatSeconds(total)}`);
+  }
   if (trace.words) parts.push(`${trace.words} words`);
   const summary = el('summary', '', '');
   summary.append(el('span', 'step-icon', trace.outcome === 'error' ? '✕' : trace.outcome === 'stopped' ? '■' : '✓'), el('span', '', parts.join(' · ') || 'Done'));
