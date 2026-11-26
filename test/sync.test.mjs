@@ -62,3 +62,23 @@ test('requests without credentials or DB are rejected', async () => {
   assert.equal((await loginFn.onRequestPost({ request: req('POST'), env: { DB: createD1() } })).status, 401);
   assert.equal((await loginFn.onRequestPost({ request: req('POST', auth()), env: {} })).status, 501);
 });
+
+test('durable rate limit: per-minute and per-day, IPs stored only as hashes', async () => {
+  const { rateLimit } = await import('../lib/portai-ratelimit.mjs');
+  const env = { DB: createD1() };
+  for (let i = 0; i < 3; i++) assert.equal((await rateLimit(env, 'chat', '1.2.3.4', { perMinute: 3, perDay: 5 })).ok, true);
+  const blocked = await rateLimit(env, 'chat', '1.2.3.4', { perMinute: 3, perDay: 5 });
+  assert.equal(blocked.ok, false);
+  assert.equal(blocked.scope, 'minute');
+  assert.ok(blocked.retryAfter >= 1 && blocked.retryAfter <= 60);
+  assert.equal((await rateLimit(env, 'chat', '5.6.7.8', { perMinute: 3, perDay: 5 })).ok, true, 'other people unaffected');
+  const rows = env.DB.raw.prepare('SELECT key FROM rate_limits').all();
+  assert.ok(rows.every((r) => !r.key.includes('1.2.3.4') && /^[md]:[a-f0-9]{64}$/.test(r.key)));
+
+  // daily limit across minutes
+  const env2 = { DB: createD1() };
+  for (let i = 0; i < 5; i++) await rateLimit(env2, 'chat', '9.9.9.9', { perMinute: 100, perDay: 5 });
+  const day = await rateLimit(env2, 'chat', '9.9.9.9', { perMinute: 100, perDay: 5 });
+  assert.equal(day.scope, 'day');
+  assert.ok(day.retryAfter > 60);
+});

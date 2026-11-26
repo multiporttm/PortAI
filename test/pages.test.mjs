@@ -125,3 +125,12 @@ test('system prompt includes Multiport knowledge, rules and Port model name', as
   assert.match(sys, /never as Gemma, GLM/);
   assert.match(sys, /recommend it by name with its link/);
 });
+
+test('Workers AI calls disable thinking and allow long replies', async () => {
+  let input;
+  const AI = { async run(_m, i) { input = i; return new ReadableStream({ start(c) { c.close(); } }); } };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }) });
+  await (await onRequestPost(ctx(req, { AI, PORTAI_MODELS: '@cf/google/gemma-4-26b-a4b-it' }))).text();
+  assert.deepEqual(input.chat_template_kwargs, { enable_thinking: false });
+  assert.equal(input.max_tokens, 2048);
+});
