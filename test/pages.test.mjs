@@ -86,3 +86,22 @@ test('pages chat explains exhausted free allowance', async () => {
   const text = await (await onRequestPost(ctx(req, { AI, PORTAI_MODELS: '@cf/swiss-ai/apertus-v1.5-8b' }))).text();
   assert.match(text, /free AI allowance/);
 });
+
+test('pages chat handles OpenAI-style Workers AI chunks and hides reasoning', async () => {
+  const AI = {
+    async run() {
+      const enc = new TextEncoder();
+      return new ReadableStream({
+        start(c) {
+          c.enqueue(enc.encode('data: {"choices":[{"delta":{"reasoning_content":"secret thoughts"}}]}\n\n'));
+          c.enqueue(enc.encode('data: {"choices":[{"delta":{"content":"Hello!"}}]}\n\ndata: [DONE]\n\n'));
+          c.close();
+        },
+      });
+    },
+  };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }) });
+  const text = await (await onRequestPost(ctx(req, { AI, PORTAI_MODELS: '@cf/google/gemma-4-26b-a4b-it' }))).text();
+  assert.match(text, /"delta":"Hello!"/);
+  assert.doesNotMatch(text, /secret thoughts/);
+});

@@ -1,6 +1,8 @@
 # PortAI
 
-**An AI chatbot powered by the open Swiss [Apertus](https://huggingface.co/swiss-ai) models. Privacy first: no ads, no tracking, no logs.**
+**A free, privacy-first AI chatbot powered by open-source models. No ads, no tracking, no logs.**
+
+On Cloudflare Pages it runs for free on open models (Google Gemma 4, GLM-4.7 Flash) hosted by Cloudflare Workers AI with zero data retention. It also supports the Swiss [Apertus](https://huggingface.co/swiss-ai) models through any OpenAI-compatible provider, or Workers AI once Cloudflare grants access.
 
 Open it and start chatting, with no account and no setup.
 
@@ -40,23 +42,25 @@ docker run -p 8080:8080 --env-file .env portai
 
 ### Cloudflare Pages (free)
 
-PortAI runs on Cloudflare Pages. `public/` is the static site, and `functions/api/*` are Pages Functions that replace `server.js` (same validation, header stripping and streaming).
+PortAI runs on Cloudflare Pages for free. `public/` is the static site, and `functions/api/*` are Pages Functions that replace `server.js` (same validation, header stripping and streaming). All settings live in `wrangler.toml`.
 
-By default it uses **Apertus 1.5 8B on Cloudflare Workers AI**, which is free up to Cloudflare's daily allowance (10,000 Neurons/day, resets 00:00 UTC). It needs **no API key**, and Cloudflare lists the model as *zero data retention*.
+By default it uses **Gemma 4** and **GLM-4.7 Flash** on Cloudflare Workers AI:
+- Both are available on the free Workers plan.
+- Cloudflare lists both as *zero data retention*.
+- They need **no API key**.
+- Usage is covered by Cloudflare's daily allowance of 10,000 Neurons, which resets at 00:00 UTC.
 
 1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and pick this repo.
 2. Build settings: Framework preset **None**, build command **empty**, build output directory **`public`**.
-3. **Save and Deploy**. The AI binding and models are configured in `wrangler.toml`, so there's nothing else to set.
+3. **Save and Deploy**. Then send a test message.
 
-Send a test message. If PortAI says the account has no access to the model, Cloudflare is still restricting Apertus (it used to require an access request form, which is now closed): ask Cloudflare support or the Community, or use Public AI meanwhile (see below).
+When the allowance runs out, users see "Today's free AI allowance has been used up" until 00:00 UTC. Nothing is charged on the free plan.
 
-When the free allowance runs out, users see "Today's free AI allowance has been used up", and it works again after 00:00 UTC. To get more, either upgrade to Workers Paid ($5/month), or add Apertus 70B from Public AI: uncomment the lines in `wrangler.toml` and add `PORTAI_API_KEY` as a **Secret** under **Settings → Variables and Secrets**. Models whose id starts with `@cf/` go to Workers AI, and all others go to `PORTAI_API_BASE`.
+**Switching models:** edit `PORTAI_MODELS` in `wrangler.toml`. Ids starting with `@cf/` use Workers AI, and any other id goes to `PORTAI_API_BASE`, which needs the `PORTAI_API_KEY` secret. Apertus on Workers AI (`@cf/swiss-ai/apertus-v1.5-8b`) is currently restricted (error `5018`). The commented lines in `wrangler.toml` switch to it once your account has access.
 
-> When `wrangler.toml` exists, Cloudflare uses it for bindings and plain variables, so edit them there rather than in the dashboard. Secrets are still set in the dashboard.
+> When `wrangler.toml` exists, Cloudflare uses it for bindings and plain variables. Secrets are still set in the dashboard.
 
-Command-line deploy: `npx wrangler login && npx wrangler pages deploy`
-
-**Keep it private on Cloudflare:** leave **Web Analytics** off, don't `console.log` request bodies, and add a **WAF rate-limiting rule** for `/api/chat` so strangers can't burn through your free allowance. Security headers come from `public/_headers`.
+**Keep it private and within the free allowance:** leave **Web Analytics** off, don't `console.log` request bodies, and add a **WAF rate-limiting rule** for `/api/chat` on your domain. Security headers come from `public/_headers`.
 
 ## Choosing an Apertus provider
 
@@ -64,7 +68,7 @@ PortAI works with any **OpenAI-compatible** `/chat/completions` endpoint. Set `P
 
 | Provider | `PORTAI_API_BASE` | Example model id |
 |---|---|---|
-| **Cloudflare Workers AI (free tier)** | (uses the `AI` binding, Pages only) | `@cf/swiss-ai/apertus-v1.5-8b` |
+| Cloudflare Workers AI (restricted access) | (uses the `AI` binding, Pages only) | `@cf/swiss-ai/apertus-v1.5-8b` |
 | Public AI Inference Utility | `https://api.publicai.co/v1` | `swiss-ai/apertus-v1.5-70b` |
 | CSCS LLM Inference API | `https://api.inference.cscs.ch/v1` | `swiss-ai/Apertus-70B-Instruct-2509` |
 | Self-hosted (vLLM, llama.cpp, Ollama…) | `http://localhost:8000/v1` | `swiss-ai/Apertus-8B-Instruct-2509` |

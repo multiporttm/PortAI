@@ -7,17 +7,21 @@ name = "portai"
 compatibility_date = "2026-10-01"
 pages_build_output_dir = "public"
 
-# Workers AI binding: free daily allocation, no API key needed.
+# Workers AI binding (only used by models whose id starts with "@cf/").
 [ai]
 binding = "AI"
 
 [vars]
-# FREE: Apertus 1.5 8B on Cloudflare Workers AI.
-PORTAI_MODELS = "@cf/swiss-ai/apertus-v1.5-8b"
-PORTAI_MODEL_LABELS = "Apertus 8B"
+# FREE + PRIVATE: open models hosted by Cloudflare Workers AI on the free plan,
+# with zero data retention. No API key needed. The first model is the default.
+PORTAI_MODELS = "@cf/google/gemma-4-26b-a4b-it,@cf/zai-org/glm-4.7-flash"
+PORTAI_MODEL_LABELS = "Gemma 4,GLM-4.7 Flash"
 
-# OPTIONAL (paid, bigger model): also offer Apertus 70B via Public AI.
-# Uncomment, then add the PORTAI_API_KEY secret in the dashboard:
-#   PORTAI_MODELS = "@cf/swiss-ai/apertus-v1.5-8b,swiss-ai/apertus-v1.5-70b"
-#   PORTAI_MODEL_LABELS = "Apertus 8B (free),Apertus 70B"
+# Apertus (Swiss open model) - switch back when Cloudflare gives your account
+# access (it currently returns error 5018):
+#   PORTAI_MODELS = "@cf/swiss-ai/apertus-v1.5-8b"
+#   PORTAI_MODEL_LABELS = "Apertus 8B"
+#
+# Apertus via Public AI (paid after $2 free credit; needs PORTAI_API_KEY secret):
+#   PORTAI_MODELS = "swiss-ai/apertus-v1.5-8b,swiss-ai/apertus-v1.5-70b"
 PORTAI_API_BASE = "https://api.publicai.co/v1"

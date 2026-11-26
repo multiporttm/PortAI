@@ -4,11 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
-  <meta name="description" content="PortAI — a private AI assistant powered by the open Swiss Apertus models. No ads, no tracking, encrypted history.">
+  <meta name="description" content="PortAI — a private AI assistant powered by open-source models. No ads, no tracking, no chat logs.">
   <meta name="color-scheme" content="light dark">
   <title>PortAI</title>
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/styles.css">
   <script type="module" src="/app.js"></script>
 </head>
@@ -61,7 +62,7 @@
         <div id="welcome" class="welcome">
           <img src="/icon.svg" alt="" width="64" height="64">
           <h2>How can I help you today?</h2>
-          <p class="muted">PortAI runs on <strong>Apertus</strong>, the fully open multilingual model from the Swiss AI Initiative (EPFL · ETH Zürich · CSCS). Your chats are never used for ads or profiling.</p>
+          <p class="muted">PortAI runs on <strong>open-source AI models</strong> with zero data retention. Your chats are never stored on our servers, and never used for ads, profiling or training.</p>
           <div class="suggestions">
             <button class="suggestion">Summarize the main ideas of quantum computing</button>
             <button class="suggestion">Rédige un e-mail poli pour reporter une réunion</button>
@@ -126,7 +127,7 @@
           <li><strong>Encrypted history.</strong> Chats are encrypted with AES-256-GCM in your browser before being stored, and never leave your device.</li>
           <li><strong>No server logs.</strong> The PortAI server only relays your message to the model and streams the answer back. It stores nothing and never logs content or IP addresses.</li>
           <li><strong>Minimal forwarding.</strong> Only the conversation text and model settings are sent to the model provider — not your IP, cookies or browser details.</li>
-          <li><strong>Open models.</strong> Apertus is fully open: weights, data and training recipes are public, and it was trained respecting opt-outs.</li>
+          <li><strong>Open models, zero retention.</strong> PortAI only uses open-source models, hosted by Cloudflare under a zero-data-retention policy: prompts and replies are not stored or used for training.</li>
           <li><strong>Ghost mode.</strong> Chats that are never written to storage at all.</li>
         </ul>
       </details>
