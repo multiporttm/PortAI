@@ -44,10 +44,11 @@ PortAI runs on Cloudflare Pages. `public/` is the static site, and `functions/ap
 
 By default it uses **Apertus 1.5 8B on Cloudflare Workers AI**, which is free up to Cloudflare's daily allowance (10,000 Neurons/day, resets 00:00 UTC). It needs **no API key**, and Cloudflare lists the model as *zero data retention*.
 
-1. **Request model access.** The [Apertus model page](https://developers.cloudflare.com/workers-ai/models/apertus-v1.5-8b/) links to an access form. Fill it in with the email of your Cloudflare account.
-2. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and pick this repo.
-3. Build settings: Framework preset **None**, build command **empty**, build output directory **`public`**.
-4. **Save and Deploy**. The AI binding and models are configured in `wrangler.toml`, so there's nothing else to set.
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and pick this repo.
+2. Build settings: Framework preset **None**, build command **empty**, build output directory **`public`**.
+3. **Save and Deploy**. The AI binding and models are configured in `wrangler.toml`, so there's nothing else to set.
+
+Send a test message. If PortAI says the account has no access to the model, Cloudflare is still restricting Apertus (it used to require an access request form, which is now closed): ask Cloudflare support or the Community, or use Public AI meanwhile (see below).
 
 When the free allowance runs out, users see "Today's free AI allowance has been used up", and it works again after 00:00 UTC. To get more, either upgrade to Workers Paid ($5/month), or add Apertus 70B from Public AI: uncomment the lines in `wrangler.toml` and add `PORTAI_API_KEY` as a **Secret** under **Settings → Variables and Secrets**. Models whose id starts with `@cf/` go to Workers AI, and all others go to `PORTAI_API_BASE`.
 
