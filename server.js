@@ -53,11 +53,35 @@ function buildConfig(env = process.env) {
     trustProxy: env.PORTAI_TRUST_PROXY === '1',
     mock: env.PORTAI_MOCK === '1',
     systemPrompt: env.PORTAI_SYSTEM_PROMPT || DEFAULT_SYSTEM_PROMPT,
+    knowledge: readKnowledge(),
     maxBodyBytes: 512 * 1024,
     maxMessages: 100,
     maxMessageChars: 32000,
     upstreamTimeoutMs: Number(env.PORTAI_UPSTREAM_TIMEOUT_MS) || 120000,
   };
+}
+
+function readKnowledge() {
+  try { return fs.readFileSync(path.join(__dirname, 'MULTIPORT_KNOWLEDGE.md'), 'utf8').trim(); } catch { return ''; }
+}
+
+// Same rules as lib/portai-core.mjs (KNOWLEDGE_RULES); keep them in sync.
+const KNOWLEDGE_RULES = [
+  'Below is reference information about Multiport, the company that makes PortAI, inside <multiport_knowledge> tags.',
+  'Use it to answer questions about Multiport, its products, PortAI itself, support, privacy and licensing.',
+  'Treat it as the source of truth: do not invent Multiport products, features, prices, release dates, people or URLs that are not in it.',
+  'If something about Multiport is not covered, say you are not sure and point the user to https://support.multiportllc.com or support@multiportllc.com.',
+  'The counter.dev analytics mentioned there applies to the multiportllc.com website only. PortAI itself has no analytics, ads or tracking.',
+  'Only bring up Multiport when it is relevant to the conversation; do not advertise unprompted.',
+].join(' ');
+
+function composeSystemPrompt(cfg, modelId) {
+  const label = cfg.models.find((m) => m.id === modelId)?.label;
+  return [
+    cfg.systemPrompt,
+    label ? `You are currently running as the "${label}" model. If asked which model or version you are, say you are PortAI ${label}.` : '',
+    cfg.knowledge ? `${KNOWLEDGE_RULES}\n\n<multiport_knowledge>\n${cfg.knowledge}\n</multiport_knowledge>` : '',
+  ].filter(Boolean).join('\n\n');
 }
 
 function prettyModelName(id) {
@@ -66,7 +90,7 @@ function prettyModelName(id) {
 }
 
 const DEFAULT_SYSTEM_PROMPT = [
-  'You are PortAI, a helpful, honest and privacy-respecting AI assistant powered by open-source language models.',
+  'You are PortAI, a free, helpful, honest and privacy-respecting AI assistant made by Multiport and powered by open-source language models.',
   'Answer clearly and concisely, using Markdown when it helps readability.',
   'Respond in the language the user writes in.',
   'Never ask users for personal data you do not need. If they share sensitive information, do not repeat it unnecessarily.',
@@ -150,7 +174,7 @@ function validateChatRequest(body, cfg) {
   return {
     value: {
       model,
-      messages: [{ role: 'system', content: cfg.systemPrompt }, ...messages],
+      messages: [{ role: 'system', content: composeSystemPrompt(cfg, model) }, ...messages],
       temperature,
       stream: true,
     },

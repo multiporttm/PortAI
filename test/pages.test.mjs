@@ -105,3 +105,21 @@ test('pages chat handles OpenAI-style Workers AI chunks and hides reasoning', as
   assert.match(text, /"delta":"Hello!"/);
   assert.doesNotMatch(text, /secret thoughts/);
 });
+
+test('system prompt includes Multiport knowledge, rules and Port model name', async () => {
+  const fs = await import('node:fs');
+  const { renderKnowledgeModule } = await import('../scripts/build-knowledge.mjs');
+  const md = fs.readFileSync(new URL('../MULTIPORT_KNOWLEDGE.md', import.meta.url), 'utf8');
+  const generated = fs.readFileSync(new URL('../lib/multiport-knowledge.mjs', import.meta.url), 'utf8');
+  assert.equal(generated, renderKnowledgeModule(md), 'lib/multiport-knowledge.mjs is stale: run `npm run knowledge`');
+
+  let sent;
+  const AI = { async run(_m, input) { sent = input; return new ReadableStream({ start(c) { c.close(); } }); } };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ model: '@cf/zai-org/glm-4.7-flash', messages: [{ role: 'user', content: 'What is Multiport?' }] }) });
+  await (await onRequestPost(ctx(req, { AI, PORTAI_MODELS: '@cf/google/gemma-4-26b-a4b-it,@cf/zai-org/glm-4.7-flash', PORTAI_MODEL_LABELS: 'Port 1.1,Port 1.0' }))).text();
+  const sys = sent.messages[0].content;
+  assert.match(sys, /PortAI Port 1\.0/);
+  assert.match(sys, /<multiport_knowledge>[\s\S]*Multiport Counter App[\s\S]*<\/multiport_knowledge>/);
+  assert.match(sys, /portai\.multiportllc\.com/);
+  assert.match(sys, /PortAI itself has no analytics/);
+});
