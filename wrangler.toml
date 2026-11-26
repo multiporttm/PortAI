@@ -30,6 +30,11 @@ PORTAI_MODELS = "@cf/google/gemma-4-26b-a4b-it,@cf/zai-org/glm-4.7-flash,@cf/ibm
 PORTAI_MODEL_LABELS = "Regular,Lite,Mini,Coder,Pro"
 PORTAI_MODEL_BASES = "Gemma 4 26B,GLM-4.7 Flash,IBM Granite 4.0 Micro,Qwen 2.5 Coder 32B,gpt-oss-120b"
 PORTAI_MODEL_LIMITS = "60/500,60/500,60/500,15/100,20/150"
+# If a model hasn't started answering after 5 s (busy/queued at Cloudflare), a backup
+# model is started too and whichever answers first is used. First match that isn't the
+# chosen model is the backup.
+PORTAI_FALLBACK_MODELS = "@cf/zai-org/glm-4.7-flash,@cf/google/gemma-4-26b-a4b-it"
+PORTAI_HEDGE_MS = "5000"
 
 # Apertus (Swiss open model) - switch back when Cloudflare gives your account
 # access (it currently returns error 5018):

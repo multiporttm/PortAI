@@ -159,3 +159,60 @@ test('gpt-oss uses low reasoning effort instead of chat_template_kwargs', async 
   assert.deepEqual(thinkingOff('@cf/openai/gpt-oss-120b'), { reasoning_effort: 'low' });
   assert.deepEqual(thinkingOff('@cf/google/gemma-4-26b-a4b-it'), { chat_template_kwargs: { enable_thinking: false } });
 });
+
+function fakeAI(behaviour) {
+  const calls = [];
+  return {
+    calls,
+    async run(model) {
+      calls.push(model);
+      const b = behaviour[model];
+      if (b.fail) { await new Promise((r) => setTimeout(r, b.delay || 0)); throw new Error(b.fail); }
+      const enc = new TextEncoder();
+      return new ReadableStream({
+        async start(c) {
+          await new Promise((r) => setTimeout(r, b.delay || 0));
+          try { c.enqueue(enc.encode(`data: {"response":"${b.text}"}\n\ndata: [DONE]\n\n`)); c.close(); } catch { /* cancelled */ }
+        },
+      });
+    },
+  };
+}
+const hedgeEnv = (AI) => ({ AI, PORTAI_MODELS: '@cf/a/regular,@cf/b/lite', PORTAI_MODEL_LABELS: 'Regular,Lite', PORTAI_HEDGE_MS: '50' });
+const runChat = async (env) => {
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }) });
+  const text = await (await onRequestPost(ctx(req, env))).text();
+  const events = text.split('\n\n').filter((e) => e.startsWith('data: {')).map((e) => JSON.parse(e.slice(6)));
+  return { events, out: events.filter((e) => e.delta).map((e) => e.delta).join('') };
+};
+
+test('busy model: backup starts after the hedge delay and the faster one wins', async () => {
+  const AI = fakeAI({ '@cf/a/regular': { delay: 400, text: 'slow' }, '@cf/b/lite': { delay: 10, text: 'fast' } });
+  const { events, out } = await runChat(hedgeEnv(AI));
+  assert.equal(out, 'fast');
+  assert.deepEqual(AI.calls, ['@cf/a/regular', '@cf/b/lite']);
+  assert.ok(events.some((e) => e.status === 'switched' && e.from === 'Regular' && e.to === 'Lite' && e.reason === 'busy'));
+});
+
+test('fast model: no backup is started', async () => {
+  const AI = fakeAI({ '@cf/a/regular': { delay: 0, text: 'quick' }, '@cf/b/lite': { delay: 0, text: 'unused' } });
+  const { events, out } = await runChat(hedgeEnv(AI));
+  assert.equal(out, 'quick');
+  assert.deepEqual(AI.calls, ['@cf/a/regular']);
+  assert.ok(!events.some((e) => e.status === 'switched'));
+});
+
+test('failing model falls back immediately; both failing shows a friendly error', async () => {
+  let AI = fakeAI({ '@cf/a/regular': { fail: '3040: Capacity temporarily exceeded' }, '@cf/b/lite': { delay: 0, text: 'backup' } });
+  let r = await runChat(hedgeEnv(AI));
+  assert.equal(r.out, 'backup');
+  assert.ok(r.events.some((e) => e.status === 'switched' && e.reason === 'error'));
+  AI = fakeAI({ '@cf/a/regular': { fail: '3040: Capacity temporarily exceeded' }, '@cf/b/lite': { fail: '3040: Capacity temporarily exceeded' } });
+  r = await runChat(hedgeEnv(AI));
+  assert.ok(r.events.some((e) => e.error === 'The model is busy right now. Please try again in a moment.'));
+});
+
+test('knowledge rules tell the model to answer non-Multiport questions normally', async () => {
+  const { KNOWLEDGE_RULES } = await import('../lib/portai-core.mjs');
+  assert.match(KNOWLEDGE_RULES, /answer normally from your own general knowledge/);
+});
