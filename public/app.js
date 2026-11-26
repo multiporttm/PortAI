@@ -477,11 +477,51 @@ $('#messages').addEventListener('click', (e) => {
   if (btn) copyText(btn.closest('.code-block').querySelector('code').textContent, btn);
 });
 
+// Follow the reply while it streams, but stop as soon as the user scrolls up to
+// read, and resume when they scroll back to the bottom. Scrolling is instant
+// (smooth-scroll animations restarted many times a second make it stutter).
+const scrollState = { follow: true, programmatic: false };
+
+function distanceFromBottom(box) { return box.scrollHeight - box.scrollTop - box.clientHeight; }
+
 function scrollToBottom(force) {
   const box = $('#messages');
-  const near = box.scrollHeight - box.scrollTop - box.clientHeight < 160;
-  if (force || near) box.scrollTop = box.scrollHeight;
+  if (force) scrollState.follow = true;
+  if (!scrollState.follow) { updateJumpButton(); return; }
+  if (distanceFromBottom(box) > 1) {
+    scrollState.programmatic = true;
+    box.scrollTop = box.scrollHeight;
+  }
+  updateJumpButton();
 }
+
+function updateJumpButton() {
+  const btn = $('#jump-latest');
+  if (btn) btn.hidden = scrollState.follow || distanceFromBottom($('#messages')) < 80;
+}
+
+(() => {
+  const box = $('#messages');
+  box.addEventListener('scroll', () => {
+    if (scrollState.programmatic) { scrollState.programmatic = false; return; }
+    scrollState.follow = distanceFromBottom(box) < 80;
+    updateJumpButton();
+  }, { passive: true });
+  // Any upward gesture stops following immediately (before the scroll event lands).
+  box.addEventListener('wheel', (e) => { if (e.deltaY < 0) { scrollState.follow = false; updateJumpButton(); } }, { passive: true });
+  let touchY = 0;
+  box.addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+  box.addEventListener('touchmove', (e) => { if (e.touches[0].clientY > touchY + 4) { scrollState.follow = false; updateJumpButton(); } }, { passive: true });
+  const btn = document.createElement('button');
+  btn.id = 'jump-latest';
+  btn.type = 'button';
+  btn.className = 'jump-latest';
+  btn.hidden = true;
+  btn.textContent = '↓ Latest';
+  btn.setAttribute('aria-label', 'Jump to the latest message');
+  btn.addEventListener('click', () => scrollToBottom(true));
+  document.querySelector('.composer').before(btn);
+})();
 
 // ---------------------------------------------------------------------------
 // Sending & streaming
@@ -541,6 +581,8 @@ async function send(text) {
     const decoder = new TextDecoder();
     let buf = '';
     let frame = 0;
+    let lastRender = 0;
+    let renderedText = '';
     for (;;) {
       const { value, done } = await reader.read();
       if (done) break;
@@ -587,12 +629,16 @@ async function send(text) {
           reply.content += msg.delta;
         }
       }
-      if (!frame) {
-        frame = requestAnimationFrame(() => {
+      // Re-render at most ~12 times a second (rendering every frame is heavy on long answers).
+      if (!frame && reply.content !== renderedText) {
+        const wait = Math.max(0, 80 - (performance.now() - lastRender));
+        frame = setTimeout(() => requestAnimationFrame(() => {
           frame = 0;
+          lastRender = performance.now();
+          renderedText = reply.content;
           bubble.innerHTML = renderMarkdown(reply.sources?.length ? stripCitations(reply.content) : reply.content);
           scrollToBottom();
-        });
+        }), wait);
       }
     }
     if (!reply.content) reply.content = '_(The model returned an empty response.)_';
