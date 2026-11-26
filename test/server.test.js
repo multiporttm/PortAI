@@ -104,3 +104,27 @@ test('apple-touch-icon is embedded in the page and matches the file', () => {
   const file = fs.readFileSync(require('node:path').join(__dirname, '../public/apple-touch-icon.png')).toString('base64');
   assert.equal(m[1], file, 'embedded icon is out of date with public/apple-touch-icon.png');
 });
+
+test('module imports get the deploy version for cache busting', async () => {
+  const { versionImports } = await import('../lib/portai-version.mjs');
+  const code = "import { Vault } from './vault.js';\nimport * as Account from \"./account.js\";\nconst x = await import('./lazy.js');\nimport { a } from 'https://cdn.example/x.js';";
+  const out = versionImports(code, 'abc123');
+  assert.match(out, /from '\.\/vault\.js\?v=abc123'/);
+  assert.match(out, /from "\.\/account\.js\?v=abc123"/);
+  assert.match(out, /import\('\.\/lazy\.js\?v=abc123'\)/);
+  assert.match(out, /'https:\/\/cdn\.example\/x\.js'/, 'external imports untouched');
+});
+
+test('middleware leaves responses alone without a deploy version (local dev)', async () => {
+  const { onRequest } = await import('../functions/_middleware.js');
+  const original = new Response('x', { headers: { 'content-type': 'text/javascript' } });
+  const res = await onRequest({ request: new Request('https://x/app.js'), next: async () => original, env: {} });
+  assert.equal(res, original);
+});
+
+test('middleware versions imports inside JavaScript files', async () => {
+  const { onRequest } = await import('../functions/_middleware.js');
+  const res = await onRequest({ request: new Request('https://x/app.js'), next: async () => new Response("import { Vault } from './vault.js';", { headers: { 'content-type': 'application/javascript', etag: '"1"' } }), env: { CF_PAGES_COMMIT_SHA: 'deadbeefcafe1234' } });
+  assert.equal(await res.text(), "import { Vault } from './vault.js?v=deadbeefcafe';");
+  assert.equal(res.headers.get('etag'), null);
+});
