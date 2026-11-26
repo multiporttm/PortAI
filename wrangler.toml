@@ -35,5 +35,5 @@ PORTAI_MODEL_LABELS = "UseX 1.0,UseX 1.0 Lite"
 PORTAI_API_BASE = "https://api.publicai.co/v1"
 
 # Per-person limits (counted in D1, shared by all Cloudflare servers; IPs stored only as hashes).
-PORTAI_RATE_LIMIT = "20"    # messages per minute
-PORTAI_DAILY_LIMIT = "300"  # messages per day (resets at midnight UTC)
+PORTAI_RATE_LIMIT = "60"    # messages per minute (1 per second; only bots hit this)
+PORTAI_DAILY_LIMIT = "500"  # messages per day (resets at midnight UTC)
