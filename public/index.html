@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="PortAI — a private AI assistant powered by the open Swiss Apertus models. No ads, no tracking, encrypted history.">
+  <meta name="color-scheme" content="light dark">
+  <title>PortAI</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <!-- Unlock screen (only shown if the user opted into a passphrase) -->
+  <div id="vault" class="vault" hidden>
+    <div class="vault-card">
+      <img src="/icon.svg" alt="" class="vault-logo" width="56" height="56">
+      <h1>PortAI</h1>
+      <p class="tagline">Your AI chat assistant. Enter your passphrase to open your chat history.</p>
+
+      <form id="unlock-form">
+        <label for="unlock-pass">Passphrase</label>
+        <input id="unlock-pass" type="password" autocomplete="current-password" autofocus>
+        <p class="error" id="unlock-error" role="alert"></p>
+        <button type="submit" class="btn primary">Unlock</button>
+        <button type="button" id="unlock-reset" class="btn ghost danger-text">Forgot passphrase? Erase everything</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="app" class="app" hidden>
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-head">
+        <div class="brand"><img src="/icon.svg" alt="" width="28" height="28"><span>PortAI</span></div>
+        <button id="close-sidebar" class="icon-btn mobile-only" aria-label="Close sidebar">✕</button>
+      </div>
+      <button id="new-chat" class="btn primary block">＋ New chat</button>
+      <nav id="chat-list" class="chat-list" aria-label="Conversations"></nav>
+      <div class="sidebar-foot">
+        <div class="privacy-badge" title="No ads, no tracking. Chat history stays encrypted on this device.">🔒 Private · No ads · No tracking</div>
+        <button id="open-settings" class="btn ghost block">⚙ Settings &amp; privacy</button>
+      </div>
+    </aside>
+    <div id="scrim" class="scrim" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="open-sidebar" class="icon-btn mobile-only" aria-label="Open sidebar">☰</button>
+        <select id="model-select" aria-label="Model"></select>
+        <div class="spacer"></div>
+        <label class="ghost-toggle" title="Ghost mode: this chat is never saved, not even encrypted">
+          <input type="checkbox" id="ghost-toggle">
+          <span class="ghost-pill">👻 Ghost</span>
+        </label>
+      </header>
+
+      <section id="messages" class="messages" aria-live="polite">
+        <div id="welcome" class="welcome">
+          <img src="/icon.svg" alt="" width="64" height="64">
+          <h2>How can I help you today?</h2>
+          <p class="muted">PortAI runs on <strong>Apertus</strong>, the fully open multilingual model from the Swiss AI Initiative (EPFL · ETH Zürich · CSCS). Your chats are never used for ads or profiling.</p>
+          <div class="suggestions">
+            <button class="suggestion">Summarize the main ideas of quantum computing</button>
+            <button class="suggestion">Rédige un e-mail poli pour reporter une réunion</button>
+            <button class="suggestion">Write a Python function that validates an IBAN</button>
+            <button class="suggestion">Was sind gute Wanderwege im Berner Oberland?</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="ghost-banner" class="ghost-banner" hidden>👻 Ghost mode — this conversation will disappear when you leave it.</div>
+
+      <form id="composer" class="composer">
+        <textarea id="input" rows="1" placeholder="Message PortAI…" aria-label="Message" maxlength="32000"></textarea>
+        <button type="submit" id="send" class="send-btn" aria-label="Send">➤</button>
+        <button type="button" id="stop" class="send-btn stop" aria-label="Stop generating" hidden>■</button>
+      </form>
+      <p class="disclaimer">PortAI can make mistakes. Check important information. Your messages are sent to the model provider only to generate a reply and are not stored by PortAI.</p>
+    </main>
+  </div>
+
+  <!-- Settings -->
+  <dialog id="settings" class="dialog">
+    <form method="dialog" class="dialog-body">
+      <h2>Settings &amp; privacy</h2>
+
+      <fieldset>
+        <legend>Model</legend>
+        <label for="temperature">Creativity <output id="temp-out">0.7</output></label>
+        <input id="temperature" type="range" min="0" max="1.5" step="0.1" value="0.7">
+      </fieldset>
+
+      <fieldset>
+        <legend>Appearance</legend>
+        <select id="theme-select" aria-label="Theme">
+          <option value="system">Match system</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend>Chat history</legend>
+        <p class="muted" id="vault-mode"></p>
+        <div id="pass-setup" class="pass-setup">
+          <label for="new-pass">Optional: require a passphrase to open your chat history</label>
+          <input id="new-pass" type="password" autocomplete="new-password" placeholder="Passphrase (min. 8 characters)">
+          <input id="new-pass2" type="password" autocomplete="new-password" placeholder="Repeat passphrase" aria-label="Repeat passphrase">
+          <p class="error" id="pass-error" role="alert"></p>
+          <button type="button" id="set-pass" class="btn ghost">Set passphrase</button>
+        </div>
+        <div class="row">
+          <button type="button" id="export-data" class="btn ghost">Export chats (JSON)</button>
+          <button type="button" id="lock-now" class="btn ghost">Lock now</button>
+        </div>
+        <button type="button" id="erase-data" class="btn danger block">Delete all chat history</button>
+      </fieldset>
+
+      <details>
+        <summary>How PortAI protects your privacy</summary>
+        <ul class="privacy-list">
+          <li><strong>No ads, no tracking.</strong> No analytics, cookies, fingerprinting or third-party scripts — enforced by a strict Content-Security-Policy.</li>
+          <li><strong>Encrypted history.</strong> Chats are encrypted with AES-256-GCM in your browser before being stored, and never leave your device.</li>
+          <li><strong>No server logs.</strong> The PortAI server only relays your message to the model and streams the answer back. It stores nothing and never logs content or IP addresses.</li>
+          <li><strong>Minimal forwarding.</strong> Only the conversation text and model settings are sent to the model provider — not your IP, cookies or browser details.</li>
+          <li><strong>Open models.</strong> Apertus is fully open: weights, data and training recipes are public, and it was trained respecting opt-outs.</li>
+          <li><strong>Ghost mode.</strong> Chats that are never written to storage at all.</li>
+        </ul>
+      </details>
+
+      <div class="dialog-actions"><button class="btn primary">Done</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

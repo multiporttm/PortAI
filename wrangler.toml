@@ -1,0 +1,23 @@
+# Cloudflare Pages configuration for PortAI.
+#
+# Note: when this file exists, Cloudflare uses it (not the dashboard) for
+# bindings and plain variables. Edit them here. Secrets still go in the dashboard.
+
+name = "portai"
+compatibility_date = "2026-10-01"
+pages_build_output_dir = "public"
+
+# Workers AI binding: free daily allocation, no API key needed.
+[ai]
+binding = "AI"
+
+[vars]
+# FREE: Apertus 1.5 8B on Cloudflare Workers AI.
+PORTAI_MODELS = "@cf/swiss-ai/apertus-v1.5-8b"
+PORTAI_MODEL_LABELS = "Apertus 8B"
+
+# OPTIONAL (paid, bigger model): also offer Apertus 70B via Public AI.
+# Uncomment, then add the PORTAI_API_KEY secret in the dashboard:
+#   PORTAI_MODELS = "@cf/swiss-ai/apertus-v1.5-8b,swiss-ai/apertus-v1.5-70b"
+#   PORTAI_MODEL_LABELS = "Apertus 8B (free),Apertus 70B"
+PORTAI_API_BASE = "https://api.publicai.co/v1"
