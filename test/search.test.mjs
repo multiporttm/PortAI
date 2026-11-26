@@ -6,9 +6,14 @@ import { webSearch, buildSearchQuery, searchContext } from '../lib/portai-search
 import { onRequestPost } from '../functions/api/chat.js';
 import { createD1 } from './d1-shim.mjs';
 
+const PROTON_ARTICLE = 'Proton AG is a Swiss technology company that offers privacy-focused online services.\n\nProton Mail was launched in 2014 by scientists who met at CERN in Geneva, Switzerland.\n\nIn July 2025, Proton launched Lumo, an AI chatbot that stores chat logs in encrypted storage. Proton stated that user data in Lumo is not used to train AI models.\n\nThe company is majority owned by the non-profit Proton Foundation.';
 const wikiFetch = async (url) => {
-  assert.match(String(url), /en\.wikipedia\.org\/w\/api\.php/);
-  return new Response(JSON.stringify({ query: { pages: [{ index: 1, title: 'Proton AG', fullurl: 'https://en.wikipedia.org/wiki/Proton_AG', extract: 'Proton AG is a Swiss company. It offers Lumo, an AI assistant.' }] } }));
+  const u = new URL(String(url));
+  assert.equal(u.hostname, 'en.wikipedia.org');
+  const p = Object.fromEntries(u.searchParams);
+  if (p.list === 'search') return new Response(JSON.stringify({ query: { search: /lumo/i.test(p.srsearch) && !/reviews/i.test(p.srsearch) ? [{ title: 'Proton AG' }] : [] } }));
+  if (p.prop) return new Response(JSON.stringify({ query: { pages: [{ title: 'Proton AG', fullurl: 'https://en.wikipedia.org/wiki/Proton_AG', extract: PROTON_ARTICLE }] } }));
+  throw new Error('unexpected request');
 };
 
 test('follow-up questions include the previous question in the search query', () => {
@@ -27,9 +32,11 @@ test('uses Cloudflare Web Search (Ceramic) when available', async () => {
 
 test('falls back to free Wikipedia search when Cloudflare search fails (e.g. no credits)', async () => {
   const env = { AI: { websearch: async () => new Response(JSON.stringify({ errors: [{ code: 'web_search_payment_required' }] }), { status: 402 }) } };
-  const r = await webSearch(env, 'lumo ai', {}, wikiFetch);
+  const r = await webSearch(env, 'Lumo AI reviews and performance comparison', {}, wikiFetch);
   assert.equal(r.provider, 'wikipedia');
-  assert.match(r.items[0].description, /Lumo, an AI assistant/);
+  assert.equal(r.items[0].title, 'Proton AG');
+  assert.match(r.items[0].description, /In July 2025, Proton launched Lumo/, 'finds the paragraph about Lumo inside the article');
+  assert.doesNotMatch(r.items[0].description, /CERN/, 'skips unrelated paragraphs');
 });
 
 test('search context cites sources and guards against prompt injection', () => {
@@ -109,4 +116,25 @@ test('search off: no router call and no search', async () => {
   const events = await autoChat(AI, false, 'Is Lumo AI a good choice?');
   assert.ok(!AI.calls.some((c) => !c.stream), 'router not called');
   assert.ok(!events.some((e) => e.status === 'searching'));
+});
+
+
+test('Brave Search is used first when a key is set (free monthly credit)', async () => {
+  let seen;
+  const fetchImpl = async (url, init) => {
+    seen = { url: String(url), key: init.headers['X-Subscription-Token'] };
+    return new Response(JSON.stringify({ web: { results: [{ title: 'Lumo: <strong>Privacy-first</strong> AI', url: 'https://lumo.proton.me/', description: 'Proton’s AI assistant with <strong>no logs</strong>.' }] } }));
+  };
+  const r = await webSearch({ BRAVE_SEARCH_API_KEY: 'k123' }, 'lumo ai', {}, fetchImpl);
+  assert.equal(r.provider, 'brave');
+  assert.match(seen.url, /^https:\/\/api\.search\.brave\.com\/res\/v1\/web\/search\?q=lumo\+ai/);
+  assert.equal(seen.key, 'k123');
+  assert.equal(r.items[0].title, 'Lumo: Privacy-first AI');
+  assert.equal(r.items[0].description, 'Proton’s AI assistant with no logs.');
+});
+
+test('without any key or credits, search still works via Wikipedia', async () => {
+  const r = await webSearch({}, 'Is Lumo AI good?', {}, wikiFetch);
+  assert.equal(r.provider, 'wikipedia');
+  assert.match(r.items[0].description, /Lumo/);
 });
