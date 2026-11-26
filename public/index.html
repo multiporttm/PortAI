@@ -42,6 +42,7 @@
       <nav id="chat-list" class="chat-list" aria-label="Conversations"></nav>
       <div class="sidebar-foot">
         <div class="privacy-badge" title="No ads, no tracking. Chat history stays encrypted on this device.">🔒 Private · No ads · No tracking</div>
+        <button id="open-account" class="btn ghost block account-btn" hidden></button>
         <button id="open-settings" class="btn ghost block">⚙ Settings &amp; privacy</button>
       </div>
     </aside>
@@ -104,15 +105,9 @@
       </fieldset>
 
       <fieldset>
-        <legend>Chat history</legend>
+        <legend>Account &amp; chat history</legend>
         <p class="muted" id="vault-mode"></p>
-        <div id="pass-setup" class="pass-setup">
-          <label for="new-pass">Optional: require a passphrase to open your chat history</label>
-          <input id="new-pass" type="password" autocomplete="new-password" placeholder="Passphrase (min. 8 characters)">
-          <input id="new-pass2" type="password" autocomplete="new-password" placeholder="Repeat passphrase" aria-label="Repeat passphrase">
-          <p class="error" id="pass-error" role="alert"></p>
-          <button type="button" id="set-pass" class="btn ghost">Set passphrase</button>
-        </div>
+        <button type="button" id="settings-account" class="btn ghost block"></button>
         <div class="row">
           <button type="button" id="export-data" class="btn ghost">Export chats (JSON)</button>
           <button type="button" id="lock-now" class="btn ghost">Lock now</button>
@@ -128,12 +123,70 @@
           <li><strong>No server logs.</strong> The PortAI server only relays your message to the model and streams the answer back. It stores nothing and never logs content or IP addresses.</li>
           <li><strong>Minimal forwarding.</strong> Only the conversation text and model settings are sent to the model provider — not your IP, cookies or browser details.</li>
           <li><strong>Open models, zero retention.</strong> PortAI only uses open-source models, hosted by Cloudflare under a zero-data-retention policy: prompts and replies are not stored or used for training.</li>
+          <li><strong>Zero-knowledge accounts.</strong> Your passphrase is turned into keys inside your browser. The server only stores encrypted chats it cannot read, and it never sees your passphrase.</li>
           <li><strong>Ghost mode.</strong> Chats that are never written to storage at all.</li>
         </ul>
       </details>
 
       <div class="dialog-actions"><button class="btn primary">Done</button></div>
     </form>
+  </dialog>
+  <!-- Account: sign in / create / manage -->
+  <dialog id="account" class="dialog">
+    <div class="dialog-body">
+      <div class="dialog-head">
+        <h2 id="account-title">Your PortAI account</h2>
+        <button type="button" class="icon-btn" id="account-close" aria-label="Close">✕</button>
+      </div>
+
+      <div id="account-signed-out">
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" class="tab active" data-tab="signin" aria-selected="true">Sign in</button>
+          <button type="button" role="tab" class="tab" data-tab="create" aria-selected="false">Create account</button>
+        </div>
+
+        <form id="signin-form" class="account-form" autocomplete="on">
+          <p class="muted">Enter your passphrase to open your chats on any device. No email, no name, no tracking.</p>
+          <input type="text" name="username" autocomplete="username" value="PortAI account" hidden>
+          <label for="signin-pass">Passphrase</label>
+          <input id="signin-pass" type="password" autocomplete="current-password" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required>
+          <label class="check"><input type="checkbox" id="signin-remember" checked> Stay signed in on this device</label>
+          <p class="error" id="signin-error" role="alert"></p>
+          <button type="submit" class="btn primary block">Sign in</button>
+        </form>
+
+        <form id="create-form" class="account-form" autocomplete="on" hidden>
+          <p class="muted">Your passphrase <strong>is</strong> your account. Anyone who has it can open your chats, and if you lose it, nobody can recover them, not even us.</p>
+          <input type="text" name="username" autocomplete="username" value="PortAI account" hidden>
+          <div id="gen-wrap">
+            <label>Your new passphrase</label>
+            <div class="passphrase-box">
+              <input id="gen-pass" type="text" readonly autocomplete="new-password" spellcheck="false" aria-label="Generated passphrase">
+              <button type="button" class="btn ghost" id="gen-copy">Copy</button>
+              <button type="button" class="btn ghost" id="gen-new" aria-label="Generate another">↻</button>
+            </div>
+            <button type="button" class="link-btn" id="use-custom">Use my own passphrase instead</button>
+          </div>
+          <div id="custom-wrap" hidden>
+            <label for="custom-pass">Your own passphrase</label>
+            <input id="custom-pass" type="password" autocomplete="new-password" placeholder="At least 12 characters">
+            <input id="custom-pass2" type="password" autocomplete="new-password" placeholder="Repeat passphrase" aria-label="Repeat passphrase">
+            <button type="button" class="link-btn" id="use-generated">Generate a strong one for me instead</button>
+          </div>
+          <label class="check"><input type="checkbox" id="create-saved"> I've saved my passphrase somewhere safe</label>
+          <label class="check"><input type="checkbox" id="create-remember" checked> Stay signed in on this device</label>
+          <p class="error" id="create-error" role="alert"></p>
+          <button type="submit" class="btn primary block">Create account</button>
+        </form>
+      </div>
+
+      <div id="account-signed-in" hidden>
+        <p>✅ <strong>Signed in.</strong> Your chats are end-to-end encrypted and synced across every device where you enter your passphrase.</p>
+        <p class="muted" id="sync-status"></p>
+        <button type="button" id="sign-out" class="btn ghost block">Sign out on this device</button>
+        <button type="button" id="delete-account" class="btn danger block">Delete account and all synced chats</button>
+      </div>
+    </div>
   </dialog>
 </body>
 </html>

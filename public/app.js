@@ -1,4 +1,5 @@
 import { Vault } from './vault.js';
+import * as Account from './account.js';
 import { renderMarkdown } from './markdown.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -10,6 +11,10 @@ const state = {
   current: null,      // active chat object
   streaming: null,    // AbortController
   settings: loadSettings(),
+  store: vault,       // where chats are saved: the local vault or the signed-in account
+  session: null,      // signed-in account keys (memory only unless 'stay signed in')
+  accounts: false,    // server supports accounts (D1 configured)
+  unsynced: new Set(),
 };
 
 // ---------------------------------------------------------------------------
@@ -69,7 +74,26 @@ function busy(btn, label) {
 }
 
 async function enterApp() {
-  state.chats = await vault.loadChats();
+  if (state.accounts) {
+    const saved = await vault.getSession();
+    if (saved) {
+      try {
+        await Account.login(saved);
+        state.session = saved;
+        state.store = new Account.AccountStore(saved);
+      } catch (e) {
+        if (e.status === 404 || e.status === 401) await vault.clearSession(); // account deleted elsewhere
+        else toast(`Couldn't reach your account (${e.message}). Showing chats on this device.`);
+      }
+    }
+  }
+  try {
+    state.chats = await state.store.loadChats();
+  } catch (e) {
+    toast(`Couldn't load your chats: ${e.message}`);
+    state.chats = [];
+  }
+  updateAccountUi();
   $('#vault').hidden = true;
   $('#app').hidden = false;
   renderChatList();
@@ -100,6 +124,7 @@ async function loadConfig() {
     const res = await fetch('/api/config', { credentials: 'omit' });
     const cfg = await res.json();
     state.models = cfg.models || [];
+    state.accounts = !!cfg.accounts;
   } catch {
     state.models = [];
   }
@@ -157,9 +182,32 @@ async function persist(chat) {
   chat.updatedAt = Date.now();
   if (!state.chats.includes(chat)) state.chats.unshift(chat);
   state.chats.sort((a, b) => b.updatedAt - a.updatedAt);
-  await vault.saveChat(stripGhost(chat));
   renderChatList();
+  await saveToStore(chat);
 }
+
+async function saveToStore(chat) {
+  try {
+    await state.store.saveChat(stripGhost(chat));
+    state.unsynced.delete(chat.id);
+  } catch (e) {
+    if (state.store === vault) throw e;
+    state.unsynced.add(chat.id);
+  }
+  updateSyncStatus();
+}
+
+async function retryUnsynced() {
+  if (state.store === vault || !state.unsynced.size) return;
+  for (const id of [...state.unsynced]) {
+    const chat = state.chats.find((c) => c.id === id);
+    if (!chat) { state.unsynced.delete(id); continue; }
+    await saveToStore(chat);
+    if (state.unsynced.has(id)) break; // still failing: stop for now
+  }
+}
+window.addEventListener('online', retryUnsynced);
+setInterval(retryUnsynced, 30000);
 
 function stripGhost(chat) {
   const { ghost, ...rest } = chat;
@@ -168,7 +216,8 @@ function stripGhost(chat) {
 
 async function deleteChat(id) {
   if (!confirm('Delete this conversation?')) return;
-  await vault.deleteChat(id);
+  try { await state.store.deleteChat(id); } catch (e) { toast(`Couldn't delete: ${e.message}`); return; }
+  state.unsynced.delete(id);
   state.chats = state.chats.filter((c) => c.id !== id);
   if (state.current?.id === id) newChat();
   else renderChatList();
@@ -453,11 +502,14 @@ $('#open-settings').addEventListener('click', () => {
   $('#temperature').value = state.settings.temperature;
   $('#temp-out').textContent = state.settings.temperature;
   $('#theme-select').value = state.settings.theme;
-  $('#vault-mode').textContent = vault.mode === 'passphrase'
-    ? '🔐 Your chat history is protected by your passphrase.'
-    : '🔑 Your chat history is saved only on this device, encrypted automatically.';
+  $('#vault-mode').textContent = state.session
+    ? '☁️ Signed in: your chats are end-to-end encrypted and synced across your devices.'
+    : vault.mode === 'passphrase'
+      ? '🔐 Your chat history is protected by your passphrase on this device.'
+      : '🔑 Your chat history is saved only on this device, encrypted automatically.';
   $('#lock-now').hidden = vault.mode !== 'passphrase';
-  $('#pass-setup').hidden = vault.mode === 'passphrase';
+  $('#settings-account').hidden = !state.accounts;
+  $('#settings-account').textContent = state.session ? '👤 Manage account' : '👤 Sign in or create an account to sync chats';
   $('#settings').showModal();
 });
 $('#temperature').addEventListener('input', (e) => {
@@ -471,20 +523,17 @@ $('#theme-select').addEventListener('change', (e) => {
   applyTheme();
 });
 $('#lock-now').addEventListener('click', lockApp);
-$('#set-pass').addEventListener('click', async (e) => {
-  const p1 = $('#new-pass').value;
-  const p2 = $('#new-pass2').value;
-  const err = $('#pass-error');
-  if (p1.length < 8) { err.textContent = 'Use at least 8 characters.'; return; }
-  if (p1 !== p2) { err.textContent = 'Passphrases do not match.'; return; }
-  err.textContent = '';
-  busy(e.currentTarget, 'Saving…');
-  await vault.switchToPassphrase(p1, state.chats.map(stripGhost));
-  $('#new-pass').value = $('#new-pass2').value = '';
+$('#erase-data').addEventListener('click', async () => {
+  if (!state.session) return eraseEverything();
+  if (!confirm('Delete ALL your chats from your account on every device? This cannot be undone.')) return;
+  for (const chat of [...state.chats]) {
+    try { await state.store.deleteChat(chat.id); } catch (e) { toast(`Couldn't delete everything: ${e.message}`); break; }
+    state.chats = state.chats.filter((c) => c !== chat);
+  }
   $('#settings').close();
-  resetIdle();
+  newChat();
 });
-$('#erase-data').addEventListener('click', eraseEverything);
+$('#settings-account').addEventListener('click', () => { $('#settings').close(); openAccount(); });
 $('#export-data').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(state.chats.map(stripGhost), null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -506,5 +555,173 @@ function resetIdle() {
   if (vault.mode === 'passphrase') idleTimer = setTimeout(() => { if (!state.streaming) lockApp(); }, 15 * 60 * 1000);
 }
 ['pointerdown', 'keydown'].forEach((ev) => document.addEventListener(ev, resetIdle, { passive: true }));
+
+// ---------------------------------------------------------------------------
+// Accounts (zero-knowledge, end-to-end encrypted sync)
+// ---------------------------------------------------------------------------
+
+function toast(message) {
+  let el = $('#toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'toast';
+    el.className = 'toast';
+    el.setAttribute('role', 'status');
+    document.body.append(el);
+  }
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+function updateAccountUi() {
+  const btn = $('#open-account');
+  btn.hidden = !state.accounts;
+  btn.textContent = state.session ? '☁️ Account · synced' : '👤 Sign in to sync chats';
+  $('#account-signed-in').hidden = !state.session;
+  $('#account-signed-out').hidden = !!state.session;
+  $('.privacy-badge').textContent = state.session ? '🔒 End-to-end encrypted sync' : '🔒 Private · No ads · No tracking';
+  updateSyncStatus();
+}
+
+function updateSyncStatus() {
+  const el = $('#sync-status');
+  if (!el) return;
+  el.textContent = state.unsynced.size
+    ? `⚠️ ${state.unsynced.size} chat(s) waiting to sync. PortAI will keep retrying.`
+    : `${state.chats.length} chat(s) synced.`;
+  if (state.session) $('#open-account').textContent = state.unsynced.size ? '☁️ Account · syncing…' : '☁️ Account · synced';
+}
+
+function openAccount() {
+  closeSidebar();
+  updateAccountUi();
+  if (!state.session) { showTab('signin'); }
+  $('#account').showModal();
+  if (!state.session) $('#signin-pass').focus();
+}
+
+function showTab(tab) {
+  document.querySelectorAll('#account .tab').forEach((t) => {
+    const on = t.dataset.tab === tab;
+    t.classList.toggle('active', on);
+    t.setAttribute('aria-selected', String(on));
+  });
+  $('#signin-form').hidden = tab !== 'signin';
+  $('#create-form').hidden = tab !== 'create';
+  $('#signin-error').textContent = $('#create-error').textContent = '';
+  if (tab === 'create' && !$('#gen-pass').value) $('#gen-pass').value = Account.generatePassphrase();
+}
+
+document.querySelectorAll('#account .tab').forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
+$('#open-account').addEventListener('click', openAccount);
+$('#account-close').addEventListener('click', () => $('#account').close());
+$('#gen-new').addEventListener('click', () => { $('#gen-pass').value = Account.generatePassphrase(); $('#create-saved').checked = false; });
+$('#gen-copy').addEventListener('click', (e) => copyText($('#gen-pass').value, e.currentTarget));
+$('#use-custom').addEventListener('click', () => { $('#gen-wrap').hidden = true; $('#custom-wrap').hidden = false; $('#custom-pass').focus(); });
+$('#use-generated').addEventListener('click', () => { $('#gen-wrap').hidden = false; $('#custom-wrap').hidden = true; });
+
+async function startSession(session, remember) {
+  // Offer to move chats that are only on this device into the account.
+  const local = state.store === vault ? state.chats.slice() : await vault.loadChats();
+  const store = new Account.AccountStore(session);
+  let remote = await store.loadChats();
+  if (local.length && confirm(`Move ${local.length} chat(s) from this device into your account? They'll be encrypted and synced.`)) {
+    const remoteIds = new Set(remote.map((c) => c.id));
+    for (const chat of local) {
+      if (!remoteIds.has(chat.id)) await store.saveChat(stripGhost(chat));
+      await vault.deleteChat(chat.id);
+    }
+    remote = await store.loadChats();
+  }
+  if (remember) await vault.saveSession(session);
+  else await vault.clearSession();
+  state.session = session;
+  state.store = store;
+  state.chats = remote;
+  state.unsynced.clear();
+  updateAccountUi();
+  renderChatList();
+  newChat();
+}
+
+$('#signin-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = $('#signin-error');
+  const pass = $('#signin-pass').value;
+  if (!pass.trim()) return;
+  err.textContent = '';
+  busy(e.submitter, 'Signing in…');
+  try {
+    const session = await Account.deriveAccount(pass);
+    await Account.login(session);
+    await startSession(session, $('#signin-remember').checked);
+    $('#signin-pass').value = '';
+    $('#account').close();
+    toast('Signed in. Your chats are synced.');
+  } catch (ex) {
+    err.textContent = ex.status === 404
+      ? 'No account found for this passphrase. Check it for typos, or create a new account.'
+      : ex.message || 'Could not sign in.';
+  } finally {
+    busy(e.submitter, null);
+  }
+});
+
+$('#create-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = $('#create-error');
+  const custom = !$('#custom-wrap').hidden;
+  const pass = custom ? $('#custom-pass').value : $('#gen-pass').value;
+  if (custom) {
+    if (pass.trim().length < Account.MIN_CUSTOM_LENGTH) { err.textContent = `Use at least ${Account.MIN_CUSTOM_LENGTH} characters. Longer is safer.`; return; }
+    if (pass !== $('#custom-pass2').value) { err.textContent = 'Passphrases do not match.'; return; }
+  }
+  if (!$('#create-saved').checked) { err.textContent = 'Please save your passphrase first. It cannot be recovered.'; return; }
+  err.textContent = '';
+  busy(e.submitter, 'Creating…');
+  try {
+    const session = await Account.deriveAccount(pass);
+    await Account.createAccount(session);
+    await startSession(session, $('#create-remember').checked);
+    ['#custom-pass', '#custom-pass2', '#gen-pass'].forEach((s) => { $(s).value = ''; });
+    $('#create-saved').checked = false;
+    $('#account').close();
+    toast('Account created. Sign in with your passphrase on any device.');
+  } catch (ex) {
+    err.textContent = ex.message || 'Could not create the account.';
+  } finally {
+    busy(e.submitter, null);
+  }
+});
+
+$('#sign-out').addEventListener('click', async () => {
+  stopStreaming();
+  await vault.clearSession();
+  state.session = null;
+  state.store = vault;
+  state.unsynced.clear();
+  state.chats = await vault.loadChats();
+  $('#account').close();
+  updateAccountUi();
+  renderChatList();
+  newChat();
+  toast('Signed out. Your synced chats are safe in your account.');
+});
+
+$('#delete-account').addEventListener('click', async (e) => {
+  if (!confirm('Permanently delete your account and ALL synced chats? This cannot be undone.')) return;
+  busy(e.currentTarget, 'Deleting…');
+  try {
+    await Account.deleteAccount(state.session);
+    $('#sign-out').click();
+    toast('Your account and all synced chats were deleted.');
+  } catch (ex) {
+    toast(`Couldn't delete the account: ${ex.message}`);
+  } finally {
+    busy(e.currentTarget, null);
+  }
+});
 
 boot();

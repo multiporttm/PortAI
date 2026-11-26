@@ -62,6 +62,25 @@ When the allowance runs out, users see "Today's free AI allowance has been used 
 
 **Keep it private and within the free allowance:** leave **Web Analytics** off, don't `console.log` request bodies, and add a **WAF rate-limiting rule** for `/api/chat` on your domain. Security headers come from `public/_headers`.
 
+## Accounts & sync (zero-knowledge)
+
+On Cloudflare Pages, people can create an **account protected only by a passphrase**, with no email or name. Their chats then sync, end-to-end encrypted, to every device where they enter it. This uses Cloudflare **D1** (binding `DB`, schema in `migrations/0001_accounts.sql`).
+
+```
+passphrase ─PBKDF2-SHA256 (600k)─▶ master ─HKDF─┬─ "id"   → account id         (sent to server)
+                                                ├─ "auth" → login secret       (server stores only its SHA-256)
+                                                └─ "enc"  → AES-256-GCM key    (never leaves the browser)
+```
+
+- The server stores only an account id, a hash of the login secret, and **ciphertext**. It can't read chats or recover passphrases.
+- New accounts get a generated passphrase like `K7QM-2XHD-9PRA-V4TS-6WNE` (about 98 bits of entropy). Generated passphrases ignore case, spaces and dashes when typed. Custom passphrases need at least 12 characters.
+- **There is no recovery.** If a passphrase is lost, its chats are gone.
+- "Stay signed in" keeps the keys in the browser's IndexedDB. The AES key is stored non-extractable. Leaving it unticked keeps the keys in memory only.
+- When someone signs in, PortAI offers to move chats that are only on that device into the account. Ghost-mode chats are never saved anywhere.
+- Deleting an account removes the account and all its synced chats from D1.
+
+**Setting up D1 for your own deployment:** create a database with `npx wrangler d1 create portai-db`, put its id in `wrangler.toml`, then run `npx wrangler d1 execute portai-db --remote --file migrations/0001_accounts.sql`. The Node server (`server.js`) does not support accounts. It reports `accounts: false`, and the UI hides the feature.
+
 ## Choosing an Apertus provider
 
 PortAI works with any **OpenAI-compatible** `/chat/completions` endpoint. Set `PORTAI_MODELS` to the exact model ids your provider exposes. Check them with `curl $PORTAI_API_BASE/models`.
@@ -109,6 +128,7 @@ Browser (vanilla JS)                    PortAI server (Node, no deps)        Ape
 - `public/app.js`: UI logic, streaming, ghost mode, settings
 - `functions/api/*` + `lib/portai-core.mjs`: the Cloudflare Pages Functions version of the server
 - `public/_headers`: security headers on Cloudflare Pages
+- `public/account.js` + `lib/portai-sync.mjs` + `functions/api/account*`, `functions/api/chats*`: zero-knowledge accounts and encrypted sync (D1)
 
 ## Development
 
