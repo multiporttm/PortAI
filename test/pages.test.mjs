@@ -125,7 +125,7 @@ test('system prompt includes Multiport knowledge, rules and Port model name', as
   assert.match(sys, /<multiport_knowledge>[\s\S]*Multiport Counter App[\s\S]*<\/multiport_knowledge>/);
   assert.match(sys, /portai\.multiportllc\.com/);
   assert.match(sys, /PortAI itself has no analytics/);
-  assert.match(sys, /never as Gemma, GLM/);
+  assert.match(sys, /Never refer to yourself as Gemma, GLM/);
   assert.match(sys, /recommend it by name with its link/);
 });
 
