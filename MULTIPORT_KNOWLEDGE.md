@@ -27,8 +27,8 @@ away from Big Tech and take back control of their privacy, one small tool at a t
   free to browse and download.
 - **Everything Quiz** — a fast-paced quiz covering a bit of everything.
 - **PortAI** (portai.multiportllc.com) — live now. A free, privacy-first AI chatbot running
-  on Gemma 4, GLM and Qwen 2.5 Coder models (shown as UseX 1.0, UseX 1.0 Lite and UseX 1.0 Alt),
-  built right into the browser.
+  on open models: Gemma 4, GLM, Qwen 2.5 Coder and gpt-oss (shown as UseX 1.0, UseX 1.0 Lite,
+  UseX 1.0 Alt and UseX 1.0 Pro), built right into the browser.
   No ads, no tracking, and optional passphrase accounts with end-to-end encrypted chat sync.
 - **Hello New Tab – Custom NTP** — a browser extension that gives you a fresh new tab
   every time. Live now on Firefox Add-ons (Gecko); Chrome/Edge/Brave (Chromium) is

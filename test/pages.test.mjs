@@ -152,3 +152,9 @@ test('Workers AI numeric tokens (older models send digits as numbers) are kept',
   const out = text.split('\n\n').filter((e) => e.startsWith('data: {"delta"')).map((e) => JSON.parse(e.slice(6)).delta).join('');
   assert.equal(out, 'UseX 1.0 s[::-1]');
 });
+
+test('gpt-oss uses low reasoning effort instead of chat_template_kwargs', async () => {
+  const { thinkingOff } = await import('../lib/portai-core.mjs');
+  assert.deepEqual(thinkingOff('@cf/openai/gpt-oss-120b'), { reasoning_effort: 'low' });
+  assert.deepEqual(thinkingOff('@cf/google/gemma-4-26b-a4b-it'), { chat_template_kwargs: { enable_thinking: false } });
+});
