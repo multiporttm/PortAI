@@ -95,7 +95,7 @@
         <button type="submit" id="send" class="send-btn" aria-label="Send">➤</button>
         <button type="button" id="stop" class="send-btn stop" aria-label="Stop generating" hidden>■</button>
       </form>
-      <p class="disclaimer">PortAI can make mistakes. Check important information. Your messages are sent to the model provider only to generate a reply and are not stored by PortAI.</p>
+      <p class="disclaimer">PortAI can make mistakes. Check important information. Your messages are sent to the model provider only to generate a reply and are not stored by PortAI. <span class="legal-links"><a href="https://multiportllc.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> · <a href="https://multiportllc.com/terms" target="_blank" rel="noopener noreferrer">Terms</a></span></p>
     </main>
   </div>
 
@@ -142,6 +142,8 @@
           <li><strong>Ghost mode.</strong> Chats that are never written to storage at all.</li>
         </ul>
       </details>
+
+      <p class="legal-links settings-legal"><a href="https://multiportllc.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> · <a href="https://multiportllc.com/terms" target="_blank" rel="noopener noreferrer">Terms</a></p>
 
       <div class="dialog-actions"><button class="btn primary">Done</button></div>
     </form>
@@ -191,6 +193,7 @@
           <label class="check"><input type="checkbox" id="create-saved"> I've saved my passphrase somewhere safe</label>
           <label class="check"><input type="checkbox" id="create-remember" checked> Stay signed in on this device</label>
           <p class="error" id="create-error" role="alert"></p>
+          <p class="fine">By creating an account, you agree to the <a href="https://multiportllc.com/terms" target="_blank" rel="noopener noreferrer">Terms</a> and <a href="https://multiportllc.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</p>
           <button type="submit" class="btn primary block">Create account</button>
         </form>
       </div>
