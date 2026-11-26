@@ -126,7 +126,8 @@ test('system prompt includes Multiport knowledge, rules and Port model name', as
   assert.match(sys, /portai\.multiportllc\.com/);
   assert.match(sys, /PortAI itself has no analytics/);
   assert.match(sys, /Never refer to yourself as Gemma, GLM/);
-  assert.match(sys, /recommend it by name with its link/);
+  assert.match(sys, /actively looking for a tool, app or website/);
+  assert.match(sys, /No advertising\./);
 });
 
 test('Workers AI calls disable thinking and allow long replies', async () => {
