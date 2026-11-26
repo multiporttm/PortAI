@@ -7,7 +7,9 @@ const GENERIC = 'Something went wrong. Please try again.';
 function rateLimitMessage(retryAfter) {
   const s = Number(retryAfter);
   if (!Number.isFinite(s) || s <= 0) return RATE_LIMIT_MESSAGE;
-  return s < 90 ? `Rate limit hit. Please try again in ${Math.ceil(s)} seconds.` : `Rate limit hit. Please try again in about ${Math.ceil(s / 60)} minutes.`;
+  if (s < 90) return `Rate limit hit. Please try again in ${Math.ceil(s)} seconds.`;
+  if (s < 5400) return `Rate limit hit. Please try again in about ${Math.ceil(s / 60)} minutes.`;
+  return `Daily message limit reached. Please try again in about ${Math.round(s / 3600)} hours.`;
 }
 
 /** True if the text is safe and readable to show as-is (no JSON, markup or bare error codes). */
