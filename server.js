@@ -259,7 +259,7 @@ function serveStatic(req, res, cfg, publicDir) {
 
 async function handleChat(req, res, cfg, allow) {
   const headers = securityHeaders(cfg);
-  if (!allow(clientIp(req, cfg))) return sendJson(res, 429, { error: 'Too many requests. Please wait a minute.' }, headers);
+  if (!allow(clientIp(req, cfg))) return sendJson(res, 429, { error: 'Rate limit hit. Please wait a minute and try again.' }, { ...headers, 'Retry-After': '60' });
 
   let parsed;
   try { parsed = JSON.parse(await readBody(req, cfg.maxBodyBytes)); } catch (e) {
