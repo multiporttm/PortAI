@@ -122,7 +122,7 @@ async function eraseEverything() {
 
 async function loadConfig() {
   try {
-    const res = await fetch('/api/config', { credentials: 'omit' });
+    const res = await fetch('/api/config', { credentials: 'same-origin' });
     const cfg = await res.json();
     state.models = cfg.models || [];
     state.accounts = !!cfg.accounts;
@@ -370,7 +370,7 @@ async function send(text) {
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
-      credentials: 'omit',
+      credentials: 'same-origin',
       cache: 'no-store',
       referrerPolicy: 'no-referrer',
       headers: { 'Content-Type': 'application/json' },

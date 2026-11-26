@@ -68,7 +68,7 @@ async function api(session, method, path, body) {
   try {
     res = await fetch(path, {
       method,
-      credentials: 'omit',
+      credentials: 'same-origin',
       cache: 'no-store',
       referrerPolicy: 'no-referrer',
       headers: { Authorization: `Bearer ${session.id}.${session.auth}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
