@@ -320,3 +320,17 @@ body.ghost .main { background: color-mix(in srgb, var(--ghost) 6%, var(--bg)); }
 .steps-summary > summary .step-icon { color: var(--accent); }
 .steps-summary .steps { margin: 6px 0 4px 6px; padding-left: 10px; border-left: 2px solid var(--border); }
 @media (prefers-reduced-motion: reduce) { .shimmer { animation: none; color: var(--text) !important; background: none; } }
+
+/* Mobile resize fixes */
+body.resizing *, body.resizing *::before, body.resizing *::after { transition: none !important; animation-duration: 0s !important; }
+@media (min-width: 761px) { .scrim { display: none !important; } }
+@media (max-width: 760px) {
+  /* iOS zooms into inputs smaller than 16px, which makes the layout jump. */
+  input, select, textarea, .composer textarea { font-size: 16px !important; }
+}
+
+/* iPhone notch / home indicator (matters most when added to the Home Screen) */
+.topbar { padding-top: max(10px, env(safe-area-inset-top)); padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+.sidebar { padding-top: max(14px, env(safe-area-inset-top)); padding-bottom: max(14px, env(safe-area-inset-bottom)); padding-left: max(12px, env(safe-area-inset-left)); }
+.disclaimer { margin-bottom: max(12px, env(safe-area-inset-bottom)); }
+.vault { padding-top: max(24px, env(safe-area-inset-top)); padding-bottom: max(24px, env(safe-area-inset-bottom)); }

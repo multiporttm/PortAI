@@ -514,6 +514,16 @@ $('#ghost-toggle').addEventListener('change', () => {
 function openSidebar() { $('#sidebar').classList.add('open'); $('#scrim').hidden = false; }
 function closeSidebar() { $('#sidebar').classList.remove('open'); $('#scrim').hidden = true; }
 $('#open-sidebar').addEventListener('click', openSidebar);
+
+// Resizing / rotating: no slide animations mid-resize, and never leave the
+// mobile sidebar or its dark overlay stuck when switching layouts.
+let resizeTimer;
+window.addEventListener('resize', () => {
+  document.body.classList.add('resizing');
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => document.body.classList.remove('resizing'), 200);
+}, { passive: true });
+matchMedia('(max-width: 760px)').addEventListener('change', closeSidebar);
 $('#close-sidebar').addEventListener('click', closeSidebar);
 $('#scrim').addEventListener('click', closeSidebar);
 $('#new-chat').addEventListener('click', newChat);
