@@ -337,7 +337,7 @@ function createServer(cfg = buildConfig()) {
       return;
     }
     if (url === '/api/config' && req.method === 'GET') {
-      return sendJson(res, 200, { models: cfg.models, mock: cfg.mock }, securityHeaders(cfg));
+      return sendJson(res, 200, { models: cfg.models, mock: cfg.mock, accounts: false }, securityHeaders(cfg));
     }
     if (url === '/api/health' && req.method === 'GET') {
       return sendJson(res, 200, { ok: true }, securityHeaders(cfg));

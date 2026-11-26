@@ -11,6 +11,13 @@ pages_build_output_dir = "public"
 [ai]
 binding = "AI"
 
+# D1 database for accounts + end-to-end encrypted chat sync.
+# Schema: migrations/0001_accounts.sql
+[[d1_databases]]
+binding = "DB"
+database_name = "portai-db"
+database_id = "09b2911a-bcea-4995-aaa9-4f28d00b18a9"
+
 [vars]
 # FREE + PRIVATE: open models hosted by Cloudflare Workers AI on the free plan,
 # with zero data retention. No API key needed. The first model is the default.

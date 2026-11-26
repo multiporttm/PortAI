@@ -68,6 +68,7 @@ async function decryptWith(key, { iv, ct }) {
 export class Vault {
   #key = null;
   mode = null;
+  kind = 'device';
 
   /** @returns {'new'|'passphrase'|'device'} */
   async status() {
@@ -154,6 +155,19 @@ export class Vault {
       try { chats.push(JSON.parse(await decryptWith(this.#key, r))); } catch { /* skip corrupt */ }
     }
     return chats.sort((a, b) => b.updatedAt - a.updatedAt);
+  }
+
+  /** Remember a signed-in account on this device (the AES key is stored non-extractable). */
+  async saveSession(session) {
+    await metaSet('account', { id: session.id, auth: session.auth, key: session.key });
+  }
+
+  async getSession() {
+    try { return (await metaGet('account')) || null; } catch { return null; }
+  }
+
+  async clearSession() {
+    await tx('meta', 'readwrite', (s) => s.delete('account'));
   }
 
   /** Permanently erases every trace of PortAI from this browser. */
