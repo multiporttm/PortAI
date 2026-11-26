@@ -1,0 +1,10 @@
+{
+  "name": "PortAI",
+  "short_name": "PortAI",
+  "description": "Private AI assistant powered by the open Swiss Apertus models.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#15141d",
+  "theme_color": "#6d4aff",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
