@@ -59,7 +59,14 @@
     <main class="main">
       <header class="topbar">
         <button id="open-sidebar" class="icon-btn mobile-only" aria-label="Open sidebar">☰</button>
-        <select id="model-select" aria-label="Model"></select>
+        <div class="model-picker">
+          <select id="model-select" class="visually-hidden" aria-hidden="true" tabindex="-1"></select>
+          <button type="button" id="model-button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="mp-text"><span class="mp-label"></span><span class="mp-base"></span></span>
+            <span class="mp-caret" aria-hidden="true">▾</span>
+          </button>
+          <ul id="model-menu" role="listbox" aria-label="Choose a model" hidden></ul>
+        </div>
         <div class="spacer"></div>
         <label class="ghost-toggle" title="Ghost mode: this chat is never saved, not even encrypted">
           <input type="checkbox" id="ghost-toggle">

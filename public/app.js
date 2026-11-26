@@ -135,7 +135,82 @@ async function loadConfig() {
   const sel = $('#model-select');
   sel.replaceChildren(...state.models.map((m) => new Option(m.label, m.id)));
   if (state.settings.model && state.models.some((m) => m.id === state.settings.model)) sel.value = state.settings.model;
+  renderModelMenu();
 }
+
+// ---------------------------------------------------------------------------
+// Model picker: alias in bold, real model name underneath (a native <select>
+// can only show one line, so it stays hidden and holds the value).
+// ---------------------------------------------------------------------------
+
+function modelSubtitle(m) {
+  return [m.base, m.perDay ? `${m.perDay}/day` : ''].filter(Boolean).join(' · ');
+}
+
+function syncModelButton() {
+  const m = state.models.find((x) => x.id === $('#model-select').value) || state.models[0];
+  if (!m) return;
+  $('#model-button .mp-label').textContent = m.label;
+  $('#model-button .mp-base').textContent = m.base || '';
+  $('#model-button').setAttribute('aria-label', `Model: ${m.label} (${m.base || m.id})`);
+  document.querySelectorAll('#model-menu [role=option]').forEach((li) => li.setAttribute('aria-selected', String(li.dataset.id === m.id)));
+}
+
+function renderModelMenu() {
+  const menu = $('#model-menu');
+  menu.replaceChildren(...state.models.map((m) => {
+    const li = document.createElement('li');
+    li.setAttribute('role', 'option');
+    li.dataset.id = m.id;
+    li.tabIndex = -1;
+    const name = document.createElement('span');
+    name.className = 'mo-label';
+    name.textContent = m.label;
+    const sub = document.createElement('span');
+    sub.className = 'mo-base';
+    sub.textContent = modelSubtitle(m);
+    const check = document.createElement('span');
+    check.className = 'mo-check';
+    check.textContent = '✓';
+    li.append(name, sub, check);
+    li.addEventListener('click', () => chooseModel(m.id));
+    return li;
+  }));
+  syncModelButton();
+}
+
+function chooseModel(id) {
+  const sel = $('#model-select');
+  sel.value = id;
+  sel.dispatchEvent(new Event('change'));
+  syncModelButton();
+  closeModelMenu(true);
+}
+
+function openModelMenu() {
+  $('#model-menu').hidden = false;
+  $('#model-button').setAttribute('aria-expanded', 'true');
+  (document.querySelector('#model-menu [aria-selected=true]') || document.querySelector('#model-menu [role=option]'))?.focus();
+}
+
+function closeModelMenu(focusButton) {
+  if ($('#model-menu').hidden) return;
+  $('#model-menu').hidden = true;
+  $('#model-button').setAttribute('aria-expanded', 'false');
+  if (focusButton) $('#model-button').focus();
+}
+
+$('#model-button').addEventListener('click', () => ($('#model-menu').hidden ? openModelMenu() : closeModelMenu()));
+$('#model-menu').addEventListener('keydown', (e) => {
+  const items = [...document.querySelectorAll('#model-menu [role=option]')];
+  const i = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+  else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (items[i]) chooseModel(items[i].dataset.id); }
+  else if (e.key === 'Escape') { e.preventDefault(); closeModelMenu(true); }
+  else if (e.key === 'Tab') closeModelMenu();
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.model-picker')) closeModelMenu(); });
 
 $('#model-select').addEventListener('change', (e) => {
   state.settings.model = e.target.value;
@@ -175,7 +250,7 @@ function openChat(id) {
   state.current = chat;
   $('#ghost-toggle').checked = false;
   updateGhostBanner();
-  if (chat.model && state.models.some((m) => m.id === chat.model)) $('#model-select').value = chat.model;
+  if (chat.model && state.models.some((m) => m.id === chat.model)) { $('#model-select').value = chat.model; syncModelButton(); }
   renderMessages();
   renderChatList();
   closeSidebar();
@@ -396,9 +471,9 @@ async function send(text) {
     });
 
     if (!res.ok || !res.body) {
-      let serverMsg = '';
-      try { serverMsg = (await res.clone().json()).error || ''; } catch { /* Cloudflare block pages are HTML */ }
-      throw Object.assign(new Error(friendlyError({ status: res.status, message: serverMsg, retryAfter: res.headers.get('Retry-After') })), { friendly: true });
+      let info = {};
+      try { info = await res.clone().json(); } catch { /* Cloudflare block pages are HTML */ }
+      throw Object.assign(new Error(friendlyError({ status: res.status, message: info.error || '', retryAfter: res.headers.get('Retry-After'), model: info.model, limit: info.limit })), { friendly: true });
     }
 
     const reader = res.body.getReader();

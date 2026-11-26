@@ -84,3 +84,26 @@ test('durable rate limit: per-minute and per-day, IPs stored only as hashes', as
   assert.equal(day.scope, 'day');
   assert.ok(day.retryAfter > 60);
 });
+
+test('each model has its own limit and the 429 names the model', async () => {
+  const { onRequestPost } = await import('../functions/api/chat.js');
+  const env = {
+    DB: createD1(), PORTAI_MOCK: '1',
+    PORTAI_MODELS: 'a/fast,b/coder', PORTAI_MODEL_LABELS: 'UseX 1.0,UseX 1.0 Coder',
+    PORTAI_MODEL_BASES: 'Gemma 4,Qwen Coder', PORTAI_MODEL_LIMITS: '60/500,2/100',
+  };
+  const send = (model) => onRequestPost({ request: new Request('https://x/api/chat', { method: 'POST', headers: { 'CF-Connecting-IP': '7.7.7.7' }, body: JSON.stringify({ model, messages: [{ role: 'user', content: 'hi' }] }) }), env, waitUntil: () => {} });
+  assert.equal((await send('b/coder')).status, 200);
+  assert.equal((await send('b/coder')).status, 200);
+  const blocked = await send('b/coder');
+  assert.equal(blocked.status, 429);
+  const body = await blocked.json();
+  assert.equal(body.model, 'UseX 1.0 Coder');
+  assert.match(body.error, /UseX 1\.0 Coder/);
+  assert.ok(blocked.headers.get('Retry-After'));
+  assert.equal((await send('a/fast')).status, 200, 'other models still work');
+
+  const { handleConfig } = await import('../lib/portai-core.mjs');
+  const cfg = await handleConfig(env).json();
+  assert.deepEqual(cfg.models[1], { id: 'b/coder', label: 'UseX 1.0 Coder', base: 'Qwen Coder', perMinute: 2, perDay: 100 });
+});
