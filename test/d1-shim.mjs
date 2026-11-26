@@ -1,3 +1,5 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 // Minimal Cloudflare D1 API shim on top of node:sqlite, for tests.
 import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';

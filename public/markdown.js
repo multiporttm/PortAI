@@ -1,3 +1,5 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 // Minimal, safe Markdown renderer. All input is HTML-escaped FIRST, so model
 // output can never inject markup or scripts. Supports headings, bold, italic,
 // strike, inline code, fenced code blocks, lists, blockquotes, links (http/https

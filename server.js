@@ -1,3 +1,5 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 'use strict';
 /**
  * PortAI server — a tiny, dependency-free, privacy-first proxy in front of an
@@ -282,6 +284,7 @@ async function handleChat(req, res, cfg, allow) {
   res.on('close', () => controller.abort());
 
   try {
+    send({ status: 'thinking' }); // tells the UI the model has started working
     if (cfg.mock) {
       await mockStream(value, send, controller.signal);
     } else if (!cfg.apiKey && !/^https?:\/\/(localhost|127\.|\[::1\])/.test(cfg.apiBase)) {
@@ -343,12 +346,14 @@ async function proxyUpstream(payload, cfg, send, signal) {
 }
 
 async function mockStream(payload, send, signal) {
+  const delay = Number(process.env.PORTAI_MOCK_DELAY_MS) || 0; // dev only: simulate model thinking time
+  if (delay) await new Promise((r) => setTimeout(r, delay));
   const last = payload.messages[payload.messages.length - 1].content;
   const reply = `**Mock mode** — no upstream model is configured.\n\nYou said:\n\n> ${last.split('\n').join('\n> ')}\n\nSet \`PORTAI_API_KEY\` and \`PORTAI_API_BASE\` to talk to **${payload.model}**.`;
   for (const word of reply.split(/(?<=\s)/)) {
     if (signal.aborted) return;
     send({ delta: word });
-    await new Promise((r) => setTimeout(r, 12));
+    await new Promise((r) => setTimeout(r, delay ? 40 : 12));
   }
 }
 

@@ -1,3 +1,6 @@
+-- This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+-- If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 -- Durable per-person rate limiting shared by all Cloudflare servers.
 -- key = SHA-256(random secret salt + scope + IP address), so raw IPs are never stored.
 -- Rows expire after their window (a minute or a day) and are cleaned up automatically.
