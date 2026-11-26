@@ -96,9 +96,8 @@ When a message contains a link, PortAI reads that page automatically, like Lumo 
 Web search is **automatic** by default, like Lumo. Before answering, a small, cheap model (Mini, IBM Granite) decides whether the question needs the web, for example news, prices, recent events or newer products like Lumo. If it does, PortAI searches with that model's query; if not, it answers right away. The **🌐 Auto / Off** button turns searching off. Set `PORTAI_SEARCH_ROUTER` to pick a different decision model.
 
 - **Providers**, tried in order (`PORTAI_SEARCH_PROVIDERS`):
-  1. **Brave Search API**: full web from an independent index, with a free $5 monthly credit (about 1,000 searches). Sign up at brave.com/search/api, then add the key as the Pages secret `BRAVE_SEARCH_API_KEY`.
-  2. **Cloudflare Web Search API** (Ceramic.ai): zero data retention, $0.25 per 1,000 searches, paid from AI Gateway credits.
-  3. **Free, no signup**: **DuckDuckGo Instant Answers** (summaries and quick facts) together with **Wikipedia**. It runs a full-text search inside articles and returns the matching paragraphs. For example, it finds Lumo inside the "Proton AG" article.
+  1. **Cloudflare Web Search API** (Ceramic.ai): zero data retention, $0.25 per 1,000 searches, paid from AI Gateway credits.
+  2. **Free, no signup**: **DuckDuckGo Instant Answers** (summaries and quick facts) together with **Wikipedia**. It runs a full-text search inside articles and returns the matching paragraphs. For example, it finds Lumo inside the "Proton AG" article.
 - Only the search query is sent. No IP address, cookies or chat history go with it.
 - Settings in `wrangler.toml`: `PORTAI_SEARCH` turns it on or off, `PORTAI_SEARCH_PROVIDER` picks `ceramic`, `linkup` or `wikipedia`, `PORTAI_SEARCH_LIMITS` sets searches per person per minute and per day, and `PORTAI_SEARCH_CONTACT` is the contact info Wikipedia asks API clients to send.
 

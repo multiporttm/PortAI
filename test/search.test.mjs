@@ -120,20 +120,6 @@ test('search off: no router call and no search', async () => {
 });
 
 
-test('Brave Search is used first when a key is set (free monthly credit)', async () => {
-  let seen;
-  const fetchImpl = async (url, init) => {
-    seen = { url: String(url), key: init.headers['X-Subscription-Token'] };
-    return new Response(JSON.stringify({ web: { results: [{ title: 'Lumo: <strong>Privacy-first</strong> AI', url: 'https://lumo.proton.me/', description: 'Proton’s AI assistant with <strong>no logs</strong>.' }] } }));
-  };
-  const r = await webSearch({ BRAVE_SEARCH_API_KEY: 'k123' }, 'lumo ai', {}, fetchImpl);
-  assert.equal(r.provider, 'brave');
-  assert.match(seen.url, /^https:\/\/api\.search\.brave\.com\/res\/v1\/web\/search\?q=lumo\+ai/);
-  assert.equal(seen.key, 'k123');
-  assert.equal(r.items[0].title, 'Lumo: Privacy-first AI');
-  assert.equal(r.items[0].description, 'Proton’s AI assistant with no logs.');
-});
-
 test('without any key or credits, search still works via Wikipedia', async () => {
   const r = await webSearch({}, 'Is Lumo AI good?', {}, wikiFetch);
   assert.equal(r.provider, 'wikipedia');
