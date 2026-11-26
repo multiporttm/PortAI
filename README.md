@@ -38,6 +38,31 @@ docker build -t portai .
 docker run -p 8080:8080 --env-file .env portai
 ```
 
+### Cloudflare Pages
+
+PortAI runs on Cloudflare Pages without changes. `public/` is the static site, and `functions/api/*` are Pages Functions that replace `server.js` (they use the same validation, header stripping and streaming).
+
+**Option A: from GitHub (dashboard)**
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and pick this repo.
+2. Build settings: Framework preset **None**, build command **empty**, build output directory **`public`**.
+3. **Save and Deploy**.
+4. Project → **Settings** → **Variables and Secrets** → **Add**:
+   - `PORTAI_API_KEY`: type **Secret**, with your Public AI key as the value
+   - (optional) `PORTAI_MODELS`, `PORTAI_API_BASE`, `PORTAI_MODEL_LABELS` as plain text
+5. **Deployments** → **Retry deployment** (variables only apply to new deployments).
+
+**Option B: from the command line**
+```bash
+npx wrangler login
+npx wrangler pages project create portai
+npx wrangler pages secret put PORTAI_API_KEY --project-name portai
+npx wrangler pages deploy
+```
+
+Local preview in the Workers runtime: `npx wrangler pages dev --binding PORTAI_MOCK=1`
+
+**Keep it private on Cloudflare:** leave **Web Analytics** off for the project, don't add `console.log` of request bodies, and add a **WAF rate-limiting rule** for `/api/chat`. The built-in limiter is per-isolate and best-effort only. Security headers come from `public/_headers`.
+
 ## Choosing an Apertus provider
 
 PortAI works with any **OpenAI-compatible** `/chat/completions` endpoint. Set `PORTAI_MODELS` to the exact model ids your provider exposes. Check them with `curl $PORTAI_API_BASE/models`.
@@ -82,6 +107,8 @@ Browser (vanilla JS)                    PortAI server (Node, no deps)        Ape
 - `public/vault.js`: client-side encrypted storage (WebCrypto)
 - `public/markdown.js`: XSS-safe Markdown renderer (escapes everything first)
 - `public/app.js`: UI logic, streaming, ghost mode, settings
+- `functions/api/*` + `lib/portai-core.mjs`: the Cloudflare Pages Functions version of the server
+- `public/_headers`: security headers on Cloudflare Pages
 
 ## Development
 

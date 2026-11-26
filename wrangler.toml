@@ -1,0 +1,11 @@
+# Cloudflare Pages configuration for PortAI.
+# The API key is NOT set here: add it as an encrypted secret:
+#   npx wrangler pages secret put PORTAI_API_KEY
+name = "portai"
+compatibility_date = "2026-10-01"
+pages_build_output_dir = "public"
+
+[vars]
+PORTAI_API_BASE = "https://api.publicai.co/v1"
+PORTAI_MODELS = "swiss-ai/apertus-v1.5-70b,swiss-ai/apertus-v1.5-8b"
+PORTAI_MODEL_LABELS = "Apertus 70B,Apertus 8B"
