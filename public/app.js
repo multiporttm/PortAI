@@ -1,5 +1,6 @@
 import { Vault } from './vault.js';
 import * as Account from './account.js';
+import { friendlyError } from './errors.js';
 import { renderMarkdown } from './markdown.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -382,9 +383,9 @@ async function send(text) {
     });
 
     if (!res.ok || !res.body) {
-      let msg = `Request failed (${res.status}).`;
-      try { msg = (await res.json()).error || msg; } catch { /* ignore */ }
-      throw new Error(msg);
+      let serverMsg = '';
+      try { serverMsg = (await res.clone().json()).error || ''; } catch { /* Cloudflare block pages are HTML */ }
+      throw Object.assign(new Error(friendlyError({ status: res.status, message: serverMsg, retryAfter: res.headers.get('Retry-After') })), { friendly: true });
     }
 
     const reader = res.body.getReader();
@@ -403,7 +404,7 @@ async function send(text) {
         if (data === '[DONE]') continue;
         let msg;
         try { msg = JSON.parse(data); } catch { continue; }
-        if (msg.error) throw new Error(msg.error);
+        if (msg.error) throw Object.assign(new Error(friendlyError({ message: msg.error })), { friendly: true });
         if (msg.delta) reply.content += msg.delta;
       }
       if (!frame) {
@@ -420,7 +421,7 @@ async function send(text) {
       if (!reply.content) reply.content = '_(Stopped.)_';
     } else {
       reply.error = !reply.content;
-      reply.content = (reply.content ? reply.content + '\n\n' : '') + `⚠️ ${err.message || 'Something went wrong.'}`;
+      reply.content = (reply.content ? reply.content + '\n\n' : '') + `⚠️ ${err.friendly ? err.message : friendlyError({ status: err instanceof TypeError ? 0 : undefined, message: err.message })}`;
     }
   } finally {
     delete reply.pending;

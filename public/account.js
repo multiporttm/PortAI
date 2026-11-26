@@ -1,3 +1,4 @@
+import { friendlyError } from './errors.js';
 // PortAI accounts: zero-knowledge, end-to-end encrypted sync.
 //
 // passphrase ──PBKDF2-SHA256 (600k)──▶ master ──HKDF──┬─ "id"   → account id (sent to server)
@@ -78,7 +79,7 @@ async function api(session, method, path, body) {
   }
   let data = {};
   try { data = await res.json(); } catch { /* empty */ }
-  if (!res.ok) throw new AccountError(data.error || `Request failed (${res.status}).`, res.status);
+  if (!res.ok) throw new AccountError(friendlyError({ status: res.status, message: data.error, retryAfter: res.headers.get('Retry-After') }), res.status);
   return data;
 }
 
