@@ -120,6 +120,22 @@ export class Vault {
 
   lock() { this.#key = null; }
 
+  /** Re-encrypt existing history under a passphrase-derived key. */
+  async switchToPassphrase(passphrase, chats) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const key = await deriveKey(passphrase, salt);
+    const verifier = await encryptWith(key, VERIFIER_TEXT);
+    const records = [];
+    for (const chat of chats) records.push([chat.id, await encryptWith(key, JSON.stringify(chat))]);
+    await tx('chats', 'readwrite', (s) => { for (const [id, r] of records) s.put(r, id); });
+    await metaSet('salt', salt);
+    await metaSet('verifier', verifier);
+    await metaSet('mode', 'passphrase');
+    await tx('meta', 'readwrite', (s) => s.delete('deviceKey'));
+    this.#key = key;
+    this.mode = 'passphrase';
+  }
+
   async saveChat(chat) {
     if (!this.#key) throw new Error('Vault locked');
     const record = await encryptWith(this.#key, JSON.stringify(chat));

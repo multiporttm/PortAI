@@ -1,6 +1,8 @@
 # PortAI
 
-**A private AI assistant powered by the open Swiss [Apertus](https://huggingface.co/swiss-ai) models. No ads, no tracking, encrypted history.**
+**An AI chatbot powered by the open Swiss [Apertus](https://huggingface.co/swiss-ai) models. Privacy first: no ads, no tracking, no logs.**
+
+Open it and start chatting, with no account and no setup.
 
 PortAI is a lightweight, self-hostable chat assistant in the spirit of privacy-first assistants like Proton's Lumo. It runs on **Apertus**, the fully open multilingual LLM family from the Swiss AI Initiative (EPFL, ETH Zürich, CSCS): its weights, training data and recipes are all public.
 
@@ -9,7 +11,7 @@ PortAI is a lightweight, self-hostable chat assistant in the spirit of privacy-f
 | | |
 |---|---|
 | 🚫 **No ads, no tracking** | No analytics, cookies, fingerprinting or third-party scripts. A strict Content-Security-Policy (`default-src 'self'`) enforces this in the browser. |
-| 🔐 **Encrypted history** | Chats are encrypted in the browser with **AES-256-GCM** before they are stored in IndexedDB. The key comes either from your **passphrase** (PBKDF2-SHA-256, 600k iterations) or from a **non-extractable device key**. Chats never leave your device unencrypted, and the server never stores them. |
+| 🔐 **Encrypted history** | Chats are encrypted in the browser with **AES-256-GCM** before they are stored in IndexedDB. By default this uses an automatic **non-extractable device key**, so there's nothing to set up. You can optionally add a **passphrase** in Settings (PBKDF2-SHA-256, 600k iterations). Chats never leave your device unencrypted, and the server never stores them. |
 | 🙈 **No server logs** | The server relays the conversation to the model and streams the answer back. It never logs or stores message content or IP addresses. Rate limiting uses an in-memory HMAC of the IP with a random salt that changes on every restart. |
 | ✂️ **Minimal forwarding** | Only the message text, model id and temperature are sent upstream. Your IP, cookies, user agent and referrer are not. |
 | 👻 **Ghost mode** | Chats that are never written to storage at all. |

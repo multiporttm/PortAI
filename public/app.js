@@ -37,34 +37,16 @@ async function boot() {
   applyTheme();
   await loadConfig();
   const status = await vault.status();
-  if (status === 'device') {
+  // Default: open straight into the chat. History is encrypted with a device key automatically.
+  if (status === 'new') await vault.setupDevice();
+  if (status !== 'passphrase') {
     await vault.unlock();
     return enterApp();
   }
+  // Only users who opted into a passphrase see the unlock screen.
   $('#vault').hidden = false;
-  $('#setup-form').hidden = status !== 'new';
-  $('#unlock-form').hidden = status !== 'passphrase';
-  (status === 'new' ? $('#setup-pass') : $('#unlock-pass')).focus();
+  $('#unlock-pass').focus();
 }
-
-$('#setup-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const p1 = $('#setup-pass').value;
-  const p2 = $('#setup-pass2').value;
-  const err = $('#setup-error');
-  if (p1.length < 8) { err.textContent = 'Use at least 8 characters.'; return; }
-  if (p1 !== p2) { err.textContent = 'Passphrases do not match.'; return; }
-  err.textContent = '';
-  busy(e.submitter, 'Encrypting…');
-  await vault.setupPassphrase(p1);
-  $('#setup-pass').value = $('#setup-pass2').value = '';
-  enterApp();
-});
-
-$('#setup-device').addEventListener('click', async () => {
-  await vault.setupDevice();
-  enterApp();
-});
 
 $('#unlock-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -104,7 +86,7 @@ function lockApp() {
 }
 
 async function eraseEverything() {
-  if (!confirm('Erase all PortAI conversations and keys from this device? This cannot be undone.')) return;
+  if (!confirm('Delete all PortAI chat history from this device? This cannot be undone.')) return;
   await vault.eraseAll();
   location.reload();
 }
@@ -472,9 +454,10 @@ $('#open-settings').addEventListener('click', () => {
   $('#temp-out').textContent = state.settings.temperature;
   $('#theme-select').value = state.settings.theme;
   $('#vault-mode').textContent = vault.mode === 'passphrase'
-    ? '🔐 Your chats are encrypted with a key derived from your passphrase (PBKDF2 · AES-256-GCM).'
-    : '🔑 Your chats are encrypted with a non-extractable device key (AES-256-GCM). Erase data and set up again to use a passphrase.';
+    ? '🔐 Your chat history is protected by your passphrase.'
+    : '🔑 Your chat history is saved only on this device, encrypted automatically.';
   $('#lock-now').hidden = vault.mode !== 'passphrase';
+  $('#pass-setup').hidden = vault.mode === 'passphrase';
   $('#settings').showModal();
 });
 $('#temperature').addEventListener('input', (e) => {
@@ -488,6 +471,19 @@ $('#theme-select').addEventListener('change', (e) => {
   applyTheme();
 });
 $('#lock-now').addEventListener('click', lockApp);
+$('#set-pass').addEventListener('click', async (e) => {
+  const p1 = $('#new-pass').value;
+  const p2 = $('#new-pass2').value;
+  const err = $('#pass-error');
+  if (p1.length < 8) { err.textContent = 'Use at least 8 characters.'; return; }
+  if (p1 !== p2) { err.textContent = 'Passphrases do not match.'; return; }
+  err.textContent = '';
+  busy(e.currentTarget, 'Saving…');
+  await vault.switchToPassphrase(p1, state.chats.map(stripGhost));
+  $('#new-pass').value = $('#new-pass2').value = '';
+  $('#settings').close();
+  resetIdle();
+});
 $('#erase-data').addEventListener('click', eraseEverything);
 $('#export-data').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(state.chats.map(stripGhost), null, 2)], { type: 'application/json' });

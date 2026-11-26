@@ -13,25 +13,14 @@
   <script type="module" src="/app.js"></script>
 </head>
 <body>
-  <!-- Vault: setup / unlock -->
+  <!-- Unlock screen (only shown if the user opted into a passphrase) -->
   <div id="vault" class="vault" hidden>
     <div class="vault-card">
       <img src="/icon.svg" alt="" class="vault-logo" width="56" height="56">
       <h1>PortAI</h1>
-      <p class="tagline">Private AI, powered by open Swiss Apertus models.</p>
+      <p class="tagline">Your AI chat assistant. Enter your passphrase to open your chat history.</p>
 
-      <form id="setup-form" hidden>
-        <p class="muted">Your conversations are encrypted on this device before they are saved. Nobody else — not even the PortAI server — can read them.</p>
-        <label for="setup-pass">Passphrase <span class="muted">(recommended)</span></label>
-        <input id="setup-pass" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters">
-        <input id="setup-pass2" type="password" autocomplete="new-password" placeholder="Repeat passphrase" aria-label="Repeat passphrase">
-        <p class="error" id="setup-error" role="alert"></p>
-        <button type="submit" class="btn primary">Encrypt with passphrase</button>
-        <button type="button" id="setup-device" class="btn ghost">Use a device key instead</button>
-        <p class="fine">A device key is stored non-extractably in this browser. A passphrase also protects you if someone gets access to this browser. There is no recovery — if you forget the passphrase, your history is gone.</p>
-      </form>
-
-      <form id="unlock-form" hidden>
+      <form id="unlock-form">
         <label for="unlock-pass">Passphrase</label>
         <input id="unlock-pass" type="password" autocomplete="current-password" autofocus>
         <p class="error" id="unlock-error" role="alert"></p>
@@ -51,7 +40,7 @@
       <button id="new-chat" class="btn primary block">＋ New chat</button>
       <nav id="chat-list" class="chat-list" aria-label="Conversations"></nav>
       <div class="sidebar-foot">
-        <div class="privacy-badge" title="Chats are encrypted with AES-256-GCM in your browser">🔒 End-to-device encrypted</div>
+        <div class="privacy-badge" title="No ads, no tracking. Chat history stays encrypted on this device.">🔒 Private · No ads · No tracking</div>
         <button id="open-settings" class="btn ghost block">⚙ Settings &amp; privacy</button>
       </div>
     </aside>
@@ -74,7 +63,7 @@
           <h2>How can I help you today?</h2>
           <p class="muted">PortAI runs on <strong>Apertus</strong>, the fully open multilingual model from the Swiss AI Initiative (EPFL · ETH Zürich · CSCS). Your chats are never used for ads or profiling.</p>
           <div class="suggestions">
-            <button class="suggestion">Explain end-to-end encryption in simple terms</button>
+            <button class="suggestion">Summarize the main ideas of quantum computing</button>
             <button class="suggestion">Rédige un e-mail poli pour reporter une réunion</button>
             <button class="suggestion">Write a Python function that validates an IBAN</button>
             <button class="suggestion">Was sind gute Wanderwege im Berner Oberland?</button>
@@ -114,13 +103,20 @@
       </fieldset>
 
       <fieldset>
-        <legend>Your data</legend>
+        <legend>Chat history</legend>
         <p class="muted" id="vault-mode"></p>
+        <div id="pass-setup" class="pass-setup">
+          <label for="new-pass">Optional: require a passphrase to open your chat history</label>
+          <input id="new-pass" type="password" autocomplete="new-password" placeholder="Passphrase (min. 8 characters)">
+          <input id="new-pass2" type="password" autocomplete="new-password" placeholder="Repeat passphrase" aria-label="Repeat passphrase">
+          <p class="error" id="pass-error" role="alert"></p>
+          <button type="button" id="set-pass" class="btn ghost">Set passphrase</button>
+        </div>
         <div class="row">
           <button type="button" id="export-data" class="btn ghost">Export chats (JSON)</button>
           <button type="button" id="lock-now" class="btn ghost">Lock now</button>
         </div>
-        <button type="button" id="erase-data" class="btn danger block">Erase all data on this device</button>
+        <button type="button" id="erase-data" class="btn danger block">Delete all chat history</button>
       </fieldset>
 
       <details>
