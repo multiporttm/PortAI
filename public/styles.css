@@ -380,7 +380,7 @@ body.resizing *, body.resizing *::before, body.resizing *::after { transition: n
 .sources { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
 .sources-label { font-size: 12px; font-weight: 600; color: var(--muted); margin-right: 2px; }
 .source {
-  display: inline-flex; align-items: center; gap: 6px; max-width: 260px; padding: 4px 10px 4px 4px;
+  display: inline-flex; align-items: center; gap: 6px; max-width: 260px; padding: 4px 10px;
   border: 1px solid var(--border); border-radius: 999px; background: var(--panel); text-decoration: none;
   color: var(--text); font-size: 12.5px;
 }

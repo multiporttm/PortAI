@@ -403,7 +403,7 @@ function messageNode(m) {
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   if (m.role === 'assistant') {
-    bubble.innerHTML = renderMarkdown(m.content); // renderer escapes all input
+    bubble.innerHTML = renderMarkdown(m.sources?.length ? stripCitations(m.content) : m.content); // renderer escapes all input
     if (m.error) bubble.classList.add('error-bubble');
   } else {
     bubble.textContent = m.content;
@@ -427,6 +427,14 @@ function messageNode(m) {
   return wrap;
 }
 
+// Remove citation markers like [1], [1, 2] or [1][2] (sources are shown as links instead).
+function stripCitations(text) {
+  // Leave code untouched: split out ``` blocks and `inline code`, strip only the prose parts.
+  return text.split(/(```[\s\S]*?(?:```|$)|`[^`\n]*`)/g)
+    .map((part, i) => (i % 2 ? part : part.replace(/ ?(\[\d{1,2}(?:\s*[,–-]\s*\d{1,2})*\])+(?![(\w])/g, '')))
+    .join('');
+}
+
 function sourcesNode(sources) {
   const box = document.createElement('div');
   box.className = 'sources';
@@ -444,16 +452,13 @@ function sourcesNode(sources) {
     a.target = '_blank';
     a.rel = 'noopener noreferrer nofollow';
     a.title = src.title;
-    const n = document.createElement('span');
-    n.className = 'source-n';
-    n.textContent = String(i + 1);
     const t = document.createElement('span');
     t.className = 'source-title';
     t.textContent = src.title;
     const h = document.createElement('span');
     h.className = 'source-host';
     h.textContent = host;
-    a.append(n, t, h);
+    a.append(t, h);
     box.append(a);
   });
   return box;
@@ -585,7 +590,7 @@ async function send(text) {
       if (!frame) {
         frame = requestAnimationFrame(() => {
           frame = 0;
-          bubble.innerHTML = renderMarkdown(reply.content);
+          bubble.innerHTML = renderMarkdown(reply.sources?.length ? stripCitations(reply.content) : reply.content);
           scrollToBottom();
         });
       }
