@@ -62,15 +62,13 @@ is needed.
 
 ## Models (pick one with the model menu at the top)
 - **Regular** (Gemma 4 26B): the default. A good all-rounder for everyday questions, writing
-  and explanations. Limit: 60 messages per minute, 500 per day.
-- **Lite** (GLM-4.7 Flash): fast replies and strong support for 100+ languages. Limit:
-  60 per minute, 500 per day.
+  and explanations. Limits per person: 60 messages per minute, daily limit 500 messages.
+- **Lite** (GLM-4.7 Flash): fast replies and strong support for 100+ languages. Limits per person: 60 messages per minute, daily limit 500 messages.
 - **Mini** (IBM Granite 4.0 Micro): the smallest and lightest. Best for quick, simple
-  questions. Limit: 60 per minute, 500 per day.
+  questions. Limits per person: 60 messages per minute, daily limit 500 messages.
 - **Coder** (Qwen 2.5 Coder 32B): best for programming, such as writing, explaining and
-  fixing code. Limit: 15 per minute, 100 per day.
-- **Pro** (gpt-oss-120b): the largest model, for harder questions and reasoning. Limit:
-  20 per minute, 150 per day.
+  fixing code. Limits per person: 15 messages per minute, daily limit 100 messages.
+- **Pro** (gpt-oss-120b): the largest model, for harder questions and reasoning. Limits per person: 20 messages per minute, daily limit 150 messages.
 - On top of the per-model limits, each person can send up to 60 messages per minute and
   500 per day across all models.
 - If the chosen model is busy and hasn't started answering within about 5 seconds, PortAI
