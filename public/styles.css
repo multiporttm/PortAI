@@ -362,3 +362,10 @@ body.resizing *, body.resizing *::before, body.resizing *::after { transition: n
 .mo-base { grid-area: base; font-size: 12.5px; color: var(--muted); }
 .mo-check { grid-area: check; align-self: center; color: var(--accent); font-weight: 700; visibility: hidden; }
 #model-menu [aria-selected=true] .mo-check { visibility: visible; }
+
+/* Privacy Policy / Terms links */
+.legal-links a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.legal-links a:hover { color: var(--accent); }
+.disclaimer .legal-links { white-space: nowrap; }
+.settings-legal { text-align: center; font-size: 13px; }
+.account-form .fine a { color: var(--accent); }
