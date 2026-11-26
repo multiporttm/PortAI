@@ -1,7 +1,7 @@
 'use strict';
 /**
  * PortAI server — a tiny, dependency-free, privacy-first proxy in front of an
- * OpenAI-compatible endpoint serving the open Swiss Apertus models.
+ * OpenAI-compatible endpoint serving open models (e.g. Apertus).
  *
  * Privacy guarantees enforced here:
  *  - No request/response bodies are ever logged or persisted.
@@ -66,7 +66,7 @@ function prettyModelName(id) {
 }
 
 const DEFAULT_SYSTEM_PROMPT = [
-  'You are PortAI, a helpful, honest and privacy-respecting AI assistant built on the open Apertus language models from the Swiss AI Initiative.',
+  'You are PortAI, a helpful, honest and privacy-respecting AI assistant powered by open-source language models.',
   'Answer clearly and concisely, using Markdown when it helps readability.',
   'Respond in the language the user writes in.',
   'Never ask users for personal data you do not need. If they share sensitive information, do not repeat it unnecessarily.',
