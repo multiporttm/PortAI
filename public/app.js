@@ -133,6 +133,7 @@ async function loadConfig() {
     state.models = cfg.models || [];
     state.accounts = !!cfg.accounts;
     state.searchAvailable = !!cfg.search;
+    state.version ||= cfg.version;
   } catch {
     state.models = [];
   }
@@ -911,5 +912,38 @@ $('#delete-account').addEventListener('click', async (e) => {
     busy(e.currentTarget, null);
   }
 });
+
+// ---------------------------------------------------------------------------
+// Auto-update: apps opened from the Home Screen stay in memory and never reload,
+// so check for a new version whenever PortAI comes back to the foreground.
+// ---------------------------------------------------------------------------
+
+let lastUpdateCheck = 0;
+async function checkForUpdate() {
+  if (Date.now() - lastUpdateCheck < 60_000 || !state.version) return;
+  lastUpdateCheck = Date.now();
+  try {
+    const cfg = await (await fetch('/api/config', { credentials: 'same-origin', cache: 'no-store' })).json();
+    if (!cfg.version || cfg.version === state.version) return;
+    const busyNow = state.streaming || $('#input').value.trim() || document.querySelector('dialog[open]');
+    if (!busyNow) { location.reload(); return; }
+    showUpdateToast();
+  } catch { /* offline: try again later */ }
+}
+
+function showUpdateToast() {
+  if ($('#update-toast')) return;
+  const btn = document.createElement('button');
+  btn.id = 'update-toast';
+  btn.type = 'button';
+  btn.className = 'update-toast';
+  btn.textContent = '✨ New version of PortAI available · Tap to reload';
+  btn.addEventListener('click', () => location.reload());
+  document.body.append(btn);
+}
+
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkForUpdate(); });
+window.addEventListener('focus', checkForUpdate);
+setInterval(checkForUpdate, 10 * 60_000);
 
 boot();
