@@ -30,7 +30,7 @@ export function friendlyError({ status, message, retryAfter } = {}) {
   if (/free AI allowance|daily free allocation|\b3036\b/i.test(text)) return "Today's free AI allowance has been used up. It resets at midnight UTC.";
   if (status === 0 || /failed to fetch|networkerror|load failed|offline/i.test(text)) return 'You appear to be offline. Check your connection and try again.';
   if (status === 413) return 'That message is too long. Try shortening it.';
-  if (status === 401 || status === 403) return looksFriendly(text) ? text : 'Access was denied. Please refresh the page and try again.';
+  if (status === 401 || status === 403) return looksFriendly(text) ? text : 'Cloudflare security check needed. Please refresh the page and try again.';
   if (status >= 500 && !looksFriendly(text)) return 'PortAI is having trouble right now. Please try again in a moment.';
   return looksFriendly(text) ? text : GENERIC;
 }
