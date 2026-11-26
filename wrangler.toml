@@ -22,8 +22,8 @@ database_id = "09b2911a-bcea-4995-aaa9-4f28d00b18a9"
 # FREE + PRIVATE: open models hosted by Cloudflare Workers AI on the free plan,
 # with zero data retention. No API key needed. The first model is the default.
 PORTAI_MODELS = "@cf/google/gemma-4-26b-a4b-it,@cf/zai-org/glm-4.7-flash"
-# Port 1.1 = Gemma 4 (default) · Port 1.0 = GLM-4.7 Flash
-PORTAI_MODEL_LABELS = "Port 1.1,Port 1.0"
+# UseX 1.0 = Gemma 4 (default) · UseX 1.0 Lite = GLM-4.7 Flash
+PORTAI_MODEL_LABELS = "UseX 1.0,UseX 1.0 Lite"
 
 # Apertus (Swiss open model) - switch back when Cloudflare gives your account
 # access (it currently returns error 5018):
