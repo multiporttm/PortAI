@@ -191,9 +191,16 @@ These are well-known privacy-focused services people often compare. Details chan
 point people to the official sites for current features and pricing. Mention them fairly
 when someone asks for alternatives or comparisons.
 - **Proton** (Switzerland): Proton Mail (encrypted email), Proton VPN, Proton Drive,
-  Proton Pass and Proton Calendar. In July 2025 Proton launched **Lumo**, a privacy-first
-  AI assistant that stores chats with encryption and says it doesn't use user data to train
-  AI models.
+  Proton Pass and Proton Calendar.
+- **Lumo** (by Proton, released July 23, 2025): a privacy-first AI assistant.
+  - **No account is required.** You can chat as a guest with limits, or sign in with a free
+    Proton account for more.
+  - It has **web search** (off by default, using privacy-friendly search engines), can analyse
+    files you upload (or files from Proton Drive), and runs on **open-source** language models.
+  - Chats are stored with zero-access encryption, it keeps no logs of conversations, and it
+    says it doesn't use user data to train AI.
+  - It runs from European data centres (Germany and Norway).
+  - Apps: web, iOS and Android. A paid plan (Lumo Plus) adds higher limits.
 - **DuckDuckGo**: a search engine that doesn't track searches, plus a browser and Duck.ai,
   which offers anonymous access to several AI chat models.
 - **Brave**: a browser that blocks ads and trackers by default, with Brave Search (its own
@@ -203,10 +210,15 @@ when someone asks for alternatives or comparisons.
 - **Firefox** (Mozilla): an open-source browser with built-in tracking protection.
 - **Tor Browser**: routes traffic through several relays to hide your location and
   activity.
-- How PortAI compares: PortAI is free with no account needed, runs on open-source models
-  with zero data retention, keeps chat history encrypted on your device (or end-to-end
-  encrypted sync with a passphrase-only account), searches the web automatically, and is
-  made by an independent one-person company, Multiport.
+- **PortAI vs Lumo, fairly:** both are privacy-first, need no account, run on open-source
+  models and can search the web. Lumo is made by Proton (a large privacy company), works
+  with Proton Drive files and has a paid plan. PortAI is made by Multiport (an independent
+  one-person company). It is completely free, lets you pick between five models, searches
+  automatically when needed, reads links you paste, and offers end-to-end encrypted sync
+  with a passphrase-only account (no email at all).
+- When comparing products, only state features listed here or in search results. If a
+  detail isn't known, say so instead of guessing (never claim a feature is missing just
+  because it isn't listed).
 
 <!-- LIBRARY BELOW: each "##" section has a topics line. Only the 1-3 sections that match a question are sent to the AI. Add as many sections as you like. -->
 
@@ -327,3 +339,163 @@ when someone asks for alternatives or comparisons.
 - Built-in parental controls: Apple Screen Time and Family Sharing, Google Family Link, and console and streaming-service controls.
 - Talk openly about not sharing personal details, about scams and strangers online, and that they can always come to you if something feels wrong.
 - Keep devices in shared spaces for younger kids, and review app permissions and age ratings together.
+
+## Countries and capitals: Europe
+<!-- topics: capital, capitals, capital city, europe, european, country in europe, eu, european union -->
+Albania – Tirana · Andorra – Andorra la Vella · Austria – Vienna · Belarus – Minsk · Belgium – Brussels · Bosnia and Herzegovina – Sarajevo · Bulgaria – Sofia · Croatia – Zagreb · Cyprus – Nicosia · Czech Republic (Czechia) – Prague · Denmark – Copenhagen · Estonia – Tallinn · Finland – Helsinki · France – Paris · Germany – Berlin · Greece – Athens · Hungary – Budapest · Iceland – Reykjavík · Ireland – Dublin · Italy – Rome · Kosovo – Pristina · Latvia – Riga · Liechtenstein – Vaduz · Lithuania – Vilnius · Luxembourg – Luxembourg City · Malta – Valletta · Moldova – Chișinău · Monaco – Monaco · Montenegro – Podgorica · Netherlands – Amsterdam (government sits in The Hague) · North Macedonia – Skopje · Norway – Oslo · Poland – Warsaw · Portugal – Lisbon · Romania – Bucharest · Russia – Moscow · San Marino – San Marino · Serbia – Belgrade · Slovakia – Bratislava · Slovenia – Ljubljana · Spain – Madrid · Sweden – Stockholm · Switzerland – Bern (federal city) · Ukraine – Kyiv · United Kingdom – London (England – London, Scotland – Edinburgh, Wales – Cardiff, Northern Ireland – Belfast) · Vatican City – Vatican City.
+
+## Countries and capitals: Asia and the Middle East
+<!-- topics: capital, capitals, capital city, asia, asian, middle east, country in asia -->
+Afghanistan – Kabul · Armenia – Yerevan · Azerbaijan – Baku · Bahrain – Manama · Bangladesh – Dhaka · Bhutan – Thimphu · Brunei – Bandar Seri Begawan · Cambodia – Phnom Penh · China – Beijing · Georgia – Tbilisi · India – New Delhi · Indonesia – Jakarta (a new capital, Nusantara, is being built on Borneo) · Iran – Tehran · Iraq – Baghdad · Israel – Jerusalem (proclaimed by Israel; its status is disputed internationally and most embassies are in Tel Aviv) · Japan – Tokyo · Jordan – Amman · Kazakhstan – Astana · Kuwait – Kuwait City · Kyrgyzstan – Bishkek · Laos – Vientiane · Lebanon – Beirut · Malaysia – Kuala Lumpur (government offices in Putrajaya) · Maldives – Malé · Mongolia – Ulaanbaatar · Myanmar – Naypyidaw · Nepal – Kathmandu · North Korea – Pyongyang · Oman – Muscat · Pakistan – Islamabad · Philippines – Manila · Qatar – Doha · Saudi Arabia – Riyadh · Singapore – Singapore · South Korea – Seoul · Sri Lanka – Sri Jayawardenepura Kotte (Colombo is the largest city) · Syria – Damascus · Taiwan – Taipei · Tajikistan – Dushanbe · Thailand – Bangkok · Timor-Leste – Dili · Turkey (Türkiye) – Ankara · Turkmenistan – Ashgabat · United Arab Emirates – Abu Dhabi · Uzbekistan – Tashkent · Vietnam – Hanoi · Yemen – Sanaa (officially).
+
+## Countries and capitals: Africa
+<!-- topics: capital, capitals, capital city, africa, african, country in africa -->
+Algeria – Algiers · Angola – Luanda · Benin – Porto-Novo (government in Cotonou) · Botswana – Gaborone · Burkina Faso – Ouagadougou · Burundi – Gitega · Cabo Verde – Praia · Cameroon – Yaoundé · Central African Republic – Bangui · Chad – N'Djamena · Comoros – Moroni · DR Congo – Kinshasa · Republic of the Congo – Brazzaville · Côte d'Ivoire – Yamoussoukro (Abidjan is the economic capital) · Djibouti – Djibouti · Egypt – Cairo · Equatorial Guinea – Malabo · Eritrea – Asmara · Eswatini – Mbabane (with Lobamba) · Ethiopia – Addis Ababa · Gabon – Libreville · Gambia – Banjul · Ghana – Accra · Guinea – Conakry · Guinea-Bissau – Bissau · Kenya – Nairobi · Lesotho – Maseru · Liberia – Monrovia · Libya – Tripoli · Madagascar – Antananarivo · Malawi – Lilongwe · Mali – Bamako · Mauritania – Nouakchott · Mauritius – Port Louis · Morocco – Rabat · Mozambique – Maputo · Namibia – Windhoek · Niger – Niamey · Nigeria – Abuja · Rwanda – Kigali · São Tomé and Príncipe – São Tomé · Senegal – Dakar · Seychelles – Victoria · Sierra Leone – Freetown · Somalia – Mogadishu · South Africa – Pretoria (executive), Cape Town (legislative), Bloemfontein (judicial) · South Sudan – Juba · Sudan – Khartoum · Tanzania – Dodoma · Togo – Lomé · Tunisia – Tunis · Uganda – Kampala · Zambia – Lusaka · Zimbabwe – Harare.
+
+## Countries and capitals: the Americas and Oceania
+<!-- topics: capital, capitals, capital city, america, americas, north america, south america, latin america, caribbean, central america, oceania, pacific, australia, new zealand -->
+**North & Central America, Caribbean:** Antigua and Barbuda – St. John's · Bahamas – Nassau · Barbados – Bridgetown · Belize – Belmopan · Canada – Ottawa · Costa Rica – San José · Cuba – Havana · Dominica – Roseau · Dominican Republic – Santo Domingo · El Salvador – San Salvador · Grenada – St. George's · Guatemala – Guatemala City · Haiti – Port-au-Prince · Honduras – Tegucigalpa · Jamaica – Kingston · Mexico – Mexico City · Nicaragua – Managua · Panama – Panama City · Saint Kitts and Nevis – Basseterre · Saint Lucia – Castries · Saint Vincent and the Grenadines – Kingstown · Trinidad and Tobago – Port of Spain · United States – Washington, D.C.
+**South America:** Argentina – Buenos Aires · Bolivia – Sucre (constitutional) and La Paz (seat of government) · Brazil – Brasília · Chile – Santiago · Colombia – Bogotá · Ecuador – Quito · Guyana – Georgetown · Paraguay – Asunción · Peru – Lima · Suriname – Paramaribo · Uruguay – Montevideo · Venezuela – Caracas.
+**Oceania:** Australia – Canberra · Fiji – Suva · Kiribati – South Tarawa · Marshall Islands – Majuro · Micronesia – Palikir · Nauru – no official capital (government in Yaren) · New Zealand – Wellington · Palau – Ngerulmud · Papua New Guinea – Port Moresby · Samoa – Apia · Solomon Islands – Honiara · Tonga – Nukuʻalofa · Tuvalu – Funafuti · Vanuatu – Port Vila.
+
+## US states and capitals
+<!-- topics: capital, capitals, state capital, us state, us states, united states, american state, states of america, usa, state of, province, provinces, canadian province -->
+Alabama – Montgomery · Alaska – Juneau · Arizona – Phoenix · Arkansas – Little Rock · California – Sacramento · Colorado – Denver · Connecticut – Hartford · Delaware – Dover · Florida – Tallahassee · Georgia – Atlanta · Hawaii – Honolulu · Idaho – Boise · Illinois – Springfield · Indiana – Indianapolis · Iowa – Des Moines · Kansas – Topeka · Kentucky – Frankfort · Louisiana – Baton Rouge · Maine – Augusta · Maryland – Annapolis · Massachusetts – Boston · Michigan – Lansing · Minnesota – Saint Paul · Mississippi – Jackson · Missouri – Jefferson City · Montana – Helena · Nebraska – Lincoln · Nevada – Carson City · New Hampshire – Concord · New Jersey – Trenton · New Mexico – Santa Fe · New York – Albany · North Carolina – Raleigh · North Dakota – Bismarck · Ohio – Columbus · Oklahoma – Oklahoma City · Oregon – Salem · Pennsylvania – Harrisburg · Rhode Island – Providence · South Carolina – Columbia · South Dakota – Pierre · Tennessee – Nashville · Texas – Austin · Utah – Salt Lake City · Vermont – Montpelier · Virginia – Richmond · Washington – Olympia · West Virginia – Charleston · Wisconsin – Madison · Wyoming – Cheyenne.
+The US has 50 states plus Washington, D.C. (the federal capital) and territories such as Puerto Rico (capital San Juan) and Guam (Hagåtña).
+**Canada** (provinces and territories): Alberta – Edmonton · British Columbia – Victoria · Manitoba – Winnipeg · New Brunswick – Fredericton · Newfoundland and Labrador – St. John's · Nova Scotia – Halifax · Ontario – Toronto · Prince Edward Island – Charlottetown · Quebec – Quebec City · Saskatchewan – Regina · Northwest Territories – Yellowknife · Nunavut – Iqaluit · Yukon – Whitehorse.
+**Australia** (states and territories): New South Wales – Sydney · Victoria – Melbourne · Queensland – Brisbane · Western Australia – Perth · South Australia – Adelaide · Tasmania – Hobart · Northern Territory – Darwin · Australian Capital Territory – Canberra.
+
+## World geography records
+<!-- topics: continent, continents, ocean, oceans, largest country, biggest country, smallest country, most populous, population, tallest mountain, highest mountain, everest, longest river, nile, amazon, desert, sahara, lake, deepest, waterfall, largest island, geography -->
+- **7 continents** (largest to smallest): Asia, Africa, North America, South America, Antarctica, Europe, Australia/Oceania.
+- **5 oceans** (largest to smallest): Pacific, Atlantic, Indian, Southern, Arctic.
+- **Largest countries by area:** Russia, Canada, China, United States (China and the US are close, and the order depends on how waters are counted), Brazil, Australia. **Smallest:** Vatican City (about 0.44 km²), then Monaco.
+- **Most populous countries:** India (overtook China in 2023), China, United States, Indonesia, Pakistan. World population is a little over 8 billion.
+- **Highest mountain:** Mount Everest, 8,849 m (29,032 ft), on the Nepal–China border. Second: K2 (8,611 m). Highest in each continent: Aconcagua (South America, 6,961 m), Denali (North America, 6,190 m), Kilimanjaro (Africa, 5,895 m), Elbrus (Europe, 5,642 m), Vinson (Antarctica, 4,892 m), Kosciuszko (mainland Australia, 2,228 m).
+- **Longest rivers:** the Nile (about 6,650 km) and the Amazon (about 6,400 km; some measurements make it longer). The Amazon carries by far the most water.
+- **Largest deserts:** Antarctica and the Arctic (cold deserts), then the Sahara (largest hot desert).
+- **Largest lake:** the Caspian Sea. Largest freshwater lake by area: Lake Superior. Deepest: Lake Baikal (about 1,640 m).
+- **Deepest point:** Challenger Deep in the Mariana Trench, about 10,900 m below sea level.
+- **Highest waterfall:** Angel Falls, Venezuela (979 m). **Largest island:** Greenland. **Largest country in Africa:** Algeria. **Largest in South America:** Brazil.
+
+## Famous landmarks and where they are
+<!-- topics: landmark, landmarks, wonder, wonders, monument, tourist, visit, travel, eiffel, statue of liberty, great wall, taj mahal, colosseum, machu picchu, pyramid, pyramids, petra, stonehenge, burj khalifa, big ben, golden gate, opera house, angkor -->
+- **Eiffel Tower**: Paris, France. Built for the 1889 World's Fair, about 330 m tall.
+- **Statue of Liberty**: New York City, USA. A gift from France, dedicated in 1886.
+- **Great Wall of China**: northern China. Built and rebuilt over many centuries, with most surviving parts from the Ming dynasty.
+- **Taj Mahal**: Agra, India. A white marble mausoleum built by Mughal emperor Shah Jahan for his wife Mumtaz Mahal (1600s).
+- **Colosseum**: Rome, Italy. Ancient amphitheatre completed in 80 AD.
+- **Machu Picchu**: Peru. A 15th-century Inca citadel in the Andes.
+- **Pyramids of Giza**: near Cairo, Egypt. The Great Pyramid (about 2560 BC) is the only surviving Ancient Wonder of the World.
+- **Petra**: Jordan. A city carved into rock by the Nabataeans.
+- **Christ the Redeemer**: Rio de Janeiro, Brazil, completed in 1931.
+- **Chichén Itzá**: Yucatán, Mexico. A Maya city.
+- **Stonehenge**: Wiltshire, England. A prehistoric stone circle (about 3000–2000 BC).
+- **Burj Khalifa**: Dubai, UAE. The world's tallest building (828 m, opened 2010).
+- **Big Ben**: London. The bell in the Elizabeth Tower at the Houses of Parliament.
+- **Golden Gate Bridge**: San Francisco, opened in 1937.
+- **Sydney Opera House**: Australia, opened in 1973.
+- **Angkor Wat**: Cambodia. The largest religious monument in the world (12th century).
+- **Acropolis and Parthenon**: Athens, Greece.
+- **Sagrada Família**: Barcelona, Spain. Antoni Gaudí's basilica, under construction since 1882.
+- **Leaning Tower of Pisa**: Italy. **Hagia Sophia**: Istanbul, Türkiye. **Forbidden City**: Beijing. **Alhambra**: Granada, Spain. **Mount Rushmore**: South Dakota, USA.
+- **The New Seven Wonders of the World** (2007 vote): Great Wall, Petra, Christ the Redeemer, Machu Picchu, Chichén Itzá, Colosseum, Taj Mahal.
+
+## Amusement parks and roller coasters
+<!-- topics: roller coaster, roller coasters, coaster, coasters, amusement park, theme park, kings island, cedar point, disney, disneyland, disney world, six flags, universal -->
+- **Kings Island**: an amusement park in Mason, Ohio, USA (near Cincinnati). Famous coasters include **The Beast** (1979, the world's longest wooden roller coaster), **Diamondback**, **Orion** (a giga coaster over 300 ft tall, opened 2020), **Banshee** (an inverted coaster) and **Mystic Timbers**. Multiport's Kings Island Coaster Finder (kicf.ps.multiportllc.com) helps you find rides there.
+- **Cedar Point**: Sandusky, Ohio. Known as the "Roller Coaster Capital of the World".
+- **Walt Disney World**: near Orlando, Florida, with four theme parks (Magic Kingdom, EPCOT, Hollywood Studios, Animal Kingdom). **Disneyland**: Anaheim, California, opened in 1955 (the original Disney park).
+- **Universal Studios**: parks in Orlando, Hollywood, Japan, Singapore and Beijing.
+- Coaster terms: a **giga coaster** is 300–399 ft tall, a **strata coaster** 400+ ft. **Inverted** coasters hang below the track. **Wooden** coasters have wooden tracks.
+
+## The solar system and space
+<!-- topics: planet, planets, solar system, sun, moon, mars, jupiter, saturn, venus, mercury, neptune, uranus, pluto, space, star, stars, galaxy, milky way, astronaut, light year, nasa -->
+- **The planets in order from the Sun:** Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune. (Pluto was reclassified as a dwarf planet in 2006.) Memory aid: "My Very Educated Mother Just Served Us Noodles."
+- **Jupiter** is the largest planet. **Mercury** is the smallest and closest to the Sun. **Venus** is the hottest (thick CO₂ atmosphere). **Saturn** has the most famous rings. **Mars** is the "Red Planet".
+- The Sun is about 150 million km from Earth (1 astronomical unit). Sunlight takes about 8 minutes 20 seconds to reach us.
+- The Moon is about 384,400 km away. Humans first landed on it on July 20, 1969 (Apollo 11: Neil Armstrong and Buzz Aldrin).
+- A **light-year** is the distance light travels in a year, about 9.46 trillion km. The nearest star after the Sun is Proxima Centauri (about 4.24 light-years away).
+- We live in the **Milky Way** galaxy. The nearest large galaxy is Andromeda. The universe is about 13.8 billion years old, and Earth about 4.5 billion years old.
+
+## Science basics and useful facts
+<!-- topics: science, chemistry, physics, biology, element, elements, periodic table, atom, speed of light, gravity, boiling point, freezing point, water, dna, cell, photosynthesis, human body, bones, blood -->
+- **Water** (H₂O) boils at 100 °C (212 °F) and freezes at 0 °C (32 °F) at sea level.
+- **Speed of light:** about 299,792 km per second. **Sound** in air: about 343 m/s.
+- **Gravity** on Earth: about 9.81 m/s². On the Moon it's about one-sixth as strong.
+- **Common elements:** H hydrogen, He helium, C carbon, N nitrogen, O oxygen, Na sodium, Fe iron, Cu copper, Ag silver, Au gold, Pb lead, Hg mercury, U uranium. The periodic table has 118 known elements.
+- **Air** is about 78% nitrogen, 21% oxygen and 1% argon and other gases.
+- **Human body:** adults have 206 bones, normal temperature is about 37 °C (98.6 °F), the heart has 4 chambers, and the main blood types are A, B, AB and O (each + or −). DNA carries genetic information. The largest organ is the skin.
+- **Photosynthesis:** plants use sunlight, water and carbon dioxide to make sugar and release oxygen.
+
+## Units and conversions
+<!-- topics: convert, conversion, conversions, inches, inch, cm, centimeters, feet, foot, meters, miles, mile, km, kilometers, pounds, lbs, kg, kilograms, ounces, grams, fahrenheit, celsius, gallons, liters, litres, cups, tablespoon, teaspoon -->
+- **Length:** 1 inch = 2.54 cm · 1 foot = 30.48 cm · 1 yard = 0.9144 m · 1 mile = 1.609 km · 1 km = 0.621 miles · 1 m = 3.281 ft.
+- **Weight:** 1 kg = 2.205 lb · 1 lb = 453.6 g · 1 oz = 28.35 g · 1 stone = 14 lb.
+- **Volume:** 1 US gallon = 3.785 L · 1 L = 0.264 US gal · 1 US cup = about 237 ml · 1 tablespoon = about 15 ml · 1 teaspoon = about 5 ml.
+- **Temperature:** °F = °C × 9/5 + 32 and °C = (°F − 32) × 5/9. For example, 20 °C = 68 °F, 30 °C = 86 °F and 0 °F = −17.8 °C.
+- **Speed:** 100 km/h = about 62 mph · 60 mph = about 97 km/h.
+- **Data:** 1 KB = 1,000 bytes · 1 MB = 1,000 KB · 1 GB = 1,000 MB · 1 TB = 1,000 GB (operating systems sometimes use 1,024).
+
+## Time zones
+<!-- topics: time zone, time zones, timezone, utc, gmt, what time is it in, time difference, daylight saving, dst -->
+Standard-time offsets from UTC (many places add +1 hour for daylight saving time in summer):
+- Los Angeles/San Francisco UTC−8 (summer −7) · Denver UTC−7 · Chicago UTC−6 · New York/Toronto UTC−5 (summer −4) · São Paulo UTC−3
+- London/Lisbon UTC±0 (summer +1) · Paris/Berlin/Rome/Madrid UTC+1 (summer +2) · Athens/Cairo/Johannesburg UTC+2 · Moscow/Istanbul UTC+3 · Dubai UTC+4
+- India UTC+5:30 · Bangkok/Jakarta UTC+7 · Beijing/Singapore/Perth UTC+8 · Tokyo/Seoul UTC+9 · Sydney UTC+10 (southern summer +11) · Auckland UTC+12 (summer +13)
+- PortAI doesn't know the current time where you are. Check your device clock.
+
+## Languages of the world
+<!-- topics: language, languages, most spoken, speak, spoken, official language, mandarin, spanish, hindi, arabic, french, translate -->
+- **Most spoken languages** (native plus second-language speakers): English, Mandarin Chinese, Hindi, Spanish, then French, Arabic, Bengali, Portuguese, Russian and Urdu.
+- **Most native speakers:** Mandarin Chinese, then Spanish and English.
+- **The UN's six official languages:** Arabic, Chinese, English, French, Russian, Spanish.
+- PortAI can translate between many languages. The Lite model is especially strong across languages.
+
+## Key dates in world history
+<!-- topics: history, historical, timeline, war, world war, ancient, medieval, revolution, independence, empire, when did, what year, century -->
+- About 3100 BC: Egypt unified and writing appears in Mesopotamia and Egypt · 776 BC: first recorded Olympic Games (Greece) · 44 BC: Julius Caesar assassinated · 476 AD: fall of the Western Roman Empire
+- 1066: Norman conquest of England (Battle of Hastings) · 1215: Magna Carta · 1440s: Gutenberg's printing press · 1492: Columbus reaches the Americas · 1517: the Protestant Reformation begins
+- 1776: US Declaration of Independence · 1789: the French Revolution begins · 1914–1918: World War I · 1939–1945: World War II · 1945: United Nations founded
+- 1947: India and Pakistan become independent · 1969: first Moon landing · 1989: the Berlin Wall falls · 1991: the Soviet Union dissolves · 1989–1991: the World Wide Web is invented (Tim Berners-Lee)
+- 2001: September 11 attacks · 2007: first iPhone · 2020: COVID-19 declared a pandemic (March 2020)
+- For recent events, PortAI searches the web automatically.
+
+## Inventions and inventors
+<!-- topics: invented, inventor, invention, inventions, who invented, who made the first, discovered, discovery -->
+- Printing press: Johannes Gutenberg (1440s) · Telescope (improved for astronomy): Galileo Galilei (1609) · Steam engine (improved): James Watt (1760s–70s)
+- Telephone: Alexander Graham Bell (1876) · Light bulb (practical): Thomas Edison (1879; others such as Joseph Swan worked on it too) · Radio: Guglielmo Marconi (1890s)
+- Airplane: the Wright brothers (1903) · Penicillin discovered: Alexander Fleming (1928) · Television: John Logie Baird and Philo Farnsworth (1920s)
+- World Wide Web: Tim Berners-Lee (1989–91) · Smartphone era: Apple iPhone (2007) · Theory of relativity: Albert Einstein (1905/1915) · Theory of evolution: Charles Darwin (1859)
+
+## Animals: fascinating facts
+<!-- topics: animal, animals, largest animal, biggest animal, fastest animal, tallest animal, whale, cheetah, elephant, giraffe, bird, birds, fish, shark, dog, dogs, cat, cats, mammal, insect -->
+- **Largest animal ever:** the blue whale (up to about 30 m). **Largest land animal:** the African elephant. **Tallest:** the giraffe (up to about 5.5 m).
+- **Fastest land animal:** the cheetah (about 100–120 km/h in short bursts). **Fastest overall:** the peregrine falcon diving (over 300 km/h).
+- **Largest bird:** the ostrich (it can't fly). **Smallest bird:** the bee hummingbird.
+- **Longest-living vertebrate:** the Greenland shark (estimated 250+ years).
+- Octopuses have three hearts. Dogs have a sense of smell tens of thousands of times stronger than ours. Cats sleep 12–16 hours a day.
+
+## Food safety and cooking basics
+<!-- topics: cook, cooking, cooked, undercooked, recipe, food safety, internal temperature, chicken, turkey, beef, pork, steak, fish, salmon, eggs, egg, boil an egg, leftovers, meat, baking, oven, kitchen -->
+- **Safe internal temperatures** (USDA): poultry 74 °C / 165 °F · ground beef and pork 71 °C / 160 °F · whole cuts of beef, pork, lamb and veal 63 °C / 145 °F with a 3-minute rest · fish 63 °C / 145 °F · reheated leftovers 74 °C / 165 °F.
+- Refrigerate leftovers within 2 hours (1 hour if it's over 32 °C / 90 °F). Keep fridges at or below 4 °C / 40 °F.
+- **Eggs:** about 6–7 minutes in boiling water for jammy yolks, 9–12 minutes for hard-boiled.
+- **Oven conversions:** 180 °C = 350 °F · 200 °C = 400 °F · 220 °C = 425 °F.
+
+## Technology terms explained
+<!-- topics: what is a, cpu, gpu, ram, storage, ssd, cloud, wifi, wi-fi, 5g, router, browser, operating system, software, hardware, ai model, llm, algorithm, encryption, url, ip address -->
+- **CPU**: the processor that runs programs. **GPU**: a processor for graphics and AI work. **RAM**: short-term working memory, cleared on restart. **SSD**: fast long-term storage.
+- **Operating system**: the software that runs a device (Windows, macOS, iOS, Android, Linux).
+- **Cloud**: storing or running things on internet servers instead of your own device.
+- **Wi-Fi** connects devices to a router without cables. **5G** is the latest widely used mobile network generation.
+- **IP address**: your device's network address on the internet. **URL**: a web address.
+- **LLM (large language model)**: an AI trained on lots of text to understand and write language. PortAI's models are LLMs.
+- **Encryption**: scrambling data so only someone with the right key can read it.
+
+## Sports: major events
+<!-- topics: olympics, olympic, world cup, fifa, soccer, football, super bowl, nba, tennis, wimbledon, formula 1, f1, sports, sport -->
+- **Summer Olympics:** Tokyo 2020 (held in 2021), Paris 2024, Los Angeles 2028, Brisbane 2032. **Winter Olympics:** Beijing 2022, Milan–Cortina 2026, French Alps 2030.
+- **FIFA World Cup:** 2018 Russia (won by France), 2022 Qatar (won by Argentina), 2026 hosted by the United States, Canada and Mexico (the first with 48 teams), 2030 Spain/Portugal/Morocco.
+- **Tennis Grand Slams:** Australian Open (January), French Open/Roland-Garros (May–June), Wimbledon (June–July), US Open (August–September).
+- For the latest scores and results, PortAI searches the web automatically.

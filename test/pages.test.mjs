@@ -243,3 +243,15 @@ test('knowledge library: only matching topic sections are sent', async () => {
   assert.match(sys, /Knowledge library \(relevant sections\)[\s\S]*Encrypted messaging apps/);
   assert.doesNotMatch(composeSystemPrompt(cfg, cfg.models[0].id, undefined, [{ role: 'user', content: 'Write a poem about the sea' }]), /Knowledge library/);
 });
+
+test('library picks the section that actually contains the answer', async () => {
+  const { pickLibrary } = await import('../lib/portai-core.mjs');
+  const first = (q) => pickLibrary([{ role: 'user', content: q }])[0]?.title;
+  assert.equal(first('What is the capital of Peru?'), 'Countries and capitals: the Americas and Oceania');
+  assert.equal(first('Capital of Ohio?'), 'US states and capitals');
+  assert.equal(first('What is the capital of Kenya?'), 'Countries and capitals: Africa');
+  assert.equal(first('Tell me about The Beast at Kings Island'), 'Amusement parks and roller coasters');
+  assert.equal(first('What temperature should chicken be cooked to?'), 'Food safety and cooking basics');
+  assert.equal(pickLibrary([{ role: 'user', content: 'What is the capital of Peru?' }]).length, 1, 'no unrelated capital lists');
+  assert.deepEqual(pickLibrary([{ role: 'user', content: 'Write me a poem about love' }]), []);
+});
