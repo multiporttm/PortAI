@@ -81,6 +81,12 @@ passphrase ─PBKDF2-SHA256 (600k)─▶ master ─HKDF─┬─ "id"   → acco
 
 **Setting up D1 for your own deployment:** create a database with `npx wrangler d1 create portai-db`, put its id in `wrangler.toml`, then run `npx wrangler d1 execute portai-db --remote --file migrations/0001_accounts.sql`. The Node server (`server.js`) does not support accounts. It reports `accounts: false`, and the UI hides the feature.
 
+## Multiport knowledge (grounding)
+
+`MULTIPORT_KNOWLEDGE.md` holds facts about Multiport and its products. PortAI adds it to every conversation's system prompt with rules: use it as the source of truth, don't invent products or URLs, and point to support when unsure. That's how PortAI can answer questions about Multiport accurately.
+
+After editing the file, run **`npm run knowledge`**. Cloudflare Pages can't import `.md`, so this regenerates `lib/multiport-knowledge.mjs`, and `npm test` fails if you forget. The Node server reads the Markdown file directly.
+
 ## Choosing an Apertus provider
 
 PortAI works with any **OpenAI-compatible** `/chat/completions` endpoint. Set `PORTAI_MODELS` to the exact model ids your provider exposes. Check them with `curl $PORTAI_API_BASE/models`.

@@ -1,15 +1,18 @@
 {
   "name": "portai",
   "version": "0.1.0",
-  "description": "PortAI — a privacy-first AI assistant powered by the open Swiss Apertus models. No ads, no tracking, encrypted local history.",
+  "description": "PortAI \u2014 a privacy-first AI assistant powered by the open Swiss Apertus models. No ads, no tracking, encrypted local history.",
   "main": "server.js",
   "type": "commonjs",
   "private": true,
   "license": "Apache-2.0",
-  "engines": { "node": ">=18.17" },
+  "engines": {
+    "node": ">=18.17"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "PORTAI_MOCK=1 node server.js",
-    "test": "node --no-warnings --test test/*.test.js test/*.test.mjs"
+    "test": "node --no-warnings --test test/*.test.js test/*.test.mjs",
+    "knowledge": "node scripts/build-knowledge.mjs"
   }
 }

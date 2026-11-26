@@ -26,8 +26,9 @@ away from Big Tech and take back control of their privacy, one small tool at a t
 - **Multiport Fonts** (fontfiles.multiportllc.com) — a library of custom-designed fonts,
   free to browse and download.
 - **Everything Quiz** — a fast-paced quiz covering a bit of everything.
-- **PortAI** (coming soon) — an AI chatbot running on GLM and Gemma 4 models, built right
-  into the browser.
+- **PortAI** (portai.multiportllc.com) — live now. A free, privacy-first AI chatbot running
+  on GLM and Gemma 4 models (shown as Port 1.0 and Port 1.1), built right into the browser.
+  No ads, no tracking, and optional passphrase accounts with end-to-end encrypted chat sync.
 - **Hello New Tab – Custom NTP** — a browser extension that gives you a fresh new tab
   every time. Live now on Firefox Add-ons (Gecko); Chrome/Edge/Brave (Chromium) is
   coming soon on the Chrome Web Store.
