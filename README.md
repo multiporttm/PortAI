@@ -38,30 +38,24 @@ docker build -t portai .
 docker run -p 8080:8080 --env-file .env portai
 ```
 
-### Cloudflare Pages
+### Cloudflare Pages (free)
 
-PortAI runs on Cloudflare Pages without changes. `public/` is the static site, and `functions/api/*` are Pages Functions that replace `server.js` (they use the same validation, header stripping and streaming).
+PortAI runs on Cloudflare Pages. `public/` is the static site, and `functions/api/*` are Pages Functions that replace `server.js` (same validation, header stripping and streaming).
 
-**Option A: from GitHub (dashboard)**
-1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and pick this repo.
-2. Build settings: Framework preset **None**, build command **empty**, build output directory **`public`**.
-3. **Save and Deploy**.
-4. Project → **Settings** → **Variables and Secrets** → **Add**:
-   - `PORTAI_API_KEY`: type **Secret**, with your Public AI key as the value
-   - (optional) `PORTAI_MODELS`, `PORTAI_API_BASE`, `PORTAI_MODEL_LABELS` as plain text
-5. **Deployments** → **Retry deployment** (variables only apply to new deployments).
+By default it uses **Apertus 1.5 8B on Cloudflare Workers AI**, which is free up to Cloudflare's daily allowance (10,000 Neurons/day, resets 00:00 UTC). It needs **no API key**, and Cloudflare lists the model as *zero data retention*.
 
-**Option B: from the command line**
-```bash
-npx wrangler login
-npx wrangler pages project create portai
-npx wrangler pages secret put PORTAI_API_KEY --project-name portai
-npx wrangler pages deploy
-```
+1. **Request model access.** The [Apertus model page](https://developers.cloudflare.com/workers-ai/models/apertus-v1.5-8b/) links to an access form. Fill it in with the email of your Cloudflare account.
+2. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and pick this repo.
+3. Build settings: Framework preset **None**, build command **empty**, build output directory **`public`**.
+4. **Save and Deploy**. The AI binding and models are configured in `wrangler.toml`, so there's nothing else to set.
 
-Local preview in the Workers runtime: `npx wrangler pages dev --binding PORTAI_MOCK=1`
+When the free allowance runs out, users see "Today's free AI allowance has been used up", and it works again after 00:00 UTC. To get more, either upgrade to Workers Paid ($5/month), or add Apertus 70B from Public AI: uncomment the lines in `wrangler.toml` and add `PORTAI_API_KEY` as a **Secret** under **Settings → Variables and Secrets**. Models whose id starts with `@cf/` go to Workers AI, and all others go to `PORTAI_API_BASE`.
 
-**Keep it private on Cloudflare:** leave **Web Analytics** off for the project, don't add `console.log` of request bodies, and add a **WAF rate-limiting rule** for `/api/chat`. The built-in limiter is per-isolate and best-effort only. Security headers come from `public/_headers`.
+> When `wrangler.toml` exists, Cloudflare uses it for bindings and plain variables, so edit them there rather than in the dashboard. Secrets are still set in the dashboard.
+
+Command-line deploy: `npx wrangler login && npx wrangler pages deploy`
+
+**Keep it private on Cloudflare:** leave **Web Analytics** off, don't `console.log` request bodies, and add a **WAF rate-limiting rule** for `/api/chat` so strangers can't burn through your free allowance. Security headers come from `public/_headers`.
 
 ## Choosing an Apertus provider
 
@@ -69,6 +63,7 @@ PortAI works with any **OpenAI-compatible** `/chat/completions` endpoint. Set `P
 
 | Provider | `PORTAI_API_BASE` | Example model id |
 |---|---|---|
+| **Cloudflare Workers AI (free tier)** | (uses the `AI` binding, Pages only) | `@cf/swiss-ai/apertus-v1.5-8b` |
 | Public AI Inference Utility | `https://api.publicai.co/v1` | `swiss-ai/apertus-v1.5-70b` |
 | CSCS LLM Inference API | `https://api.inference.cscs.ch/v1` | `swiss-ai/Apertus-70B-Instruct-2509` |
 | Self-hosted (vLLM, llama.cpp, Ollama…) | `http://localhost:8000/v1` | `swiss-ai/Apertus-8B-Instruct-2509` |

@@ -54,3 +54,35 @@ test('pages chat proxies upstream stream without client headers', async () => {
     assert.equal(seen.body.messages[0].role, 'system');
   } finally { upstream.close(); }
 });
+
+test('pages chat streams from Workers AI binding without an API key', async () => {
+  let called;
+  const AI = {
+    async run(model, input) {
+      called = { model, input };
+      const enc = new TextEncoder();
+      return new ReadableStream({
+        start(c) {
+          c.enqueue(enc.encode('data: {"response":"Hoi "}\n\ndata: {"respo'));
+          c.enqueue(enc.encode('nse":"zäme"}\n\ndata: [DONE]\n\n'));
+          c.close();
+        },
+      });
+    },
+  };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }) });
+  const env = { AI, PORTAI_MODELS: '@cf/swiss-ai/apertus-v1.5-8b' };
+  const text = await (await onRequestPost(ctx(req, env))).text();
+  const out = text.split('\n\n').filter((e) => e.startsWith('data: {')).map((e) => JSON.parse(e.slice(6)).delta).join('');
+  assert.equal(out, 'Hoi zäme');
+  assert.equal(called.model, '@cf/swiss-ai/apertus-v1.5-8b');
+  assert.equal(called.input.stream, true);
+  assert.equal(called.input.messages[0].role, 'system');
+});
+
+test('pages chat explains exhausted free allowance', async () => {
+  const AI = { run: async () => { throw new Error('3036: You have used up your daily free allocation of 10,000 neurons'); } };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }) });
+  const text = await (await onRequestPost(ctx(req, { AI, PORTAI_MODELS: '@cf/swiss-ai/apertus-v1.5-8b' }))).text();
+  assert.match(text, /free AI allowance/);
+});
