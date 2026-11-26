@@ -569,7 +569,7 @@ async function send(text) {
         }
         if (msg.status === 'searched') {
           reply.sources = [...(reply.sources || []), ...msg.sources];
-          live.relabel(`Searched the web · ${msg.sources.length} source${msg.sources.length === 1 ? '' : 's'}${msg.provider === 'wikipedia' ? ' (Wikipedia)' : ''}`);
+          live.relabel(`Searched the web · ${msg.sources.length} source${msg.sources.length === 1 ? '' : 's'}`);
         }
         if (msg.status === 'search_skipped') {
           if (live.phase === 'searching') live.relabel(`Web search skipped · ${msg.reason}`);

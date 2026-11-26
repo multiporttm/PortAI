@@ -207,3 +207,123 @@ when someone asks for alternatives or comparisons.
   with zero data retention, keeps chat history encrypted on your device (or end-to-end
   encrypted sync with a passphrase-only account), searches the web automatically, and is
   made by an independent one-person company, Multiport.
+
+<!-- LIBRARY BELOW: each "##" section has a topics line. Only the 1-3 sections that match a question are sent to the AI. Add as many sections as you like. -->
+
+## Passwords and password managers
+<!-- topics: password, passwords, password manager, passphrase, bitwarden, 1password, keepass, proton pass, reuse, hacked, breach, leaked -->
+- Use a different password for every account. Reused passwords let one data breach unlock many accounts.
+- Long passphrases (4–6 random words) are easier to remember and harder to crack than short complex passwords.
+- A password manager creates, stores and fills strong unique passwords. Well-known options: Bitwarden (open source, free plan), Proton Pass, 1Password, KeePassXC (offline, open source), and the built-in managers in Apple devices, Google Chrome and Firefox.
+- Protect the password manager itself with a strong master passphrase and two-factor authentication.
+- Check whether your email appeared in a known breach at haveibeenpwned.com, and change passwords for any affected accounts.
+
+## Two-factor authentication (2FA)
+<!-- topics: 2fa, two-factor, two factor, mfa, multi-factor, authenticator, verification code, security key, yubikey, sms code, otp -->
+- 2FA adds a second step after your password, so a stolen password alone isn't enough.
+- From strongest to weakest: hardware security keys (e.g. YubiKey) and passkeys → authenticator apps (time-based codes, e.g. Aegis, Ente Auth, Google Authenticator, Microsoft Authenticator, 2FAS) → SMS codes (better than nothing, but vulnerable to SIM-swap attacks).
+- Save the backup/recovery codes each service gives you somewhere safe (for example in your password manager).
+- Turn on 2FA first for email, password manager, banking and cloud storage. Email matters most, because it can reset everything else.
+
+## Passkeys
+<!-- topics: passkey, passkeys, passwordless, face id login, fingerprint login, webauthn, fido -->
+- A passkey replaces a password with a cryptographic key stored on your device or in your password manager, unlocked with Face ID, a fingerprint or your device PIN.
+- Passkeys can't be phished or reused, because each one only works on the website it was created for.
+- They sync through iCloud Keychain, Google Password Manager or password managers like Bitwarden, Proton Pass and 1Password.
+- Many big services (Google, Apple, Microsoft, Amazon, PayPal, GitHub and others) support them. Look for "passkeys" in the account's security settings.
+
+## Phishing and online scams
+<!-- topics: phishing, scam, scams, scammer, fraud, suspicious email, suspicious text, fake website, smishing, gift card, tech support scam, impersonation, link safe -->
+- Warning signs: urgency or threats ("your account will be closed"), requests for passwords, codes or payment, unexpected attachments, gift-card payment requests, slightly wrong sender addresses or website names, and offers that are too good to be true.
+- Never share 2FA codes. Real companies don't ask for them.
+- Don't click links in unexpected messages. Open the app or type the website address yourself instead.
+- If someone calls claiming to be your bank, hang up and call the number on your card.
+- If you clicked or shared something: change the affected password immediately, turn on 2FA, contact your bank if money is involved, and report it (for example to the company being impersonated, or the authorities' fraud reporting site in your country).
+
+## Private browsing and browser privacy
+<!-- topics: private browsing, incognito, browser privacy, cookies, tracking cookies, ublock, ad blocker, tracker blocker, fingerprinting, safari privacy, chrome privacy, firefox privacy -->
+- Private/incognito mode only stops your device from saving history, cookies and form data after you close the window. Websites, your internet provider, your employer or school can still see what you do.
+- Better privacy: use a browser with tracking protection (Firefox, Brave, Safari, DuckDuckGo browser), block third-party cookies, and add a content blocker such as uBlock Origin (where supported).
+- Review site permissions (location, camera, microphone, notifications) in your browser's settings.
+- Use a privacy-respecting search engine such as DuckDuckGo, Brave Search, Startpage or Mojeek.
+
+## VPNs explained
+<!-- topics: vpn, vpns, virtual private network, mullvad, proton vpn, ip address, hide ip, public wifi, geo-block -->
+- A VPN encrypts your connection to the VPN server and hides your IP address from the sites you visit. Your internet provider can see that you use a VPN, but not which sites you visit.
+- A VPN does **not** make you anonymous: websites can still identify you through logins, cookies and browser fingerprinting, and the VPN provider can see your traffic metadata.
+- Choose a provider with an independently audited no-logs policy and a clear business model. Avoid free VPNs that make money from your data. Well-regarded options include Mullvad, Proton VPN (has a free plan) and IVPN.
+- VPNs are most useful on public Wi-Fi, for hiding your browsing from your internet provider, and for avoiding IP-based tracking.
+
+## iPhone and iPad privacy settings
+<!-- topics: iphone, ipad, ios, ipados, apple privacy, app tracking, location services, safari, icloud, siri, lockdown mode, mail privacy protection -->
+- **Settings → Privacy & Security → Tracking**: turn off "Allow Apps to Request to Track" so every app is told not to track you.
+- **Location Services**: give each app "While Using" or "Never", and turn off "Precise Location" where it isn't needed.
+- **Safety Check** (Privacy & Security) reviews who and what has access to your data and lets you reset it quickly.
+- **Mail → Privacy Protection**: "Protect Mail Activity" hides your IP and blocks tracking pixels in emails.
+- **Safari**: "Prevent Cross-Site Tracking" and "Hide IP Address" (Settings → Safari).
+- **Lockdown Mode** is an extreme protection for people who may be personally targeted by sophisticated attacks.
+- Keep iOS updated: updates fix security holes.
+
+## Android privacy settings
+<!-- topics: android, samsung, pixel, google account, permission manager, privacy dashboard, advertising id, ad id, google activity, location history -->
+- **Settings → Security & privacy → Privacy** (names vary by phone): the **Privacy dashboard** shows which apps used location, camera and microphone recently, and the **Permission manager** lets you revoke access.
+- **Delete the advertising ID** (Settings → Privacy → Ads, Android 12+) so apps can't use it to track you.
+- Give location "Only while using the app" and turn off "Use precise location" where it isn't needed.
+- In your Google Account (myaccount.google.com → Data & privacy) you can pause or auto-delete Web & App Activity, Location/Timeline and YouTube history.
+- Install apps only from trusted stores and keep the phone updated.
+
+## Encrypted messaging apps
+<!-- topics: signal, whatsapp, telegram, imessage, messenger, encrypted messaging, end-to-end, chat app, private messaging, secure messaging -->
+- **Signal**: end-to-end encrypted by default for messages, calls and groups, collects almost no metadata, run by a non-profit. Widely considered the most private mainstream option.
+- **WhatsApp**: messages and calls are end-to-end encrypted by default (using the Signal Protocol), but it's owned by Meta and collects metadata (who you talk to, when, how often).
+- **iMessage / FaceTime**: end-to-end encrypted between Apple devices. Messages to Android phones use SMS/RCS, which may not be.
+- **Telegram**: regular chats and groups are *not* end-to-end encrypted. Only optional one-to-one "Secret Chats" are.
+- **Facebook Messenger**: has rolled out end-to-end encryption for personal chats.
+
+## Email privacy
+<!-- topics: email privacy, private email, email alias, hide my email, simplelogin, addy, tracking pixel, newsletter tracking, spam, proton mail, tuta, gmail privacy -->
+- Encrypted email providers: Proton Mail (Switzerland) and Tuta (Germany) encrypt stored mail so the provider can't read it.
+- **Email aliases** hide your real address when signing up for sites: Apple's Hide My Email, Proton Pass/SimpleLogin, addy.io, Firefox Relay. If an alias starts getting spam, delete it.
+- Many marketing emails contain tracking pixels that report when and where you opened them. Block remote images, or use Apple Mail Privacy Protection.
+- Never trust the sender's name alone. Check the actual address before clicking anything.
+
+## Data brokers and removing your information
+<!-- topics: data broker, data brokers, people search, remove my info, opt out, personal information online, delete my data, gdpr, ccpa, right to be forgotten -->
+- Data brokers collect and sell personal information (addresses, phone numbers, relatives, purchase habits).
+- You can request removal from each broker's opt-out page, or use paid removal services that do it repeatedly.
+- In the EU/UK, GDPR gives you the right to access and delete your data. In California, the CCPA/CPRA gives similar rights. Many companies honor such requests everywhere.
+- Google offers "Results about you" to request removal of search results showing your contact details.
+
+## Public Wi-Fi safety
+<!-- topics: public wifi, public wi-fi, hotel wifi, airport wifi, cafe wifi, hotspot, free wifi -->
+- Most websites use HTTPS, which encrypts what you send, so public Wi-Fi is much safer than it used to be.
+- Still: avoid unknown networks with generic names (they may be fake hotspots), turn off auto-join, and don't install anything a captive portal asks for.
+- For sensitive tasks, use your phone's mobile data/hotspot or a trusted VPN.
+
+## Backups
+<!-- topics: backup, backups, back up, 3-2-1, lost files, ransomware, icloud backup, google drive backup, external drive, restore -->
+- The 3-2-1 rule: keep 3 copies of important data, on 2 different types of storage, with 1 copy off-site (for example in the cloud).
+- Automatic backups are the ones that actually happen: iCloud/Google backups for phones, Time Machine (Mac), File History (Windows).
+- Test restoring a file occasionally. A backup you can't restore isn't a backup.
+- Offline or versioned backups protect against ransomware.
+
+## Using AI assistants safely
+<!-- topics: ai safety, using ai, chatbot safety, ai privacy, share with ai, hallucination, hallucinate, ai mistakes, ai accurate, can i trust ai, ai training data -->
+- Don't share secrets with any AI service: passwords, full card numbers, government ID numbers or private details about other people.
+- AI can be confidently wrong ("hallucinations"). Double-check facts, quotes, numbers, legal, medical and financial information with reliable sources.
+- Check whether a service uses your chats for training. PortAI doesn't: its models run with zero data retention, and chat history stays encrypted on your device.
+- AI is great for drafts, explanations, brainstorming, summaries and code, but you stay responsible for what you use.
+
+## Getting better answers from PortAI
+<!-- topics: prompt, prompting, better answers, how to ask, tips for portai, how to use portai, write a prompt, get better results -->
+- Give context: who it's for, what you already know, and what you want ("Explain to a 12-year-old…", "I'm a beginner in Python…").
+- Say the format: "in 5 bullet points", "as a table", "under 100 words", "as an email".
+- Paste the text or a link you want summarized, translated or checked. PortAI reads links automatically.
+- Ask follow-ups to refine: "shorter", "more formal", "give an example".
+- Pick the right model: Coder for programming, Pro for hard reasoning, Lite for other languages, Regular for most things.
+
+## Kids and family online safety
+<!-- topics: kids, children, parental controls, family, screen time, child safety, teen, teenager, family link -->
+- Built-in parental controls: Apple Screen Time and Family Sharing, Google Family Link, and console and streaming-service controls.
+- Talk openly about not sharing personal details, about scams and strangers online, and that they can always come to you if something feels wrong.
+- Keep devices in shared spaces for younger kids, and review app permissions and age ratings together.

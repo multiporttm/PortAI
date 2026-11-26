@@ -40,10 +40,10 @@ PORTAI_HEDGE_MS = "5000"
 #   brave     - Brave Search API, full web, free $5/month credit (~1,000 searches).
 #               Add the BRAVE_SEARCH_API_KEY secret in the dashboard to enable it.
 #   ceramic   - Cloudflare Web Search API, zero data retention, needs AI Gateway credits.
-#   wikipedia - free, no signup: full-text search inside Wikipedia articles.
+#   free      - no signup: DuckDuckGo Instant Answers + Wikipedia full-text search.
 # Only the search query is sent.
 PORTAI_SEARCH = "1"
-PORTAI_SEARCH_PROVIDERS = "brave,ceramic,wikipedia"
+PORTAI_SEARCH_PROVIDERS = "brave,ceramic,free"
 PORTAI_SEARCH_LIMITS = "10/50"   # searches per person: per minute / per day
 # Wikipedia asks apps for contact details in requests; set e.g. "https://your-site; you@example.com"
 PORTAI_SEARCH_CONTACT = ""

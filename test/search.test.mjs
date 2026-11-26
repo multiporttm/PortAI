@@ -146,3 +146,19 @@ test('run-together names are split only when they end in an acronym', async () =
   assert.deepEqual(keywords('latest iPhone'), ['iphone']);
   assert.deepEqual(keywords('ProtonMail vs Gmail'), ['protonmail', 'gmail']);
 });
+
+test('free search merges DuckDuckGo instant answers (quick facts) with Wikipedia', async () => {
+  const fetchImpl = async (url) => {
+    const u = new URL(String(url));
+    if (u.hostname === 'api.duckduckgo.com') {
+      assert.equal(u.searchParams.get('t'), 'portai');
+      return new Response(JSON.stringify({ Heading: 'Lumo (AI assistant)', AbstractText: 'Lumo is an online chatbot developed by Proton AG.', AbstractURL: 'https://en.wikipedia.org/wiki/Lumo_(AI_assistant)', Infobox: { content: [{ label: 'Developer(s)', value: 'Proton AG' }, { label: 'Initial release', value: 'July 23, 2025' }, { label: 'Data', value: { x: 1 } }] } }));
+    }
+    return wikiFetch(url);
+  };
+  const r = await webSearch({}, 'What is LumoAI?', {}, fetchImpl);
+  assert.equal(r.provider, 'duckduckgo');
+  assert.equal(r.items[0].title, 'Lumo (AI assistant)');
+  assert.match(r.items[0].description, /Quick facts: Developer\(s\): Proton AG · Initial release: July 23, 2025/);
+  assert.ok(r.items.some((it) => it.title === 'Proton AG'), 'Wikipedia results are added too');
+});
