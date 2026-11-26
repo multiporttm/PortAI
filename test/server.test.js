@@ -88,8 +88,8 @@ test('proxies to an OpenAI-compatible upstream without forwarding client headers
     assert.equal(seen.headers.authorization, 'Bearer sk-test');
     assert.equal(seen.headers.cookie, undefined);
     assert.equal(seen.headers['x-forwarded-for'], undefined);
-    assert.equal(seen.headers['user-agent'], 'PortAI');
+    assert.equal(seen.headers['user-agent'], 'PortAI/0.1');
     assert.equal(seen.body.stream, true);
-    assert.equal(seen.body.model, 'swiss-ai/apertus-70b-instruct');
+    assert.equal(seen.body.model, 'swiss-ai/apertus-v1.5-70b');
   } finally { server.close(); upstream.close(); }
 });

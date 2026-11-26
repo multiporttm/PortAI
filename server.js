@@ -40,7 +40,7 @@ function list(v) {
 }
 
 function buildConfig(env = process.env) {
-  const models = list(env.PORTAI_MODELS || 'swiss-ai/apertus-70b-instruct,swiss-ai/apertus-8b-instruct');
+  const models = list(env.PORTAI_MODELS || 'swiss-ai/apertus-v1.5-70b,swiss-ai/apertus-v1.5-8b');
   const labels = list(env.PORTAI_MODEL_LABELS);
   return {
     port: Number(env.PORT) || 8080,
@@ -62,7 +62,7 @@ function buildConfig(env = process.env) {
 
 function prettyModelName(id) {
   const base = id.split('/').pop();
-  return base.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\b(\d+)b\b/gi, '$1B');
+  return base.replace(/-?v(\d+(\.\d+)?)/i, ' $1').replace(/[-_]/g, ' ').replace(/\s+/g, ' ').trim().replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\b(\d+)b\b/gi, '$1B');
 }
 
 const DEFAULT_SYSTEM_PROMPT = [
@@ -274,7 +274,7 @@ async function proxyUpstream(payload, cfg, send, signal) {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'text/event-stream',
-      'User-Agent': 'PortAI',
+      'User-Agent': 'PortAI/0.1',
       ...(cfg.apiKey ? { Authorization: `Bearer ${cfg.apiKey}` } : {}),
     },
     body: JSON.stringify(payload),

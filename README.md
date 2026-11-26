@@ -44,7 +44,7 @@ PortAI works with any **OpenAI-compatible** `/chat/completions` endpoint. Set `P
 
 | Provider | `PORTAI_API_BASE` | Example model id |
 |---|---|---|
-| Public AI Inference Utility | `https://api.publicai.co/v1` | `swiss-ai/apertus-70b-instruct` |
+| Public AI Inference Utility | `https://api.publicai.co/v1` | `swiss-ai/apertus-v1.5-70b` |
 | CSCS LLM Inference API | `https://api.inference.cscs.ch/v1` | `swiss-ai/Apertus-70B-Instruct-2509` |
 | Self-hosted (vLLM, llama.cpp, Ollama…) | `http://localhost:8000/v1` | `swiss-ai/Apertus-8B-Instruct-2509` |
 
@@ -56,7 +56,7 @@ For maximum privacy, **self-host Apertus**: the 8B model runs on a single consum
 |---|---|---|
 | `PORTAI_API_BASE` | `https://api.publicai.co/v1` | OpenAI-compatible base URL |
 | `PORTAI_API_KEY` | — | Provider API key (server-side only, never sent to browsers) |
-| `PORTAI_MODELS` | `swiss-ai/apertus-70b-instruct,swiss-ai/apertus-8b-instruct` | Allowed models; the first is the default |
+| `PORTAI_MODELS` | `swiss-ai/apertus-v1.5-70b,swiss-ai/apertus-v1.5-8b` | Allowed models; the first is the default |
 | `PORTAI_MODEL_LABELS` | derived | Display names, in the same order |
 | `PORTAI_SYSTEM_PROMPT` | built-in | Override the assistant persona |
 | `PORT` / `HOST` | `8080` / `127.0.0.1` | Listen address |
