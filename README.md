@@ -154,4 +154,10 @@ npm test
 
 ## License
 
-Apache-2.0. Apertus models are released by the Swiss AI Initiative under their own license; see the model cards.
+PortAI is licensed under the **Mozilla Public License 2.0 (MPL-2.0)**. See [`LICENSE`](LICENSE).
+
+> This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+Third-party parts keep their own licenses:
+- **Inter** font: SIL Open Font License 1.1 (`public/fonts/Inter-LICENSE.txt`)
+- **AI models** (Gemma 4, GLM-4.7 Flash, Apertus) are not part of this repository. Each is used under its provider's own model license and terms.
