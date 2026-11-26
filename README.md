@@ -93,7 +93,7 @@ When a message contains a link, PortAI reads that page automatically, like Lumo 
 
 ## Web search (opt-in)
 
-The **🌐 Web** toggle lets people ground answers in live results, as Lumo does. It's off by default.
+Web search is **automatic** by default, like Lumo. Before answering, a small, cheap model (Mini, IBM Granite) decides whether the question needs the web, for example news, prices, recent events or newer products like Lumo. If it does, PortAI searches with that model's query; if not, it answers right away. The **🌐 Auto / Off** button turns searching off. Set `PORTAI_SEARCH_ROUTER` to pick a different decision model.
 
 - PortAI first tries Cloudflare's **Web Search API**, using provider **Ceramic.ai** with zero data retention at **$0.25 per 1,000 searches**. It's paid from **AI Gateway credits**: Cloudflare dashboard → **AI** → **AI Gateway** → **Credits**. If there are no credits, or that search fails, PortAI falls back to free **Wikipedia** search.
 - Only the search query is sent. No IP address, cookies or chat history go with it. Results go into the system prompt with a prompt-injection guard, and the answer cites sources as `[1]`, `[2]`, which are shown as links under the reply.

@@ -25,8 +25,11 @@ const state = {
 // Settings (non-sensitive UI prefs only)
 // ---------------------------------------------------------------------------
 
+// Web search: 'auto' (default: PortAI searches when a question needs it) or 'off'.
+function normalizeWebSearch(v) { return v === 'off' ? 'off' : 'auto'; }
+
 function loadSettings() {
-  try { return { theme: 'system', temperature: 0.7, model: null, webSearch: false, ...JSON.parse(localStorage.getItem('portai.settings') || '{}') }; }
+  try { return { theme: 'system', temperature: 0.7, model: null, ...JSON.parse(localStorage.getItem('portai.settings') || '{}'), webSearch: normalizeWebSearch(JSON.parse(localStorage.getItem('portai.settings') || '{}').webSearch) }; }
   catch { return { theme: 'system', temperature: 0.7, model: null }; }
 }
 function saveSettings() {
@@ -143,10 +146,15 @@ async function loadConfig() {
 function syncWebToggle() {
   const btn = $('#web-toggle');
   btn.hidden = !state.searchAvailable;
-  btn.setAttribute('aria-pressed', String(!!state.settings.webSearch));
+  const on = state.settings.webSearch !== 'off';
+  btn.setAttribute('aria-pressed', String(on));
+  btn.textContent = on ? '🌐 Auto' : '🌐 Off';
+  btn.title = on
+    ? 'Web search: Auto. PortAI searches the web when a question needs up-to-date info. Only the search query is sent. Tap to turn off.'
+    : 'Web search: Off. PortAI only uses what its models know. Tap to turn on.';
 }
 $('#web-toggle').addEventListener('click', () => {
-  state.settings.webSearch = !state.settings.webSearch;
+  state.settings.webSearch = state.settings.webSearch === 'off' ? 'auto' : 'off';
   saveSettings();
   syncWebToggle();
 });
@@ -511,7 +519,7 @@ async function send(text) {
       body: JSON.stringify({
         model: chat.model,
         temperature: state.settings.temperature,
-        search: !!(state.searchAvailable && state.settings.webSearch),
+        search: state.searchAvailable && state.settings.webSearch !== 'off' ? 'auto' : false,
         messages: chat.messages.filter((m) => !m.error).map(({ role, content }) => ({ role, content })),
       }),
       signal: controller.signal,
