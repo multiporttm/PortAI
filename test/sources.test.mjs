@@ -39,3 +39,15 @@ test('weather, time, currency and dictionary tools return live results', async (
   assert.match(def.description, /noun: A happy accident/);
   assert.deepEqual(await toolResults('write a poem', fakeFetch), []);
 });
+
+test('does not mistake ordinary phrases for live-data questions', () => {
+  assert.equal(timePlace('time in Tokyo'), 'Tokyo');
+  assert.equal(timePlace('what time is it in the morning'), null);
+  assert.equal(weatherPlace('Weather in my area'), null);
+  assert.equal(weatherPlace('how cold is it in space'), null);
+  assert.equal(weatherPlace('What is the weather like in Paris in July?'), null, 'climate question, not a forecast');
+  assert.equal(weatherPlace('Will it snow for Christmas?'), null);
+  assert.equal(dictionaryWord('what does it mean?'), null);
+  assert.equal(dictionaryWord('What does that mean'), null);
+  assert.equal(parseCurrency('I have 20 dollars in cash'), null);
+});
