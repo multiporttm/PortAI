@@ -98,7 +98,7 @@ const autoChat = async (AI, search, content) => {
 
 test('auto mode: searches by itself when the router says the question needs it', async () => {
   const AI = routerAI('SEARCH: Lumo AI Proton assistant', [{ url: 'https://lumo.proton.me/', title: 'Lumo', description: 'Proton’s private AI assistant.' }]);
-  const events = await autoChat(AI, 'auto', 'Is Lumo AI a good choice?');
+  const events = await autoChat(AI, 'auto', 'is lumo any good for privacy');
   assert.equal(AI.calls[0].model, '@cf/ibm-granite/granite-4.0-h-micro', 'cheap router model decides');
   const searching = events.find((e) => e.status === 'searching');
   assert.equal(searching.query, 'Lumo AI Proton assistant');
@@ -154,4 +154,16 @@ test('irrelevant search results (e.g. Heathrow for a chatbot question) are dropp
   const w = keywords('What is the best online AI chatbot for privacy?');
   assert.equal(isRelevant({ title: 'Heathrow Airport', description: 'The main airport serving London.' }, w), false);
   assert.equal(isRelevant({ title: 'Lumo (AI assistant)', description: 'An AI chatbot by Proton focused on privacy.' }, w), true);
+});
+
+test('comparisons and questions about named things always search', async () => {
+  const { lookupQuery, pickLibrary } = await import('../lib/portai-core.mjs');
+  const q = (content) => lookupQuery([{ role: 'user', content }]);
+  assert.equal(q('Cape Carrier and AT&T'), 'Cape Carrier and AT&T');
+  assert.equal(q('Is Verizon better than T-Mobile?'), 'Is Verizon better than T-Mobile?');
+  assert.equal(q('hello there'), null);
+  assert.equal(q('Hello! How are you?'), null);
+  assert.equal(q('What is 2+2'), null);
+  assert.equal(q('Tell me about PortAI'), null);
+  assert.equal(pickLibrary([{ role: 'user', content: 'Compare Cape Carrier and AT&T' }])[0].title, 'Phone carriers, including privacy-focused ones');
 });
