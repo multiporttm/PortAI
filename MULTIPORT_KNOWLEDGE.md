@@ -776,7 +776,7 @@ Standard-time offsets from UTC (many places add +1 hour for daylight saving time
 - Prices, opening hours and facilities can change, so check clubmed.us for current details and bookings.
 
 ## Apple devices: ecosystem, text replacement and which to buy
-<!-- topics: apple ecosystem, mac, macbook, macbook air, macbook pro, macbook neo, ipad, iphone, iphone 17, apple watch, apple watch se, which mac, which ipad, which iphone, which laptop, mac or windows, mac vs windows, switch from windows, text replacement, text shortcuts, keyboard shortcuts iphone, apple tips, apple tricks -->
+<!-- topics: apple ecosystem, mac, macbook, macbook air, macbook pro, macbook neo, ipad, ipad a16, cheapest ipad, iphone, iphone 17, apple watch, apple watch se, which mac, which ipad, which iphone, which laptop, mac or windows, mac vs windows, switch from windows, text replacement, text shortcuts, keyboard shortcuts iphone, apple tips, apple tricks -->
 - **Why people like Apple's ecosystem:** a Mac, iPad, iPhone and Apple Watch work together (for example sharing files, messages, passwords and copy-paste across devices). Some people switch from Windows PCs after problems such as memory (RAM) issues and slowdowns.
 - **Text replacement (type a short code and it expands into a longer phrase):**
   - **iPhone and iPad:** Settings → General → Keyboard → Text Replacement, then tap + to add a phrase and its shortcut.
@@ -784,6 +784,6 @@ Standard-time offsets from UTC (many places add +1 hour for daylight saving time
   - Replacements sync between your Apple devices through iCloud.
 - **Which to buy (a Multiport user's recommendations):**
   - **For advanced or heavy apps** (video editing, coding, pro creative apps): a **MacBook Air** or **MacBook Pro**.
-  - **For simple, everyday apps:** **iPhone 17**, **Apple Watch SE**, the entry-level (base) **iPad** and the **MacBook Neo**.
+  - **For simple, everyday apps:** **iPhone 17**, **Apple Watch SE**, the **iPad (A16)** (the low-tier, entry-level iPad) and the **MacBook Neo**.
 - **MacBook Neo:** Apple's lowest-priced laptop, announced March 4, 2026. It is the first Mac to use an iPhone-style A-series chip (A18 Pro) instead of an M-series chip. It has a 13-inch display, up to 16 hours of battery life, two USB-C ports and a headphone jack. Good for students and everyday use; the MacBook Air and Pro are faster for demanding work.
 - Prices and models change, so check apple.com for current options.
