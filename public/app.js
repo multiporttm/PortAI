@@ -449,16 +449,44 @@ function imagesNode(images, generated) {
     img.addEventListener('click', () => openLightbox(src));
     fig.append(img);
     if (generated) {
-      const a = document.createElement('a');
-      a.className = 'icon-btn small img-download';
-      a.href = src;
-      a.download = `portai-image-${Date.now()}.jpg`;
-      a.textContent = '⤓ Download';
-      fig.append(a);
+      const save = document.createElement('button');
+      save.type = 'button';
+      save.className = 'icon-btn small img-download';
+      save.textContent = '⤓ Save image';
+      save.addEventListener('click', () => saveImage(src));
+      fig.append(save);
     }
     box.append(fig);
   }
   return box;
+}
+
+/** Turn a data URI into a File (no fetch(), so the strict CSP stays as it is). */
+function dataUriToFile(src, name) {
+  const [head, b64] = src.split(',');
+  const type = head.match(/data:([^;]+)/)?.[1] || 'image/jpeg';
+  const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  return new File([bytes], name, { type });
+}
+
+/**
+ * Save a created image. On iPhone/iPad (and other phones) this opens the share sheet,
+ * which has "Save Image" (Photos) and "Save to Files"; on computers it downloads a .jpg.
+ * (A plain download link opens a blank page in iOS Home Screen apps.)
+ */
+async function saveImage(src) {
+  const file = dataUriToFile(src, `neon-apple-${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.jpg`);
+  if (navigator.canShare?.({ files: [file] })) {
+    try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === 'AbortError') return; }
+  }
+  const url = URL.createObjectURL(file);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = file.name;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 function openLightbox(src) {
