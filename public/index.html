@@ -86,8 +86,11 @@
       <div id="ghost-banner" class="ghost-banner" hidden>👻 Ghost mode — this conversation will disappear when you leave it.</div>
 
       <form id="composer" class="composer">
+        <div id="attachments" class="attachments" hidden></div>
         <textarea id="input" rows="1" placeholder="Ask anything…" aria-label="Message" maxlength="32000"></textarea>
+        <input type="file" id="file-input" accept="image/*" multiple hidden>
         <div class="composer-bar">
+          <button type="button" id="attach" class="tool-pill" title="Add images (or paste / drop them here)" aria-label="Add images">🖼️ Image</button>
           <button type="button" id="web-toggle" class="tool-pill" aria-pressed="false" hidden title="Web search">🌐 Web search</button>
           <div class="spacer"></div>
           <button type="submit" id="send" class="send-btn" aria-label="Send">↑</button>

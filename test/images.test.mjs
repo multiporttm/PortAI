@@ -1,0 +1,73 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { test } from 'node:test';
+import assert from 'node:assert';
+import { onRequestPost } from '../functions/api/chat.js';
+import { imagePrompt, validateChatRequest, buildConfig } from '../lib/portai-core.mjs';
+
+const PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+
+function fakeAI() {
+  const calls = [];
+  return {
+    calls,
+    async run(model, input) {
+      calls.push({ model, input });
+      if (/flux/.test(model)) return { image: 'AAAA' };
+      if (!input.stream) return { response: 'NO' };
+      return new ReadableStream({ start(c) { c.enqueue(new TextEncoder().encode('data: {"response":"I see a cat."}\n\ndata: [DONE]\n\n')); c.close(); } });
+    },
+  };
+}
+const chat = async (AI, messages, model) => {
+  const env = { AI, PORTAI_MODELS: '@cf/zai-org/glm-4.7-flash,@cf/google/gemma-4-26b-a4b-it', PORTAI_HEDGE_MS: '0' };
+  const req = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify({ model, search: 'auto', messages }) });
+  const text = await (await onRequestPost({ request: req, env, waitUntil: () => {} })).text();
+  return text.split('\n\n').filter((e) => e.startsWith('data: {')).map((e) => JSON.parse(e.slice(6)));
+};
+
+test('detects requests to create images', () => {
+  assert.equal(imagePrompt('Draw a cat in space'), 'a cat in space');
+  assert.equal(imagePrompt('draw me a dragon'), 'a dragon');
+  assert.equal(imagePrompt('Can you generate an image of a castle at sunset?'), 'a castle at sunset');
+  assert.equal(imagePrompt('Make a logo for my bakery'), 'a logo for my bakery');
+  assert.equal(imagePrompt('make a cartoon image of a dog'), 'a dog, cartoon style');
+  assert.equal(imagePrompt('Draw conclusions from this data'), null);
+  assert.equal(imagePrompt('How do I draw a horse?'), null);
+  assert.equal(imagePrompt('Generate a python script'), null);
+});
+
+test('validates attached images', () => {
+  const cfg = buildConfig({});
+  assert.ok(validateChatRequest({ messages: [{ role: 'user', content: 'hi', images: [PNG] }] }, cfg).value.images.length === 1);
+  assert.match(validateChatRequest({ messages: [{ role: 'user', content: 'hi', images: ['data:text/html;base64,AAAA'] }] }, cfg).error, /JPEG, PNG/);
+  assert.match(validateChatRequest({ messages: [{ role: 'user', content: 'hi', images: [PNG, PNG, PNG, PNG, PNG] }] }, cfg).error, /Up to 4/);
+  assert.match(validateChatRequest({ messages: [{ role: 'assistant', content: 'hi', images: [PNG] }] }, cfg).error, /Up to 4/);
+  const v = validateChatRequest({ messages: [{ role: 'user', content: '', images: [PNG] }] }, cfg).value;
+  assert.equal(v.messages.at(-1).content, 'What is in this image?');
+});
+
+test('attached images go to a vision model as image parts', async () => {
+  const AI = fakeAI();
+  const events = await chat(AI, [{ role: 'user', content: "What's wrong here?", images: [PNG] }], '@cf/zai-org/glm-4.7-flash');
+  const vision = events.find((e) => e.status === 'vision');
+  assert.ok(vision, 'shows the vision step');
+  const call = AI.calls.find((c) => c.input.stream);
+  assert.equal(call.model, '@cf/google/gemma-4-26b-a4b-it', 'switched to the model that can see');
+  const last = call.input.messages.at(-1);
+  assert.deepEqual(last.content[1], { type: 'image_url', image_url: { url: PNG } });
+  assert.equal(last.content[0].text, "What's wrong here?");
+  assert.ok(!events.some((e) => e.status === 'searching'), 'no web search for image questions');
+  assert.ok(events.some((e) => e.delta === 'I see a cat.'));
+});
+
+test('"draw ..." creates an image instead of text', async () => {
+  const AI = fakeAI();
+  const events = await chat(AI, [{ role: 'user', content: 'Draw a cat in space' }]);
+  assert.ok(events.some((e) => e.status === 'drawing'));
+  const img = events.find((e) => e.image);
+  assert.equal(img.image, 'data:image/jpeg;base64,AAAA');
+  assert.equal(AI.calls[0].model, '@cf/black-forest-labs/flux-1-schnell');
+  assert.equal(AI.calls[0].input.prompt, 'a cat in space');
+  assert.ok(!AI.calls.some((c) => c.input.stream), 'no chat model call');
+});

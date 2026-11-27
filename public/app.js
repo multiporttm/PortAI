@@ -407,11 +407,13 @@ function messageNode(m) {
     if (m.error) bubble.classList.add('error-bubble');
   } else {
     bubble.textContent = m.content;
+    if (!m.content) bubble.hidden = true;
   }
   if (m.role === 'assistant' && m.trace) {
     const summary = renderTrace(m.trace);
     if (summary) wrap.append(summary);
   }
+  if (m.images?.length) wrap.append(imagesNode(m.images, m.role === 'assistant'));
   wrap.append(bubble);
   if (m.role === 'assistant' && m.sources?.length) wrap.append(sourcesNode(m.sources));
   if (m.role === 'assistant' && !m.pending) {
@@ -425,6 +427,110 @@ function messageNode(m) {
     wrap.append(actions);
   }
   return wrap;
+}
+
+// ---------------------------------------------------------------------------
+// Images: attach (vision) and AI-generated pictures
+// ---------------------------------------------------------------------------
+
+const MAX_ATTACH = 4;
+const isImageData = (src) => /^data:image\/(jpeg|png|webp|gif);base64,/.test(src);
+
+function imagesNode(images, generated) {
+  const box = document.createElement('div');
+  box.className = `msg-images${generated ? ' generated' : ''}`;
+  for (const src of images) {
+    if (!isImageData(src)) continue;
+    const fig = document.createElement('figure');
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = generated ? 'AI-generated image' : 'Attached image';
+    img.loading = 'lazy';
+    img.addEventListener('click', () => openLightbox(src));
+    fig.append(img);
+    if (generated) {
+      const a = document.createElement('a');
+      a.className = 'icon-btn small img-download';
+      a.href = src;
+      a.download = `portai-image-${Date.now()}.jpg`;
+      a.textContent = '⤓ Download';
+      fig.append(a);
+    }
+    box.append(fig);
+  }
+  return box;
+}
+
+function openLightbox(src) {
+  const dlg = document.createElement('dialog');
+  dlg.className = 'lightbox';
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = '';
+  dlg.append(img);
+  dlg.addEventListener('click', () => dlg.close());
+  dlg.addEventListener('close', () => dlg.remove());
+  document.body.append(dlg);
+  dlg.showModal();
+}
+
+/** Load an image file, shrink it (max side `max` px) and return a JPEG data URI. */
+async function shrinkImage(source, max, quality) {
+  const bitmap = typeof source === 'string'
+    ? await new Promise((resolve, reject) => { const i = new Image(); i.onload = () => resolve(i); i.onerror = reject; i.src = source; })
+    : await createImageBitmap(source, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(source));
+  const w = bitmap.width || bitmap.naturalWidth;
+  const h = bitmap.height || bitmap.naturalHeight;
+  const scale = Math.min(1, max / Math.max(w, h));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(w * scale));
+  canvas.height = Math.max(1, Math.round(h * scale));
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff'; // transparent PNGs get a white background
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/jpeg', quality);
+}
+
+state.attachments = []; // [{ full, thumb }]
+
+async function addImageFiles(files) {
+  const images = [...files].filter((f) => f.type.startsWith('image/'));
+  if (!images.length) return;
+  if (state.attachments.length + images.length > MAX_ATTACH) toast(`You can attach up to ${MAX_ATTACH} images per message.`);
+  for (const file of images.slice(0, MAX_ATTACH - state.attachments.length)) {
+    if (file.size > 25 * 1024 * 1024) { toast('That image is too large (max 25 MB).'); continue; }
+    try {
+      // Full size for the AI to read (sharp enough for text in screenshots), small copy for your chat history.
+      const full = await shrinkImage(file, 1600, 0.85);
+      const thumb = await shrinkImage(full, 640, 0.75);
+      state.attachments.push({ full, thumb });
+    } catch {
+      toast("Couldn't read that image. Try a JPEG or PNG.");
+    }
+  }
+  renderAttachments();
+}
+
+function renderAttachments() {
+  const box = $('#attachments');
+  box.replaceChildren();
+  box.hidden = !state.attachments.length;
+  state.attachments.forEach((att, i) => {
+    const item = document.createElement('div');
+    item.className = 'attachment';
+    const img = document.createElement('img');
+    img.src = att.thumb;
+    img.alt = `Attached image ${i + 1}`;
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'attachment-remove';
+    remove.setAttribute('aria-label', 'Remove image');
+    remove.textContent = '×';
+    remove.addEventListener('click', () => { state.attachments.splice(i, 1); renderAttachments(); });
+    item.append(img, remove);
+    box.append(item);
+  });
 }
 
 // Remove citation markers like [1], [1, 2] or [1][2] (sources are shown as links instead).
@@ -527,14 +633,16 @@ function updateJumpButton() {
 // Sending & streaming
 // ---------------------------------------------------------------------------
 
-async function send(text) {
+async function send(text, attachments = []) {
   const chat = state.current;
-  if (!text.trim() || state.streaming) return;
+  if ((!text.trim() && !attachments.length) || state.streaming) return;
   chat.model = $('#model-select').value || chat.model;
-  chat.messages.push({ role: 'user', content: text });
-  if (chat.messages.length === 1) chat.title = text.replace(/\s+/g, ' ').slice(0, 60);
+  const userMsg = { role: 'user', content: text };
+  if (attachments.length) userMsg.images = attachments.map((a) => a.thumb);
+  chat.messages.push(userMsg);
+  if (chat.messages.length === 1) chat.title = (text.trim() ? text : '🖼️ Image').replace(/\s+/g, ' ').slice(0, 60);
   $('#welcome').hidden = true;
-  $('#messages').append(messageNode({ role: 'user', content: text }));
+  $('#messages').append(messageNode(userMsg));
   await persist(chat);
 
   const reply = { role: 'assistant', content: '', pending: true };
@@ -566,7 +674,12 @@ async function send(text) {
         model: chat.model,
         temperature: state.settings.temperature,
         search: state.searchAvailable && state.settings.webSearch !== 'off' ? 'auto' : false,
-        messages: chat.messages.filter((m) => !m.error).map(({ role, content }) => ({ role, content })),
+        messages: chat.messages.filter((m) => !m.error).map((m) => {
+          // Only the new message's images are sent (full size); older ones are just mentioned.
+          if (m === userMsg && attachments.length) return { role: m.role, content: m.content, images: attachments.map((a) => a.full) };
+          const note = m.images?.length && m.role === 'user' ? `\n\n[The user attached ${m.images.length === 1 ? 'an image' : `${m.images.length} images`} here.]` : '';
+          return { role: m.role, content: (m.content + note).trim() || '(image)' };
+        }),
       }),
       signal: controller.signal,
     });
@@ -617,7 +730,19 @@ async function send(text) {
           if (live.phase === 'searching') live.relabel(`Web search skipped · ${msg.reason}`);
           else live.note('search', `Web search skipped · ${msg.reason}`);
         }
-        if (msg.status === 'thinking' && ['connecting', 'searching', 'reading'].includes(live.phase)) {
+        if (msg.status === 'vision') {
+          live.start('viewing', `Looking at your image${msg.count > 1 ? 's' : ''} with ${msg.model}`, `Looked at ${msg.count > 1 ? `${msg.count} images` : 'your image'}`);
+        }
+        if (msg.status === 'drawing') {
+          live.start('drawing', 'Creating image', 'Created image');
+        }
+        if (msg.image && isImageData(msg.image)) {
+          reply.images = [...(reply.images || []), msg.image];
+          node.querySelector('.msg-images')?.remove();
+          node.insertBefore(imagesNode(reply.images, true), bubble);
+          scrollToBottom();
+        }
+        if (msg.status === 'thinking' && ['connecting', 'searching', 'reading', 'viewing'].includes(live.phase)) {
           live.start('thinking', 'Thinking', 'Thought');
           if (mentionsMultiport(text)) live.note('knowledge', 'Checked Multiport knowledge');
         }
@@ -652,6 +777,8 @@ async function send(text) {
       reply.content = (reply.content ? reply.content + '\n\n' : '') + `⚠️ ${err.friendly ? err.message : friendlyError({ status: err instanceof TypeError ? 0 : undefined, message: err.message })}`;
     }
   } finally {
+    // Keep a smaller copy of created images in the (encrypted) chat history.
+    if (reply.images?.length) reply.images = await Promise.all(reply.images.map((src) => shrinkImage(src, 768, 0.82).catch(() => src)));
     delete reply.pending;
     reply.trace = live.finish(reply.content, outcome);
     state.streaming = null;
@@ -692,10 +819,26 @@ input.addEventListener('keydown', (e) => {
 $('#composer').addEventListener('submit', (e) => {
   e.preventDefault();
   const text = input.value;
-  if (!text.trim()) return;
+  if ((!text.trim() && !state.attachments.length) || state.streaming) return;
+  const attachments = state.attachments;
+  state.attachments = [];
+  renderAttachments();
   input.value = '';
   autosize();
-  send(text);
+  send(text, attachments);
+});
+$('#attach').addEventListener('click', () => $('#file-input').click());
+$('#file-input').addEventListener('change', (e) => { addImageFiles(e.target.files); e.target.value = ''; });
+// Paste a screenshot straight into the message box, or drop image files on it.
+input.addEventListener('paste', (e) => {
+  const files = [...(e.clipboardData?.files || [])].filter((f) => f.type.startsWith('image/'));
+  if (files.length) { e.preventDefault(); addImageFiles(files); }
+});
+$('#composer').addEventListener('dragover', (e) => { if ([...e.dataTransfer.types].includes('Files')) { e.preventDefault(); $('#composer').classList.add('dragging'); } });
+$('#composer').addEventListener('dragleave', () => $('#composer').classList.remove('dragging'));
+$('#composer').addEventListener('drop', (e) => {
+  $('#composer').classList.remove('dragging');
+  if (e.dataTransfer.files?.length) { e.preventDefault(); addImageFiles(e.dataTransfer.files); }
 });
 $('#stop').addEventListener('click', stopStreaming);
 document.querySelectorAll('.suggestion').forEach((b) => b.addEventListener('click', () => send(b.textContent.replace(/^\P{L}+/u, '').trim())));
