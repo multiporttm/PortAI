@@ -444,7 +444,7 @@ function imagesNode(images, generated) {
     const fig = document.createElement('figure');
     const img = document.createElement('img');
     img.src = src;
-    img.alt = generated ? 'AI-generated image' : 'Attached image';
+    img.alt = generated ? 'Image created by Neon Apple' : 'Attached image';
     img.loading = 'lazy';
     img.addEventListener('click', () => openLightbox(src));
     fig.append(img);
@@ -734,7 +734,7 @@ async function send(text, attachments = []) {
           live.start('viewing', `Looking at your image${msg.count > 1 ? 's' : ''} with ${msg.model}`, `Looked at ${msg.count > 1 ? `${msg.count} images` : 'your image'}`);
         }
         if (msg.status === 'drawing') {
-          live.start('drawing', 'Creating image', 'Created image');
+          live.start('drawing', '🍎 Neon Apple is creating your image', 'Created with 🍎 Neon Apple');
         }
         if (msg.image && isImageData(msg.image)) {
           reply.images = [...(reply.images || []), msg.image];

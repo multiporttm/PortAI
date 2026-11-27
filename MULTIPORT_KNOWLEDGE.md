@@ -69,6 +69,8 @@ is needed.
 - **Coder** (Qwen 2.5 Coder 32B): best for programming, such as writing, explaining and
   fixing code. Limits per person: 15 messages per minute, daily limit 100 messages.
 - **Pro** (gpt-oss-120b): the largest model, for harder questions and reasoning. Limits per person: 20 messages per minute, daily limit 150 messages.
+- **🍎 Neon Apple** (FLUX.1 schnell): PortAI's image creator. It isn't picked from the menu: just ask
+  PortAI to draw or create an image. Limits per person: 5 images per minute, 30 per day.
 - On top of the per-model limits, each person can send up to 60 messages per minute and
   500 per day across all models.
 - If the chosen model is busy and hasn't started answering within about 5 seconds, PortAI
@@ -102,9 +104,9 @@ each step.
   and drop a picture) and ask about it: "What's wrong in this screenshot?", "What plant is
   this?", "Read the text in this photo". Up to 4 images per message. PortAI uses the
   Regular model (Gemma 4), which can see images, even if another model is selected.
-- **Create images:** ask "Draw a cat astronaut", "Generate an image of a castle at sunset" or
-  "Make a logo for my bakery". PortAI creates it with the FLUX.1 schnell model on Cloudflare
-  (zero data retention). Tap an image to enlarge it, or **⤓ Download** to save it.
+- **Create images with 🍎 Neon Apple:** Neon Apple is PortAI's image creator. Ask "Draw a cat
+  astronaut", "Generate an image of a castle at sunset" or "Make a logo for my bakery" and Neon
+  Apple creates it. It runs on the open FLUX.1 schnell model on Cloudflare (zero data retention). Tap an image to enlarge it, or **⤓ Download** to save it.
   Limit: 5 images per minute and 30 per day per person.
 - Images are resized in your browser before sending. A small copy is kept in your
   encrypted chat history; nothing is stored on PortAI's servers.
