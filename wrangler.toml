@@ -42,7 +42,7 @@ PORTAI_HEDGE_MS = "5000"
 # Only the search query is sent.
 PORTAI_SEARCH = "1"
 PORTAI_SEARCH_PROVIDERS = "ceramic,free"
-PORTAI_SEARCH_LIMITS = "10/50"   # searches per person: per minute / per day
+PORTAI_SEARCH_LIMITS = "20/150"  # searches per person: per minute / per day
 # Wikipedia asks apps for contact details in requests; set e.g. "https://your-site; you@example.com"
 PORTAI_SEARCH_CONTACT = ""
 

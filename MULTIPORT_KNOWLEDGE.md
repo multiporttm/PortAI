@@ -88,8 +88,13 @@ each step.
 - The sources used are shown as links under the answer.
 - The 🌐 Web search button in the message box switches between **Auto** (default) and **Off**.
 - Only a short search query is sent to the search provider. Your IP address, cookies and
-  chat history are never sent. The free search uses DuckDuckGo and Wikipedia.
-- Limit: 10 searches per minute and 50 per day per person. If the limit is reached, PortAI
+  chat history are never sent. The free search uses DuckDuckGo, Wikipedia and news
+  sources (Hacker News, GDELT), and reads the top news pages for details.
+- Live answers: weather and 7-day forecasts (Open-Meteo), the local time anywhere,
+  currency exchange rates (European Central Bank via Frankfurter) and word definitions
+  (Wiktionary). Try "weather in Chicago", "time in Tokyo", "100 USD to EUR" or
+  "define serendipity".
+- Limit: 20 searches per minute and 150 per day per person. If the limit is reached, PortAI
   still answers, just without searching.
 
 ## Reading links you paste
@@ -510,3 +515,254 @@ Standard-time offsets from UTC (many places add +1 hour for daylight saving time
 - **FIFA World Cup:** 2018 Russia (won by France), 2022 Qatar (won by Argentina), 2026 hosted by the United States, Canada and Mexico (the first with 48 teams), 2030 Spain/Portugal/Morocco.
 - **Tennis Grand Slams:** Australian Open (January), French Open/Roland-Garros (May–June), Wimbledon (June–July), US Open (August–September).
 - For the latest scores and results, PortAI searches the web automatically.
+
+## US presidents
+<!-- topics: president, presidents, us president, american president, first president, white house, commander in chief, vice president, oval office, washington, lincoln, obama, trump, biden -->
+- 1 George Washington (1789–1797) · 2 John Adams · 3 Thomas Jefferson · 4 James Madison · 5 James Monroe · 6 John Quincy Adams · 7 Andrew Jackson · 8 Martin Van Buren · 9 William Henry Harrison (died after 31 days) · 10 John Tyler
+- 11 James K. Polk · 12 Zachary Taylor · 13 Millard Fillmore · 14 Franklin Pierce · 15 James Buchanan · 16 Abraham Lincoln (1861–1865, assassinated) · 17 Andrew Johnson · 18 Ulysses S. Grant · 19 Rutherford B. Hayes · 20 James A. Garfield
+- 21 Chester A. Arthur · 22 Grover Cleveland · 23 Benjamin Harrison · 24 Grover Cleveland (again) · 25 William McKinley · 26 Theodore Roosevelt · 27 William Howard Taft · 28 Woodrow Wilson · 29 Warren G. Harding · 30 Calvin Coolidge
+- 31 Herbert Hoover · 32 Franklin D. Roosevelt (1933–1945, the only president elected four times) · 33 Harry S. Truman · 34 Dwight D. Eisenhower · 35 John F. Kennedy (1961–1963, assassinated) · 36 Lyndon B. Johnson · 37 Richard Nixon (resigned 1974) · 38 Gerald Ford · 39 Jimmy Carter · 40 Ronald Reagan
+- 41 George H. W. Bush · 42 Bill Clinton (1993–2001) · 43 George W. Bush (2001–2009) · 44 Barack Obama (2009–2017) · 45 Donald Trump (2017–2021) · 46 Joe Biden (2021–2025) · 47 Donald Trump (second term from January 20, 2025; Vice President JD Vance)
+- A president serves a 4-year term and can be elected at most twice (22nd Amendment). Must be at least 35, a natural-born citizen and a US resident for 14 years. Inauguration is January 20 after the election.
+
+## US government and civics
+<!-- topics: government, congress, senate, senator, senators, house of representatives, representative, supreme court, constitution, amendment, amendments, bill of rights, branches, checks and balances, electoral college, civics, citizenship test, how a bill becomes law, veto -->
+- **Three branches:** legislative (Congress makes laws), executive (the President enforces laws), judicial (courts, led by the Supreme Court, interpret laws). Each can check the others (veto, veto override, judicial review, Senate confirmation, impeachment).
+- **Congress:** 100 senators (2 per state, 6-year terms) and 435 representatives (by population, 2-year terms) = 535 voting members. A bill must pass both chambers, then the President signs or vetoes it; Congress can override a veto with two-thirds of both chambers.
+- **Supreme Court:** 9 justices (one Chief Justice), appointed for life by the President and confirmed by the Senate.
+- **Electoral College:** 538 electors, 270 needed to win. Each state gets electors equal to its senators plus representatives; DC gets 3.
+- **Constitution:** written 1787, in effect 1789, 27 amendments. Bill of Rights = first 10 (1791). Key amendments: 1st (speech, religion, press, assembly, petition), 2nd (bear arms), 4th (unreasonable searches), 5th (self-incrimination, due process), 13th (abolished slavery, 1865), 14th (citizenship, equal protection, 1868), 15th (race and voting, 1870), 19th (women's suffrage, 1920), 26th (voting age 18, 1971).
+- Declaration of Independence: adopted July 4, 1776, mainly written by Thomas Jefferson.
+
+## First aid basics
+<!-- topics: first aid, cpr, choking, heimlich, burn, burns, bleeding, cut, stroke, heart attack, seizure, fainted, unconscious, emergency, allergic reaction, anaphylaxis, epipen, sprain, nosebleed, poison, call 911 -->
+- **In an emergency, call your local emergency number first:** 911 (US/Canada), 112 (EU and most of the world, works on mobiles), 999 (UK), 000 (Australia), 111 (New Zealand). This is general information, not a substitute for professional help.
+- **CPR (adult):** check responsiveness and breathing, call emergency services, then push hard and fast in the centre of the chest, about 5–6 cm deep at 100–120 compressions per minute. Use an AED as soon as one is available; it gives spoken instructions.
+- **Choking (adult who can't breathe, cough or speak):** give up to 5 back blows between the shoulder blades, then up to 5 abdominal thrusts (Heimlich), and repeat. If they become unresponsive, call for help and start CPR.
+- **Stroke, think FAST:** Face drooping, Arm weakness, Speech difficulty, Time to call emergency services. Note when symptoms started.
+- **Heart attack signs:** chest pain or pressure, pain spreading to arm, jaw or back, shortness of breath, sweating, nausea. Call emergency services immediately.
+- **Burns:** cool under cool running water for 20 minutes, remove jewellery, cover loosely with cling film or a clean non-fluffy cloth. No ice, butter or creams. Get help for large, deep, facial or electrical burns.
+- **Severe bleeding:** press firmly on the wound with a clean cloth and keep pressing; raise the limb if possible.
+- **Severe allergic reaction (anaphylaxis):** use an adrenaline auto-injector (EpiPen) if they have one, call emergency services, and lay them down with legs raised (or sitting up if breathing is hard).
+- **Poisoning (US):** Poison Control 1-800-222-1222.
+
+## Health, sleep and exercise guidelines
+<!-- topics: health, healthy, sleep, how much sleep, exercise, workout, steps, walking, fitness, water intake, how much water, bmi, blood pressure, heart rate, resting heart rate, calories, nutrition, protein, vitamins, diet -->
+- **Sleep:** adults 7–9 hours, teenagers 8–10, school-age children 9–12 (US sleep medicine guidelines).
+- **Exercise (WHO):** adults at least 150–300 minutes of moderate activity (or 75–150 vigorous) per week, plus muscle-strengthening on 2+ days. Children and teens: 60 minutes a day.
+- **Normal ranges (adults):** resting heart rate 60–100 beats per minute; blood pressure below 120/80 mmHg is normal; BMI 18.5–24.9 is the "healthy" range (BMI = weight in kg ÷ height in m²; it doesn't account for muscle).
+- **Energy:** carbohydrates and protein have about 4 calories per gram, fat about 9, alcohol about 7. Typical adult needs are roughly 2,000–2,500 kcal a day, varying with size and activity.
+- **Water:** needs vary; a common guide is about 2.7 L (women) to 3.7 L (men) of total water a day from all drinks and food.
+- Medical information here is general. For symptoms, medication or diagnosis, talk to a doctor or pharmacist.
+
+## Personal finance basics
+<!-- topics: money, 50/30/20, budget, budgeting, save, saving, savings, emergency fund, debt, credit score, credit card, interest, compound interest, apr, apy, invest, investing, index fund, stocks, bonds, 401k, ira, roth, retirement, inflation, mortgage, loan, taxes -->
+- **50/30/20 budget:** about 50% of after-tax income for needs, 30% for wants, 20% for saving and paying off debt.
+- **Emergency fund:** aim for 3–6 months of essential expenses in an easy-to-reach savings account.
+- **Compound interest:** you earn interest on interest. Rule of 72: years to double ≈ 72 ÷ annual interest rate (e.g. 8% → about 9 years).
+- **APR vs APY:** APR is the yearly interest rate without compounding (used for loans); APY includes compounding (used for savings).
+- **Credit scores (FICO, US):** 300–850. Roughly: 800+ exceptional, 740–799 very good, 670–739 good, 580–669 fair, below 580 poor. Biggest factors: on-time payments and how much of your credit limit you use (keep it under about 30%).
+- **Debt payoff:** avalanche = pay highest interest first (cheapest overall); snowball = smallest balance first (motivating).
+- **Investing basics:** stocks are part-ownership of companies, bonds are loans to governments or companies; low-cost index funds spread risk across many companies. Investing always carries risk.
+- **US retirement accounts:** 401(k) (through an employer, often with a match), traditional IRA (tax break now), Roth IRA (tax-free withdrawals in retirement). Contribution limits change yearly.
+- This is general education, not personalised financial advice.
+
+## Math formulas and tricks
+<!-- topics: math, formula, formulas, area, perimeter, volume, circumference, pythagorean, pythagoras, triangle, circle, pi, quadratic, slope, percentage, percent, average, mean, median, mode, order of operations, pemdas, bodmas, fraction, fractions, algebra, geometry, prime numbers -->
+- **Order of operations:** brackets/parentheses, exponents, multiplication and division (left to right), addition and subtraction (left to right): PEMDAS / BODMAS.
+- **Areas:** rectangle = length × width · triangle = ½ × base × height · circle = πr² · trapezoid = ½(a + b) × h. **Circle circumference** = 2πr = πd. π ≈ 3.14159.
+- **Volumes:** cube = s³ · box = l × w × h · cylinder = πr²h · sphere = (4/3)πr³ · cone = (1/3)πr²h.
+- **Pythagorean theorem:** a² + b² = c² for right triangles (e.g. 3-4-5, 5-12-13). Angles in a triangle add up to 180°.
+- **Quadratic formula:** for ax² + bx + c = 0, x = (−b ± √(b² − 4ac)) ÷ 2a. **Slope** = (y₂ − y₁) ÷ (x₂ − x₁); line: y = mx + b.
+- **Percentages:** X% of Y = X × Y ÷ 100. Percent change = (new − old) ÷ old × 100. A 20% discount then 20% increase doesn't return to the original price (0.8 × 1.2 = 0.96).
+- **Mean** = sum ÷ count · **median** = middle value when sorted · **mode** = most common value.
+- **Primes under 50:** 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47. 1 is not prime.
+
+## Grammar and writing tips
+<!-- topics: grammar, spelling, their there they're, its it's, your you're, affect effect, then than, who whom, fewer less, comma, semicolon, apostrophe, punctuation, writing tips, essay, oxford comma, i or me, lie lay -->
+- **their / there / they're:** belonging to them / a place / they are. **your / you're:** belonging to you / you are. **its / it's:** belonging to it / it is.
+- **affect / effect:** usually affect is the verb ("it affects me"), effect is the noun ("the effect"). **then / than:** time / comparison.
+- **who / whom:** who = he/she (subject), whom = him/her (object): "Whom did you call?" **fewer / less:** fewer for countable things (fewer cars), less for amounts (less water).
+- **I / me:** take the other person out to check: "Sam and I went" (I went), "for Sam and me" (for me).
+- **lie / lay:** lie = recline (lie down), lay = put something down (lay the book). Past of lie is lay; past of lay is laid.
+- **Semicolon** joins two complete, related sentences; **colon** introduces a list or explanation. The **Oxford comma** is the comma before "and" in a list of three or more; style guides differ.
+- **Clear writing:** put the main point first, use short sentences and active voice, cut filler words, and read it aloud.
+
+## How-to: common device tasks
+<!-- topics: screenshot, screen shot, screen recording, restart, force restart, reboot, frozen, factory reset, clear cache, update, storage full, find my phone, lost phone, iphone screenshot, android screenshot, windows screenshot, mac screenshot, copy paste, ip address, bluetooth, wifi not working -->
+- **Screenshots:** iPhone with Face ID = Side + Volume Up; iPhone with Home button = Side/Top + Home; Android = Power + Volume Down (most phones); Windows = Win + Shift + S (snip) or PrtScn; Mac = Cmd + Shift + 3 (whole screen), Cmd + Shift + 4 (area), Cmd + Shift + 5 (options and recording).
+- **Force restart an iPhone (8 or later):** press and release Volume Up, press and release Volume Down, then hold the Side button until the Apple logo appears. **Android:** hold Power (or Power + Volume Down) for 10–20 seconds.
+- **Lost phone:** iPhone → Find My (icloud.com/find); Android → Find My Device (google.com/android/find). You can ring, lock or erase it remotely.
+- **Wi-Fi trouble:** turn Wi-Fi off and on, restart the device and the router (unplug 30 seconds), forget the network and rejoin, check if other devices work.
+- **Storage full:** delete large videos and unused apps, clear message attachments, empty "Recently Deleted", and offload old photos to a backup.
+- **Before a factory reset:** back up everything, sign out of your Apple ID/Google account (to remove activation lock), then reset in Settings.
+
+## Keyboard shortcuts
+<!-- topics: keyboard shortcut, keyboard shortcuts, shortcut, shortcuts, ctrl, cmd, command key, copy, paste, undo, redo, select all, find, new tab, reopen tab, task manager, switch apps, lock screen, alt tab -->
+- **Windows / Mac:** copy Ctrl+C / Cmd+C · paste Ctrl+V / Cmd+V · cut Ctrl+X / Cmd+X · undo Ctrl+Z / Cmd+Z · redo Ctrl+Y / Cmd+Shift+Z · select all Ctrl+A / Cmd+A · find Ctrl+F / Cmd+F · save Ctrl+S / Cmd+S · print Ctrl+P / Cmd+P.
+- **Browser:** new tab Ctrl/Cmd+T · close tab Ctrl/Cmd+W · reopen closed tab Ctrl/Cmd+Shift+T · private window Ctrl+Shift+N (Chrome/Edge) or Ctrl+Shift+P (Firefox), Cmd+Shift+N on Mac (Safari/Chrome) · refresh F5 or Ctrl/Cmd+R · zoom Ctrl/Cmd + plus/minus.
+- **Windows:** switch apps Alt+Tab · Task Manager Ctrl+Shift+Esc · lock Win+L · desktop Win+D · emoji Win+. · clipboard history Win+V · File Explorer Win+E.
+- **Mac:** switch apps Cmd+Tab · Spotlight search Cmd+Space · force quit Cmd+Option+Esc · lock Ctrl+Cmd+Q · emoji Ctrl+Cmd+Space · quit app Cmd+Q.
+- **PortAI:** Ctrl+Shift+O (Cmd+Shift+O on Mac) starts a new chat; Enter sends, Shift+Enter adds a new line.
+
+## Programming languages overview
+<!-- topics: programming, programming language, coding, learn to code, which language, python, javascript, typescript, java, c++, c#, rust, go, golang, swift, kotlin, php, ruby, sql, html, css, beginner coding -->
+- **Python:** easy to read; great for beginners, automation, data science and AI. **JavaScript:** runs in every web browser and on servers (Node.js); **TypeScript** adds types to it.
+- **HTML** structures web pages and **CSS** styles them (they're markup/style languages, not programming languages). **SQL** queries databases.
+- **Java** and **C#** are used for large business apps, Android (Java/Kotlin) and games (C# with Unity). **Kotlin** is Google's preferred language for Android; **Swift** is Apple's language for iPhone and Mac apps.
+- **C and C++** are fast, low-level languages for operating systems, games and embedded devices. **Rust** offers similar speed with memory safety. **Go** (Google) is simple and popular for servers and cloud tools.
+- **PHP** powers many websites (including WordPress); **Ruby** is known for Ruby on Rails.
+- **Where to start:** Python or JavaScript, with free resources like freeCodeCamp, MDN Web Docs, The Odin Project and CS50 (Harvard). PortAI's **Coder** model is best for programming help.
+
+## AI assistants and companies
+<!-- topics: chatgpt, openai, claude, anthropic, gemini, google ai, bard, copilot, microsoft copilot, llama, meta ai, mistral, deepseek, grok, xai, perplexity, apple intelligence, siri, ai companies, ai chatbot, ai chatbots, llm, large language model, other ai -->
+- **ChatGPT** by OpenAI (launched November 2022; OpenAI was co-founded in 2015, CEO Sam Altman). **Claude** by Anthropic (founded 2021 by former OpenAI researchers including Dario and Daniela Amodei). **Gemini** by Google (formerly Bard). **Microsoft Copilot** is built on OpenAI models.
+- **Meta AI** uses Meta's **Llama** models, which have openly downloadable weights. **Mistral AI** is a French company with open and commercial models. **DeepSeek** is a Chinese AI lab known for low-cost open models. **Grok** is made by Elon Musk's xAI. **Perplexity** is an AI search engine. **Apple Intelligence** is Apple's on-device and private-cloud AI.
+- **Open vs closed models:** open-weight models (Llama, Gemma, Mistral, Qwen, DeepSeek, gpt-oss, GLM, Granite) can be downloaded and run by anyone; closed models (GPT-4/5, Claude, Gemini) are only available through their companies.
+- PortAI runs open models on Cloudflare with zero data retention: Regular = Google's Gemma, Lite = Zhipu's GLM, Mini = IBM's Granite, Coder = Alibaba's Qwen Coder, Pro = OpenAI's open gpt-oss.
+- Details and model versions change quickly; for the latest, PortAI searches the web.
+
+## Big tech companies and founders
+<!-- topics: apple, microsoft, google, alphabet, amazon, meta, facebook, tesla, nvidia, netflix, samsung, sony, ibm, intel, amd, spacex, x corp, twitter, founder, founders, founded, who founded, who owns, ceo, headquarters, tech company -->
+- **Apple:** founded 1976 by Steve Jobs, Steve Wozniak and Ronald Wayne; Cupertino, California; CEO Tim Cook (since 2011).
+- **Microsoft:** 1975, Bill Gates and Paul Allen; Redmond, Washington; CEO Satya Nadella (since 2014).
+- **Google:** 1998, Larry Page and Sergey Brin; parent company Alphabet (since 2015); Mountain View, California; CEO Sundar Pichai.
+- **Amazon:** 1994, Jeff Bezos; Seattle; CEO Andy Jassy (since 2021). **Meta (Facebook):** 2004, Mark Zuckerberg and co-founders; owns Facebook, Instagram, WhatsApp and Threads.
+- **Tesla:** 2003, Martin Eberhard and Marc Tarpenning; Elon Musk joined early as chairman and became CEO in 2008. **SpaceX:** 2002, Elon Musk. **Twitter** (renamed **X** in 2023) was bought by Elon Musk in 2022.
+- **Nvidia:** 1993, Jensen Huang (CEO), Chris Malachowsky and Curtis Priem; makes GPUs used for gaming and AI. **Intel:** 1968, Gordon Moore and Robert Noyce. **AMD:** 1969.
+- **Netflix:** 1997, Reed Hastings and Marc Randolph (started as DVD-by-mail). **Samsung:** 1938, South Korea. **Sony:** 1946, Japan. **IBM:** 1911 (as CTR), New York.
+- Executives change; for current leaders or company news, PortAI searches the web.
+
+## Social media and streaming services
+<!-- topics: social media, instagram, tiktok, youtube, snapchat, reddit, pinterest, linkedin, threads, bluesky, mastodon, discord, twitch, x, twitter, streaming, netflix, disney plus, disney+, hulu, max, hbo, prime video, apple tv, peacock, paramount, spotify, apple music -->
+- **Owners:** Instagram, Facebook, WhatsApp and Threads → Meta · YouTube → Google · TikTok → ByteDance (China) · Snapchat → Snap Inc. · LinkedIn → Microsoft · X (Twitter) → X Corp (Elon Musk) · Reddit, Pinterest, Discord → independent companies · Twitch → Amazon.
+- **Decentralised alternatives:** Mastodon (the fediverse, run by many independent servers) and Bluesky.
+- **Video streaming:** Netflix · Disney+ (also owns Hulu and ESPN) · Max (HBO, by Warner Bros. Discovery) · Prime Video (Amazon) · Apple TV+ · Peacock (NBCUniversal) · Paramount+ · YouTube.
+- **Music streaming:** Spotify (Sweden), Apple Music, YouTube Music, Amazon Music, Tidal, Deezer.
+- **Privacy tips:** set accounts to private, turn off ad personalisation and off-platform activity tracking, limit location sharing, and review which apps can access your account. Prices change often, so check the service for current plans.
+
+## Holidays and when they are
+<!-- topics: holiday, holidays, when is, thanksgiving, christmas, easter, halloween, new year, valentine, valentines, mothers day, mother's day, fathers day, father's day, memorial day, labor day, independence day, fourth of july, july 4th, juneteenth, mlk day, presidents day, veterans day, hanukkah, diwali, ramadan, eid, lunar new year, chinese new year, st patrick -->
+- **Fixed dates:** New Year's Day Jan 1 · Valentine's Day Feb 14 · St. Patrick's Day Mar 17 · Juneteenth Jun 19 · US Independence Day Jul 4 · Halloween Oct 31 · Veterans Day Nov 11 · Christmas Dec 25 · New Year's Eve Dec 31.
+- **US rules:** MLK Day = 3rd Monday of January · Presidents' Day = 3rd Monday of February · Mother's Day = 2nd Sunday of May · Memorial Day = last Monday of May · Father's Day = 3rd Sunday of June · Labor Day = 1st Monday of September · Columbus/Indigenous Peoples' Day = 2nd Monday of October · Thanksgiving = 4th Thursday of November (Canada: 2nd Monday of October).
+- **Moving religious and cultural holidays** follow lunar or lunisolar calendars: Easter (first Sunday after the first full moon on or after March 21; between March 22 and April 25), Lunar New Year (late January–mid February), Ramadan and Eid (move about 11 days earlier each year), Diwali (October–November), Hanukkah (8 nights, usually in December).
+- For an exact date in a given year, work it out from the rule above or ask PortAI to search.
+
+## World religions
+<!-- topics: religion, religions, christianity, christian, islam, muslim, hinduism, hindu, buddhism, buddhist, judaism, jewish, sikhism, sikh, bible, quran, koran, torah, god, gods, church, mosque, temple, synagogue -->
+- **Christianity:** about 2.3–2.4 billion followers; based on the life and teachings of Jesus; holy book the Bible (Old and New Testaments); main branches Catholic, Protestant and Orthodox.
+- **Islam:** about 1.9–2 billion; founded in the 7th century in Arabia; the Prophet Muhammad; holy book the Quran; Five Pillars (faith, prayer, charity, fasting in Ramadan, pilgrimage to Mecca); main branches Sunni and Shia.
+- **Hinduism:** about 1.2 billion, mostly in India and Nepal; many deities and texts (Vedas, Upanishads, Bhagavad Gita); concepts of dharma, karma and reincarnation.
+- **Buddhism:** about 500 million; founded by Siddhartha Gautama (the Buddha) in ancient India around the 5th century BC; Four Noble Truths and the Eightfold Path.
+- **Judaism:** about 15–16 million; one of the oldest monotheistic religions; holy texts the Torah and Talmud; worship in synagogues.
+- **Sikhism:** about 25–30 million, founded by Guru Nanak in Punjab in the 15th century; holy book the Guru Granth Sahib.
+- PortAI explains religions neutrally and respectfully, without promoting any belief.
+
+## Famous books and authors
+<!-- topics: book, books, novel, novels, author, authors, writer, wrote, who wrote, literature, shakespeare, harry potter, tolkien, lord of the rings, orwell, 1984, jane austen, classic, classics, best books, reading list, poet, poets, poetry -->
+- **Shakespeare** (1564–1616): Romeo and Juliet, Hamlet, Macbeth, Othello, King Lear, A Midsummer Night's Dream, The Tempest.
+- **Classics:** Pride and Prejudice (Jane Austen, 1813) · Frankenstein (Mary Shelley, 1818) · Moby-Dick (Herman Melville, 1851) · Great Expectations (Charles Dickens) · Crime and Punishment (Fyodor Dostoevsky) · War and Peace (Leo Tolstoy) · Don Quixote (Miguel de Cervantes) · The Adventures of Huckleberry Finn (Mark Twain).
+- **20th century:** The Great Gatsby (F. Scott Fitzgerald, 1925) · 1984 and Animal Farm (George Orwell) · Brave New World (Aldous Huxley) · To Kill a Mockingbird (Harper Lee, 1960) · The Catcher in the Rye (J. D. Salinger) · Of Mice and Men (John Steinbeck) · Fahrenheit 451 (Ray Bradbury) · One Hundred Years of Solitude (Gabriel García Márquez) · Beloved (Toni Morrison).
+- **Fantasy and series:** The Hobbit and The Lord of the Rings (J. R. R. Tolkien) · The Chronicles of Narnia (C. S. Lewis) · Harry Potter (J. K. Rowling, 7 books, 1997–2007) · The Hunger Games (Suzanne Collins) · A Song of Ice and Fire (George R. R. Martin) · Percy Jackson (Rick Riordan).
+- **Poets:** Homer (Iliad, Odyssey), Dante (Divine Comedy), Emily Dickinson, Walt Whitman, Robert Frost, Maya Angelou.
+
+## Famous art and artists
+<!-- topics: art, artist, artists, painting, paintings, painter, mona lisa, starry night, da vinci, leonardo, michelangelo, van gogh, picasso, monet, rembrandt, frida kahlo, sculpture, museum, louvre, renaissance, impressionism -->
+- **Leonardo da Vinci:** Mona Lisa (in the Louvre, Paris), The Last Supper (Milan). **Michelangelo:** Sistine Chapel ceiling, the statue of David (Florence). **Raphael:** The School of Athens. **Botticelli:** The Birth of Venus.
+- **Rembrandt:** The Night Watch (Amsterdam). **Johannes Vermeer:** Girl with a Pearl Earring.
+- **Vincent van Gogh:** The Starry Night (MoMA, New York), Sunflowers. **Claude Monet:** Water Lilies, Impression, Sunrise (gave Impressionism its name). **Edvard Munch:** The Scream.
+- **Pablo Picasso:** Guernica, co-founded Cubism. **Salvador Dalí:** The Persistence of Memory (melting clocks). **Frida Kahlo:** self-portraits. **Andy Warhol:** Campbell's Soup Cans (Pop Art).
+- **Art movements in order:** Renaissance (14th–17th c.) → Baroque → Romanticism → Realism → Impressionism (1870s) → Post-Impressionism → Cubism → Surrealism → Abstract Expressionism → Pop Art.
+- **Big museums:** the Louvre (Paris, most visited), the Metropolitan Museum of Art (New York), the British Museum (London), the Vatican Museums, the Prado (Madrid), the Uffizi (Florence).
+
+## Music basics and famous musicians
+<!-- topics: music, musician, musicians, composer, composers, beethoven, mozart, bach, beatles, elvis, michael jackson, taylor swift, instrument, instruments, notes, music theory, chord, chords, scale, genre, genres, orchestra, piano, guitar -->
+- **Music theory:** the 12 notes are C, C♯/D♭, D, D♯/E♭, E, F, F♯/G♭, G, G♯/A♭, A, A♯/B♭, B. A major scale follows whole and half steps: W-W-H-W-W-W-H. A major chord = root + major third + fifth (C major = C-E-G). Standard tuning: A = 440 Hz; guitar strings E-A-D-G-B-E.
+- **Classical composers:** Bach (Baroque), Vivaldi (The Four Seasons), Mozart and Haydn (Classical), Beethoven (9 symphonies, went deaf), Chopin, Tchaikovsky (Swan Lake, The Nutcracker), Debussy.
+- **Popular music:** Elvis Presley ("King of Rock and Roll"), The Beatles (Liverpool; John Lennon, Paul McCartney, George Harrison, Ringo Starr), Michael Jackson ("King of Pop"; Thriller is among the best-selling albums ever), Madonna, Queen, Beyoncé, Taylor Swift, Drake, BTS.
+- **Orchestra sections:** strings, woodwinds, brass and percussion.
+- For charts, tours, new releases or awards, PortAI searches the web.
+
+## Mythology
+<!-- topics: myth, myths, mythology, greek god, greek gods, greek goddess, roman god, roman gods, god of, goddess, goddess of, norse, zeus, hera, poseidon, hades, athena, ares, aphrodite, hermes, odin, thor, loki, egyptian gods, ra, anubis, olympians -->
+- **Greek → Roman names:** Zeus → Jupiter (king of the gods, sky and thunder) · Hera → Juno (marriage) · Poseidon → Neptune (sea) · Hades → Pluto (underworld) · Athena → Minerva (wisdom, war strategy) · Apollo → Apollo (sun, music, prophecy) · Artemis → Diana (hunt, moon) · Ares → Mars (war) · Aphrodite → Venus (love) · Hermes → Mercury (messenger) · Hephaestus → Vulcan (fire, forge) · Demeter → Ceres (harvest) · Dionysus → Bacchus (wine).
+- **Norse:** Odin (chief god, wisdom), Thor (thunder, hammer Mjölnir), Loki (trickster), Freya (love), Frigg (Odin's wife); the world tree Yggdrasil; Valhalla; Ragnarök (end of the world).
+- **Egyptian:** Ra (sun), Osiris (afterlife), Isis (magic, motherhood), Horus (sky, kingship), Anubis (mummification, jackal-headed), Thoth (writing, wisdom).
+- Several planets are named after Roman gods (Mercury, Venus, Mars, Jupiter, Saturn, Neptune).
+
+## Weather and natural disasters explained
+<!-- topics: hurricane, hurricanes, tornado, tornadoes, earthquake, earthquakes, tsunami, volcano, flood, lightning, thunderstorm, blizzard, heat wave, category 5, saffir simpson, enhanced fujita, richter, magnitude, climate change, global warming, el nino -->
+- **Hurricanes (Saffir-Simpson scale, sustained winds):** Category 1: 74–95 mph · 2: 96–110 · 3: 111–129 (major) · 4: 130–156 · 5: 157+ mph. Called typhoons in the western Pacific and cyclones in the Indian Ocean and South Pacific.
+- **Tornadoes (Enhanced Fujita scale):** EF0 (65–85 mph) to EF5 (over 200 mph). A tornado **watch** means conditions are possible; a **warning** means one is happening or imminent: take shelter in a basement or an interior room on the lowest floor.
+- **Earthquakes:** measured on the moment magnitude scale (which replaced Richter); each whole number is about 32 times more energy. During shaking: Drop, Cover and Hold On.
+- **Tsunami signs:** strong shaking near the coast or the sea suddenly pulling back: move to high ground immediately.
+- **Lightning:** "When thunder roars, go indoors." Wait 30 minutes after the last thunder.
+- **Climate change:** the long-term warming of Earth (about 1.2–1.3 °C since pre-industrial times), mainly from burning fossil fuels, which adds CO₂ and other greenhouse gases. El Niño and La Niña are natural Pacific Ocean cycles that shift weather worldwide.
+- For live weather and forecasts, ask PortAI something like "weather in Denver"; it checks Open-Meteo.
+
+## Space exploration milestones
+<!-- topics: space exploration, nasa, moon landing, apollo, apollo 11, neil armstrong, sputnik, gagarin, iss, international space station, hubble, james webb, jwst, spacex, artemis, mars rover, perseverance, voyager, rocket, astronauts -->
+- 1957: **Sputnik 1** (USSR), the first artificial satellite · 1961: **Yuri Gagarin** (USSR), first human in space · 1962: John Glenn, first American to orbit Earth · 1963: Valentina Tereshkova, first woman in space.
+- 1969: **Apollo 11**: Neil Armstrong and Buzz Aldrin walk on the Moon (July 20), Michael Collins orbits. Twelve people walked on the Moon (1969–1972).
+- 1977: **Voyager 1 and 2** launched; Voyager 1 entered interstellar space in 2012. 1981–2011: the Space Shuttle. 1990: **Hubble Space Telescope**. 1998: **International Space Station** assembly begins (continuously crewed since November 2000).
+- 2012: Curiosity rover lands on Mars · 2020: SpaceX Crew Dragon carries astronauts to the ISS (first private crewed spacecraft) · 2021: Perseverance rover and the Ingenuity helicopter on Mars; **James Webb Space Telescope** launched December 25, 2021.
+- **Artemis:** NASA's program to return humans to the Moon (Artemis I, uncrewed, flew in 2022). For the latest missions, PortAI searches the web.
+
+## Data sizes, Roman numerals and number words
+<!-- topics: kb, mb, gb, tb, kilobyte, megabyte, gigabyte, terabyte, byte, bit, bits, mbps, internet speed, roman numeral, roman numerals, million, billion, trillion, how many zeros, binary, hexadecimal -->
+- **Data:** 1 byte = 8 bits. 1 KB = 1,000 bytes · 1 MB = 1,000 KB · 1 GB = 1,000 MB · 1 TB = 1,000 GB (computers often use 1,024 instead, written KiB, MiB, GiB). Internet speeds are in megabits (Mbps): 100 Mbps ≈ 12.5 MB per second.
+- **Roughly:** a photo is 2–5 MB, an hour of HD streaming 1.5–3 GB, an hour of 4K 7 GB or more.
+- **Roman numerals:** I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000. A smaller numeral before a larger one subtracts (IV = 4, IX = 9, XL = 40, XC = 90, CD = 400, CM = 900). 2026 = MMXXVI.
+- **Big numbers (short scale, US/UK today):** million = 10⁶ (6 zeros), billion = 10⁹, trillion = 10¹², quadrillion = 10¹⁵.
+- **Binary** uses 0 and 1 (5 = 101); **hexadecimal** uses 0–9 and A–F (255 = FF).
+
+## Countries, currencies and flags
+<!-- topics: currency, currencies, exchange rate, usd, eur, gbp, money of, what currency, flag, flags, euro countries, eurozone, dollar countries, country currency, peso, yen, rupee, pound sterling, franc -->
+- **Major currencies:** United States dollar (USD, $) · euro (EUR, €) · British pound sterling (GBP, £) · Japanese yen (JPY, ¥) · Chinese yuan/renminbi (CNY) · Swiss franc (CHF) · Canadian dollar (CAD) · Australian dollar (AUD) · Indian rupee (INR, ₹) · Mexican peso (MXN) · Brazilian real (BRL) · South Korean won (KRW) · Russian ruble (RUB) · South African rand (ZAR).
+- **Eurozone (20 EU countries use the euro; Bulgaria plans to join in 2026):** Austria, Belgium, Croatia, Cyprus, Estonia, Finland, France, Germany, Greece, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, Netherlands, Portugal, Slovakia, Slovenia, Spain. EU members that don't use it include Denmark, Sweden, Poland, Czechia, Hungary and Romania.
+- **Flags:** the US flag has 50 stars (states) and 13 stripes (original colonies). Canada's has a red maple leaf; Japan's a red circle (the sun) on white; the UK's Union Jack combines the crosses of England, Scotland and Ireland. Nepal's is the only non-rectangular national flag.
+- For live exchange rates, ask PortAI something like "100 USD to EUR".
+
+## Cars and driving basics
+<!-- topics: car, cars, oil change, tire pressure, tyre pressure, check engine light, battery, jump start, flat tire, brakes, car maintenance, electric car, ev, hybrid, mpg, driving tips, winter driving -->
+- **Tire pressure:** use the number on the sticker inside the driver's door (not the maximum on the tire); check monthly when tires are cold. Replace tires at 2/32" (1.6 mm) tread or sooner; the penny test: if you can see all of Lincoln's head, it's time.
+- **Oil changes:** follow the owner's manual. Many modern cars with synthetic oil go 5,000–10,000 miles (or 6–12 months).
+- **Check engine light:** steady = get it checked soon (it can be as simple as a loose gas cap); flashing = a serious misfire, so reduce speed and get it checked immediately.
+- **Jump-starting:** red to the dead battery's +, red to the good battery's +, black to the good battery's −, black to unpainted metal on the dead car. Start the good car, then the dead one; remove in reverse order.
+- **EVs vs hybrids:** a battery electric vehicle (BEV) runs only on electricity; a hybrid combines a petrol engine and a battery; a plug-in hybrid can also be charged from an outlet.
+- **Winter driving:** slow down, leave 3–4 times the usual following distance, and steer into a skid gently without slamming the brakes.
+
+## Home and cleaning safety
+<!-- topics: cleaning, clean, bleach, ammonia, vinegar, baking soda, mold, laundry, stain, stains, smoke detector, carbon monoxide, fire extinguisher, home safety, pest, unclog drain, household tips -->
+- **Never mix bleach with ammonia** (toxic chloramine gas) **or with acids such as vinegar** (chlorine gas). Don't mix different cleaning products; ventilate the room.
+- **Smoke alarms:** test monthly, replace batteries yearly (unless sealed 10-year models), and replace the alarm every 10 years. Install **carbon monoxide** alarms near bedrooms; CO is odourless.
+- **Fire extinguisher (PASS):** Pull the pin, Aim at the base of the fire, Squeeze, Sweep. Never put water on a grease fire: cover the pan with a lid and turn off the heat.
+- **Stains:** blot, don't rub; cold water for blood and protein stains; dish soap for grease.
+- **Clogged drain:** try a plunger or a drain snake first; baking soda followed by hot water can help mild clogs.
+- **Mould:** fix the moisture source; small areas can be cleaned with detergent and water. Get professional help for large areas.
+
+## Study, career and job tips
+<!-- topics: study, studying, study tips, exam, exams, test prep, homework, memorize, memorise, focus, procrastination, resume, cv, cover letter, job interview, interview tips, job search, career, salary negotiation, linkedin profile -->
+- **Study smarter:** spaced repetition (review over days, not one cram), active recall (test yourself instead of rereading), the Pomodoro technique (25 minutes of focus, 5-minute break), teach the topic to someone else, and sleep well before exams.
+- **Resume:** one page for early career; lead with results using numbers ("cut costs 15%"); tailor it to each job's keywords; use a simple layout that applicant tracking systems can read; proofread.
+- **Cover letter:** why this company, what you'd bring, one or two short examples; keep it under a page.
+- **Interviews:** research the company; prepare stories using STAR (Situation, Task, Action, Result); have 2–3 questions for them; send a short thank-you note within a day.
+- **Salary negotiation:** research market pay ranges, let them name a number first if possible, negotiate the whole package (salary, bonus, remote work, time off), and be polite but specific.
+
+## Board games, card games and chess
+<!-- topics: chess, checkers, poker, blackjack, uno, monopoly, scrabble, sudoku, card game, card games, board game, board games, how to play, rules of, game rules, deck of cards, solitaire, crossword -->
+- **Chess:** each side has 16 pieces: 1 king, 1 queen, 2 rooks, 2 bishops, 2 knights and 8 pawns. White moves first. Checkmate = the king is attacked and can't escape. Special moves: castling, en passant and pawn promotion. Values: pawn 1, knight 3, bishop 3, rook 5, queen 9.
+- **A standard deck:** 52 cards, 4 suits (hearts, diamonds, clubs, spades), 13 ranks (A, 2–10, J, Q, K), plus jokers.
+- **Poker hands, best to worst:** royal flush, straight flush, four of a kind, full house, flush, straight, three of a kind, two pair, one pair, high card.
+- **Blackjack:** get closer to 21 than the dealer without going over; face cards count 10, aces 1 or 11.
+- **Sudoku:** fill a 9×9 grid so every row, column and 3×3 box contains 1–9 exactly once.
+- **Scrabble:** 100 tiles; using all 7 tiles in one turn (a "bingo") earns a 50-point bonus.
+
+## Emergency numbers and travel tips
+<!-- topics: emergency number, emergency numbers, 911, 112, 999, travel, traveling, travelling, passport, visa, jet lag, packing, travel tips, plug adapter, power adapter, voltage, tipping, tip -->
+- **Emergency numbers:** 911 (US, Canada, Mexico) · 112 (all EU, and works on GSM mobiles in most countries) · 999 (UK, Ireland also uses 112) · 000 (Australia) · 111 (New Zealand) · 110/119 (Japan: police/fire-ambulance) · 112 (India) · 120 (ambulance in China, 110 police).
+- **Power plugs:** US/Canada/Japan use type A/B at 100–120 V; Europe uses type C/F at 230 V; the UK type G at 230 V; Australia type I. Most phone and laptop chargers accept 100–240 V and only need a plug adapter.
+- **Passports:** many countries require at least 6 months' validity beyond your stay. Keep a digital copy separate from the original.
+- **Jet lag:** shift your sleep an hour a day before travel, get daylight at your destination in the morning, and stay hydrated.
+- **Tipping:** customary in the US (15–20% at restaurants); smaller or included in much of Europe; not expected (and sometimes refused) in Japan.
+- **Travel privacy:** use a VPN on public Wi-Fi, turn off auto-join for networks and keep your phone locked with a strong passcode at borders.
