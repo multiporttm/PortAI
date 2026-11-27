@@ -67,7 +67,16 @@ test('"draw ..." creates an image instead of text', async () => {
   assert.ok(events.some((e) => e.status === 'drawing'));
   const img = events.find((e) => e.image);
   assert.equal(img.image, 'data:image/jpeg;base64,AAAA');
-  assert.equal(AI.calls[0].model, '@cf/black-forest-labs/flux-1-schnell');
-  assert.equal(AI.calls[0].input.prompt, 'a cat in space');
+  const flux = AI.calls.find((c) => /flux/.test(c.model));
+  assert.equal(flux.input.prompt, 'a cat in space', 'falls back to the original prompt when the rewrite is unusable');
   assert.ok(!AI.calls.some((c) => c.input.stream), 'no chat model call');
+});
+
+test('notes that real brand logos are only lookalikes', async () => {
+  const { brandLogoNote } = await import('../lib/portai-core.mjs');
+  assert.match(brandLogoNote('a Google analytics logo'), /lookalike/);
+  assert.match(brandLogoNote('the Nike logo'), /lookalike/);
+  assert.equal(brandLogoNote('a logo for my bakery'), '');
+  assert.equal(brandLogoNote('a logo for Multiport'), '');
+  assert.equal(brandLogoNote('a cat in space'), '');
 });
