@@ -773,4 +773,4 @@ Standard-time offsets from UTC (many places add +1 hour for daylight saving time
 - **Best time to go:** during the US fall and winter.
 - **What it has:** a waterpark, pickleball, a snack spot and 3 restaurants.
 - **Aguamarina** (an area of the resort): adults travelling without kids should skip it; families should go there.
-- Prices, opening hours and facilities can change, so check clubmed.com for current details and bookings.
+- Prices, opening hours and facilities can change, so check clubmed.us for current details and bookings.
