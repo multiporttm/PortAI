@@ -80,3 +80,14 @@ test('notes that real brand logos are only lookalikes', async () => {
   assert.equal(brandLogoNote('a logo for Multiport'), '');
   assert.equal(brandLogoNote('a cat in space'), '');
 });
+
+test('ordinary requests are not mistaken for drawing', async () => {
+  const { imageFollowUp } = await import('../lib/portai-core.mjs');
+  for (const t of ['make an art project plan', 'Create an image description for alt text', 'Draw the line between work and life', 'Show me a picture of how to tie a tie', 'paint me a picture with words about autumn']) assert.equal(imagePrompt(t), null, t);
+  const after = (t) => imageFollowUp([{ role: 'user', content: 'Draw a cat' }, { role: 'assistant', content: "Here's your image of **a cat**, created with 🍎 Neon Apple." }, { role: 'user', content: t }]);
+  assert.equal(after('Try again'), 'a cat');
+  assert.equal(after('make it blue'), 'a cat, make it blue');
+  assert.equal(after('In what year was the Eiffel Tower built?'), null);
+  assert.equal(after('More details please'), null);
+  assert.equal(after('But why is it blurry?'), null);
+});

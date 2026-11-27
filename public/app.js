@@ -822,7 +822,7 @@ async function send(text, attachments = []) {
     }
   } finally {
     // Keep a smaller copy of created images in the (encrypted) chat history.
-    if (reply.images?.length) reply.images = await Promise.all(reply.images.map((src) => shrinkImage(src, 768, 0.82).catch(() => src)));
+    if (reply.images?.length) reply.images = await Promise.all(reply.images.map((src) => shrinkImage(src, 640, 0.8).catch(() => src)));
     delete reply.pending;
     reply.trace = live.finish(reply.content, outcome);
     state.streaming = null;
