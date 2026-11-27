@@ -149,7 +149,7 @@ function syncWebToggle() {
   btn.hidden = !state.searchAvailable;
   const on = state.settings.webSearch !== 'off';
   btn.setAttribute('aria-pressed', String(on));
-  btn.textContent = on ? '🌐 Auto' : '🌐 Off';
+  btn.textContent = '🌐 Web search';
   btn.title = on
     ? 'Web search: Auto. PortAI searches the web when a question needs up-to-date info. Only the search query is sent. Tap to turn off.'
     : 'Web search: Off. PortAI only uses what its models know. Tap to turn on.';
@@ -698,7 +698,7 @@ $('#composer').addEventListener('submit', (e) => {
   send(text);
 });
 $('#stop').addEventListener('click', stopStreaming);
-document.querySelectorAll('.suggestion').forEach((b) => b.addEventListener('click', () => send(b.textContent)));
+document.querySelectorAll('.suggestion').forEach((b) => b.addEventListener('click', () => send(b.textContent.replace(/^\P{L}+/u, '').trim())));
 
 // ---------------------------------------------------------------------------
 // Ghost mode
