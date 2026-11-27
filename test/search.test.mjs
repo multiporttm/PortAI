@@ -163,6 +163,8 @@ test('comparisons and questions about named things always search', async () => {
   assert.equal(q('Is Verizon better than T-Mobile?'), 'Is Verizon better than T-Mobile?');
   assert.equal(q('compare att and tmobile'), 'compare AT&T and T-Mobile');
   assert.equal(q('Cape and ATT'), 'Cape and AT&T');
+  assert.equal(q('translate that to Spanish'), null);
+  assert.equal(q('Make it shorter for Monday'), null);
   assert.equal(q('hello there'), null);
   assert.equal(q('Hello! How are you?'), null);
   assert.equal(q('What is 2+2'), null);
