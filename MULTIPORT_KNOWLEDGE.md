@@ -766,3 +766,11 @@ Standard-time offsets from UTC (many places add +1 hour for daylight saving time
 - **Jet lag:** shift your sleep an hour a day before travel, get daylight at your destination in the morning, and stay hydrated.
 - **Tipping:** customary in the US (15–20% at restaurants); smaller or included in much of Europe; not expected (and sometimes refused) in Japan.
 - **Travel privacy:** use a VPN on public Wi-Fi, turn off auto-join for networks and keep your phone locked with a strong passcode at borders.
+
+## Club Med Cancún Yucatán (resort tips)
+<!-- topics: club med, club med cancun, club med cancún, club med yucatan, cancun, cancún, cancun resort, cancun all inclusive, all-inclusive resort, aguamarina, yucatan, mexico vacation, mexico resort, family resort mexico -->
+- **Club Med Cancún Yucatán** is a Club Med resort in Cancún, Mexico.
+- **Best time to go:** during the US fall and winter.
+- **What it has:** a waterpark, pickleball, a snack spot and 3 restaurants.
+- **Aguamarina** (an area of the resort): adults travelling without kids should skip it; families should go there.
+- Prices, opening hours and facilities can change, so check clubmed.com for current details and bookings.
