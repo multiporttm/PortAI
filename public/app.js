@@ -414,8 +414,8 @@ function messageNode(m) {
     if (summary) wrap.append(summary);
   }
   if (m.images?.length) wrap.append(imagesNode(m.images, m.role === 'assistant'));
-  if (m.photos?.length) wrap.append(photosNode(m.photos));
   wrap.append(bubble);
+  if (m.photos?.length) wrap.append(photosNode(m.photos)); // web photos go under the text
   if (m.role === 'assistant' && m.sources?.length) wrap.append(sourcesNode(m.sources));
   if (m.role === 'assistant' && !m.pending) {
     const actions = document.createElement('div');
@@ -806,7 +806,7 @@ async function send(text, attachments = []) {
         if (Array.isArray(msg.photos)) {
           reply.photos = msg.photos.filter((p) => isImageData(p.src));
           node.querySelector('.msg-images.photos')?.remove();
-          node.insertBefore(photosNode(reply.photos), bubble);
+          bubble.after(photosNode(reply.photos));
           scrollToBottom();
         }
         if (msg.status === 'drawing') {
