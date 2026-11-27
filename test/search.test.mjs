@@ -27,7 +27,7 @@ test('uses Cloudflare Web Search (Ceramic) when available', async () => {
   const r = await webSearch(env, 'lumo ai', { searchProvider: 'ceramic', searchGateway: 'default' }, wikiFetch);
   assert.equal(r.provider, 'web');
   assert.equal(r.items[0].url, 'https://lumo.proton.me/');
-  assert.deepEqual({ provider: args.provider, gatewayId: args.gatewayId, limit: args.limit }, { provider: 'ceramic', gatewayId: 'default', limit: 5 });
+  assert.deepEqual({ provider: args.provider, gatewayId: args.gatewayId, limit: args.limit }, { provider: 'ceramic', gatewayId: 'default', limit: 6 });
 });
 
 test('falls back to free Wikipedia search when Cloudflare search fails (e.g. no credits)', async () => {
