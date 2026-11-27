@@ -97,6 +97,18 @@ each step.
 - Limit: 20 searches per minute and 150 per day per person. If the limit is reached, PortAI
   still answers, just without searching.
 
+## Images: show PortAI a picture, or ask it to create one
+- **Look at images:** tap **🖼️ Image** in the message box (or paste a screenshot, or drag
+  and drop a picture) and ask about it: "What's wrong in this screenshot?", "What plant is
+  this?", "Read the text in this photo". Up to 4 images per message. PortAI uses the
+  Regular model (Gemma 4), which can see images, even if another model is selected.
+- **Create images:** ask "Draw a cat astronaut", "Generate an image of a castle at sunset" or
+  "Make a logo for my bakery". PortAI creates it with the FLUX.1 schnell model on Cloudflare
+  (zero data retention). Tap an image to enlarge it, or **⤓ Download** to save it.
+  Limit: 5 images per minute and 30 per day per person.
+- Images are resized in your browser before sending. A small copy is kept in your
+  encrypted chat history; nothing is stored on PortAI's servers.
+
 ## Reading links you paste
 - Paste a link (up to 2 per message) and PortAI reads that page for you ("Extracting page
   content from …"). No setting is needed.
@@ -138,7 +150,7 @@ each step.
 - **Computer (Chrome / Edge)**: click the install icon in the address bar.
 
 ## What PortAI can't do (yet)
-- It can't create images, listen to voice, or read files you upload. Paste text or a link
+- It can't listen to voice or read documents (like PDFs) you upload. Paste text or a link
   instead.
 - It doesn't remember things between separate chats. Each chat starts fresh.
 - Like any AI, it can make mistakes. Check important information, especially medical,
