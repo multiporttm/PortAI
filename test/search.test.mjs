@@ -161,9 +161,19 @@ test('comparisons and questions about named things always search', async () => {
   const q = (content) => lookupQuery([{ role: 'user', content }]);
   assert.equal(q('Cape Carrier and AT&T'), 'Cape Carrier and AT&T');
   assert.equal(q('Is Verizon better than T-Mobile?'), 'Is Verizon better than T-Mobile?');
+  assert.equal(q('compare att and tmobile'), 'compare AT&T and T-Mobile');
+  assert.equal(q('Cape and ATT'), 'Cape and AT&T');
   assert.equal(q('hello there'), null);
   assert.equal(q('Hello! How are you?'), null);
   assert.equal(q('What is 2+2'), null);
   assert.equal(q('Tell me about PortAI'), null);
   assert.equal(pickLibrary([{ role: 'user', content: 'Compare Cape Carrier and AT&T' }])[0].title, 'Phone carriers, including privacy-focused ones');
+});
+
+test('brand names typed without punctuation are understood', async () => {
+  const { normalizeBrands, brandHint } = await import('../lib/portai-core.mjs');
+  assert.equal(normalizeBrands('Is ATT better than Tmobile?'), 'Is AT&T better than T-Mobile?');
+  assert.equal(normalizeBrands('I have an attic'), 'I have an attic');
+  assert.equal(brandHint('Cape vs ATT'), 'Note: in the user\'s message, "ATT" means AT&T.');
+  assert.equal(brandHint('Is chatgpt good?'), '');
 });
