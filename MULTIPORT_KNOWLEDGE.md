@@ -171,7 +171,7 @@ each step.
   streams the answer back.
 - For rate limits, IP addresses are only stored as scrambled, salted hashes that are
   deleted after their one-minute or one-day window.
-- The Figtree font and all code are served from PortAI itself, so no outside service sees
+- The Plus Jakarta Sans font and all code are served from PortAI itself, so no outside service sees
   your visit.
 - PortAI is open source under the Mozilla Public License 2.0 (MPL-2.0).
 - Privacy Policy: https://multiportllc.com/privacy · Terms: https://multiportllc.com/terms
