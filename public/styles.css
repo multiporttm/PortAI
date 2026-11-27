@@ -170,8 +170,9 @@ body.ghost .main { background: color-mix(in srgb, var(--ghost) 6%, var(--bg)); }
   background: var(--user-bubble); color: var(--user-text); white-space: pre-wrap; max-width: 85%;
   border-bottom-right-radius: 4px;
 }
-.msg.assistant .bubble { background: var(--assistant-bubble); border: 1px solid var(--border); box-shadow: var(--shadow); }
-.msg.assistant .bubble.error-bubble { border-color: var(--danger); }
+/* Replies sit directly on the page (no card behind the text), like Claude and Lumo. */
+.msg.assistant .bubble { background: none; border: 0; box-shadow: none; padding: 2px 0; border-radius: 0; font-size: 15.5px; line-height: 1.65; }
+.msg.assistant .bubble.error-bubble { border-left: 3px solid var(--danger); padding-left: 12px; }
 .bubble > :first-child { margin-top: 0; }
 .bubble > :last-child { margin-bottom: 0; }
 .bubble p, .bubble ul, .bubble ol, .bubble blockquote { margin: .55em 0; }
