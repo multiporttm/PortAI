@@ -502,22 +502,33 @@ function openLightbox(src) {
   dlg.showModal();
 }
 
-/** Load an image file, shrink it (max side `max` px) and return a JPEG data URI. */
+/** Load an image (File or data URI), shrink it (max side `max` px) and return a JPEG data URI. */
 async function shrinkImage(source, max, quality) {
-  const bitmap = typeof source === 'string'
-    ? await new Promise((resolve, reject) => { const i = new Image(); i.onload = () => resolve(i); i.onerror = reject; i.src = source; })
-    : await createImageBitmap(source, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(source));
-  const w = bitmap.width || bitmap.naturalWidth;
-  const h = bitmap.height || bitmap.naturalHeight;
-  const scale = Math.min(1, max / Math.max(w, h));
+  // Decode via createImageBitmap from a File: reliable on iPhone/iPad, where drawing a
+  // freshly loaded data-URI <img> onto a canvas can produce a blank (white) picture.
+  const file = typeof source === 'string' ? dataUriToFile(source, 'image') : source;
+  const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(file));
+  const scale = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement('canvas');
-  canvas.width = Math.max(1, Math.round(w * scale));
-  canvas.height = Math.max(1, Math.round(h * scale));
+  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#fff'; // transparent PNGs get a white background
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close?.();
+  if (looksBlank(ctx, canvas.width, canvas.height)) throw new Error('blank');
   return canvas.toDataURL('image/jpeg', quality);
+}
+
+/** True if every sampled pixel is pure white (the drawing failed). */
+function looksBlank(ctx, w, h) {
+  try {
+    const { data } = ctx.getImageData(0, 0, w, h);
+    const step = Math.max(4, Math.floor(data.length / 4 / 400)) * 4; // ~400 samples
+    for (let i = 0; i < data.length; i += step) if (data[i] < 250 || data[i + 1] < 250 || data[i + 2] < 250) return false;
+    return true;
+  } catch { return false; }
 }
 
 state.attachments = []; // [{ full, thumb }]
@@ -530,8 +541,13 @@ async function addImageFiles(files) {
     if (file.size > 25 * 1024 * 1024) { toast('That image is too large (max 25 MB).'); continue; }
     try {
       // Full size for the AI to read (sharp enough for text in screenshots), small copy for your chat history.
-      const full = await shrinkImage(file, 1600, 0.85);
-      const thumb = await shrinkImage(full, 640, 0.75);
+      let full;
+      try { full = await shrinkImage(file, 1600, 0.85); } catch (e) {
+        // Couldn't resize (or a plain white picture): send the original if it's small enough.
+        if (file.size > 1.5 * 1024 * 1024 || !/^image\/(jpeg|png|webp|gif)$/.test(file.type)) throw e;
+        full = await new Promise((resolve, reject) => { const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(file); });
+      }
+      const thumb = await shrinkImage(full, 640, 0.75).catch(() => full);
       state.attachments.push({ full, thumb });
     } catch {
       toast("Couldn't read that image. Try a JPEG or PNG.");
