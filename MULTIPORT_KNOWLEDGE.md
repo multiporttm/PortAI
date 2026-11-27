@@ -271,6 +271,17 @@ when someone asks for alternatives or comparisons.
 - Choose a provider with an independently audited no-logs policy and a clear business model. Avoid free VPNs that make money from your data. Well-regarded options include Mullvad, Proton VPN (has a free plan) and IVPN.
 - VPNs are most useful on public Wi-Fi, for hiding your browsing from your internet provider, and for avoiding IP-based tracking.
 
+## VPNs to avoid (with the reasons)
+<!-- topics: vpn, vpns, vpns to avoid, vpns should i avoid, vpn should i avoid, bad vpn, bad vpns, worst vpn, worst vpns, unsafe vpn, sketchy vpn, free vpn, free vpns, hola, hola vpn, supervpn, super vpn, turbo vpn, ufo vpn, onavo, which vpn not to use, avoid vpn, vpn scam, best vpn, which vpn, name some vpn -->
+When someone asks which VPNs to avoid, name these specific examples and the documented reason:
+- **Hola VPN:** not a normal VPN but a peer-to-peer network. Free users' devices and bandwidth were used as exit points for other people's traffic, and in 2015 Hola was found selling that bandwidth through its sister business Luminati (now Bright Data). Its terms still say free users may act as peers.
+- **SuperVPN** (SuperSoftTech): in 2023 an unprotected database with about 360 million records was found, including user emails, original IP addresses and websites visited, despite privacy claims. Reviewers have also reported malware in versions of the app.
+- **UFO VPN, FAST VPN, Free VPN, Super VPN, Flash VPN, Secure VPN and Rabbit VPN:** in 2020, seven "no-logs" VPN apps from Hong Kong were found leaking over a terabyte of user activity logs, IP addresses and some passwords from shared servers.
+- **Onavo Protect** (Facebook/Meta): marketed as a privacy VPN but used to collect data on which apps people used for Facebook's market research. Apple and Google removed it in 2018–2019.
+- **Turbo VPN, and generic free apps named like "Super Fast VPN", "VPN Proxy Master" or "Thunder VPN":** reviewers have criticised weak privacy policies, ads and trackers, missing kill switches and DNS leaks, and investigations found many popular free VPN apps have hidden owners (often linked to China).
+- **Red flags:** totally free with no clear business model, unknown owner, no independent audit, lots of ads or permissions, and "unlimited free" promises. A 2016 study (CSIRO) of free Android VPNs found many contained malware or tracking libraries, and some didn't encrypt traffic at all.
+- **Better choices:** Mullvad, Proton VPN (has a trustworthy free plan) and IVPN, which have audited no-logs policies and clear business models.
+
 ## Phone carriers, including privacy-focused ones
 <!-- topics: carrier, carriers, cell carrier, phone carrier, mobile carrier, cell phone plan, phone plan, wireless, cape, cape carrier, cape mobile, at&t, att, verizon, t-mobile, tmobile, mvno, visible, mint mobile, cricket, us mobile, google fi, esim, sim swap -->
 - **Cape** (cape.co): a US **privacy-focused mobile phone carrier** (cell service), not a shipping company. (A "cape" can also mean a point of land, like Cape Cod, or a sleeveless cloak. Use context.) Founded by John Doyle (formerly of Palantir). It launched its consumer plan as a beta in March 2025.
