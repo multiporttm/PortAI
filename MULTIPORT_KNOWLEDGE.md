@@ -85,10 +85,10 @@ each step.
 - When a question needs up-to-date information (news, recent releases, prices, newer
   products or companies), PortAI searches the web by itself before answering. No button
   press is needed.
-- Sources are shown as numbered links under the answer, matching the [1], [2] citations.
-- The 🌐 button in the top bar switches between **Auto** (default) and **Off**.
+- The sources used are shown as links under the answer.
+- The 🌐 Web search button in the message box switches between **Auto** (default) and **Off**.
 - Only a short search query is sent to the search provider. Your IP address, cookies and
-  chat history are never sent. The free search uses Wikipedia.
+  chat history are never sent. The free search uses DuckDuckGo and Wikipedia.
 - Limit: 10 searches per minute and 50 per day per person. If the limit is reached, PortAI
   still answers, just without searching.
 
@@ -265,6 +265,17 @@ when someone asks for alternatives or comparisons.
 - A VPN does **not** make you anonymous: websites can still identify you through logins, cookies and browser fingerprinting, and the VPN provider can see your traffic metadata.
 - Choose a provider with an independently audited no-logs policy and a clear business model. Avoid free VPNs that make money from your data. Well-regarded options include Mullvad, Proton VPN (has a free plan) and IVPN.
 - VPNs are most useful on public Wi-Fi, for hiding your browsing from your internet provider, and for avoiding IP-based tracking.
+
+## Phone carriers, including privacy-focused ones
+<!-- topics: carrier, carriers, cell carrier, phone carrier, mobile carrier, cell phone plan, phone plan, wireless, cape, cape carrier, cape mobile, at&t, att, verizon, t-mobile, tmobile, mvno, visible, mint mobile, cricket, us mobile, google fi, esim, sim swap -->
+- **Cape** (cape.co): a US **privacy-focused mobile phone carrier** (cell service), not a shipping company. (A "cape" can also mean a point of land, like Cape Cod, or a sleeveless cloak. Use context.) Founded by John Doyle (formerly of Palantir). It launched its consumer plan as a beta in March 2025.
+  - Plan (as of 2025): about $99/month with taxes and fees included, no contract; early sign-ups were offered a lower lifetime price. Unlimited talk and text, 5G/4G data, international roaming.
+  - Privacy features it advertises: needs minimal personal information, rotates the phone's network identifiers (IMSI) to make tracking harder, SIM-swap protection, network lock, encrypted voicemail, and it runs its own mobile core instead of only reselling another carrier's.
+  - It is eSIM-only (needs an unlocked, eSIM-compatible iPhone or Android). It uses partner networks for coverage. You can keep your number.
+  - Prices and partner networks change, so point people to cape.co for current details.
+- **Cape vs AT&T:** both sell US cell phone service, so they do compete. AT&T is one of the three big US network operators (with Verizon and T-Mobile). It has its own nationwide towers, physical stores, family plans, phone deals, home internet and bundles, and more plan choices. Cape is a small privacy-first carrier: fewer extras and one main plan, but it collects much less data, and defends against SIM swaps and location tracking. Choose AT&T for coverage, stores, family plans and phone deals. Choose Cape if privacy and protection from SIM-swap or tracking matter most.
+- **Big US network operators:** AT&T, Verizon and T-Mobile own their nationwide networks. Smaller carriers (MVNOs) such as Visible (Verizon), Mint Mobile (T-Mobile), Cricket (AT&T), US Mobile and Google Fi rent space on these networks and are usually cheaper.
+- **Phone privacy tips for any carrier:** add a port-out/transfer PIN or "number lock" to stop SIM-swap scams, opt out of carrier ad and data-sharing programs (for example Verizon Custom Experience or T-Mobile's advertising settings), and use an authenticator app instead of SMS codes where possible.
 
 ## iPhone and iPad privacy settings
 <!-- topics: iphone, ipad, ios, ipados, apple privacy, app tracking, location services, safari, icloud, siri, lockdown mode, mail privacy protection -->
