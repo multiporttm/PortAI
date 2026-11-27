@@ -104,9 +104,13 @@ each step.
   and drop a picture) and ask about it: "What's wrong in this screenshot?", "What plant is
   this?", "Read the text in this photo". Up to 4 images per message. PortAI uses the
   Regular model (Gemma 4), which can see images, even if another model is selected.
+- **Real photos from the web:** ask "Show me pictures of the Eiffel Tower", "Photos of Tokyo at
+  night" or "What does a capybara look like?" and PortAI finds real, openly licensed photos
+  (Openverse and Wikimedia Commons). PortAI's server fetches them, so photo sites never see your
+  IP address. The links under the photos show each one's source and license.
 - **Create images with 🍎 Neon Apple:** Neon Apple is PortAI's image creator. Ask "Draw a cat
   astronaut", "Generate an image of a castle at sunset" or "Make a logo for my bakery" and Neon
-  Apple creates it. It runs on the open FLUX.1 schnell model on Cloudflare (zero data retention). Tap an image to enlarge it, or **⤓ Download** to save it.
+  Apple creates it ("show me pictures of …" finds real photos instead). It runs on the open FLUX.1 schnell model on Cloudflare (zero data retention). Tap an image to enlarge it, or **⤓ Save image** to keep it (on iPhone and iPad this opens the share sheet with Save Image).
   Limit: 5 images per minute and 30 per day per person.
 - Images are resized in your browser before sending. A small copy is kept in your
   encrypted chat history; nothing is stored on PortAI's servers.

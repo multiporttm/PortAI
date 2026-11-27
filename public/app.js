@@ -414,6 +414,7 @@ function messageNode(m) {
     if (summary) wrap.append(summary);
   }
   if (m.images?.length) wrap.append(imagesNode(m.images, m.role === 'assistant'));
+  if (m.photos?.length) wrap.append(photosNode(m.photos));
   wrap.append(bubble);
   if (m.role === 'assistant' && m.sources?.length) wrap.append(sourcesNode(m.sources));
   if (m.role === 'assistant' && !m.pending) {
@@ -487,6 +488,27 @@ async function saveImage(src) {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+/** Real photos found on the web, with a small caption (title · creator · license). */
+function photosNode(photos) {
+  const box = document.createElement('div');
+  box.className = 'msg-images photos';
+  for (const p of photos) {
+    if (!isImageData(p.src)) continue;
+    const fig = document.createElement('figure');
+    const img = document.createElement('img');
+    img.src = p.src;
+    img.alt = p.title || 'Photo from the web';
+    img.loading = 'lazy';
+    img.addEventListener('click', () => openLightbox(p.src));
+    const cap = document.createElement('figcaption');
+    cap.textContent = [p.title, p.credit].filter(Boolean).join(' · ');
+    cap.title = cap.textContent;
+    fig.append(img, cap);
+    box.append(fig);
+  }
+  return box;
 }
 
 function openLightbox(src) {
@@ -768,7 +790,7 @@ async function send(text, attachments = []) {
         }
         if (msg.status === 'searched') {
           reply.sources = [...(reply.sources || []), ...msg.sources];
-          live.relabel(`Searched the web · ${msg.sources.length} source${msg.sources.length === 1 ? '' : 's'}`);
+          if (msg.provider !== 'photos') live.relabel(`Searched the web · ${msg.sources.length} source${msg.sources.length === 1 ? '' : 's'}`);
         }
         if (msg.status === 'search_skipped') {
           if (live.phase === 'searching') live.relabel(`Web search skipped · ${msg.reason}`);
@@ -776,6 +798,16 @@ async function send(text, attachments = []) {
         }
         if (msg.status === 'vision') {
           live.start('viewing', `Looking at your image${msg.count > 1 ? 's' : ''} with ${msg.model}`, `Looked at ${msg.count > 1 ? `${msg.count} images` : 'your image'}`);
+        }
+        if (msg.status === 'photo_searching') {
+          live.start('photos', `Searching the web for pictures of “${msg.query.length > 50 ? msg.query.slice(0, 47) + '…' : msg.query}”`, 'Found pictures on the web');
+        }
+        if (msg.status === 'photo_none') live.relabel('No pictures found');
+        if (Array.isArray(msg.photos)) {
+          reply.photos = msg.photos.filter((p) => isImageData(p.src));
+          node.querySelector('.msg-images.photos')?.remove();
+          node.insertBefore(photosNode(reply.photos), bubble);
+          scrollToBottom();
         }
         if (msg.status === 'drawing') {
           live.start('drawing', '🍎 Neon Apple is creating your image', 'Created with 🍎 Neon Apple');
@@ -823,6 +855,7 @@ async function send(text, attachments = []) {
   } finally {
     // Keep a smaller copy of created images in the (encrypted) chat history.
     if (reply.images?.length) reply.images = await Promise.all(reply.images.map((src) => shrinkImage(src, 640, 0.8).catch(() => src)));
+    if (reply.photos?.length) reply.photos = await Promise.all(reply.photos.map(async (p) => ({ ...p, src: await shrinkImage(p.src, 480, 0.78).catch(() => p.src) })));
     delete reply.pending;
     reply.trace = live.finish(reply.content, outcome);
     state.streaming = null;

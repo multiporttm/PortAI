@@ -91,3 +91,29 @@ test('ordinary requests are not mistaken for drawing', async () => {
   assert.equal(after('More details please'), null);
   assert.equal(after('But why is it blurry?'), null);
 });
+
+test('"show me pictures of ..." finds real photos instead of drawing', async () => {
+  const { photoQuery, findPhotos } = await import('../lib/portai-photos.mjs');
+  assert.equal(photoQuery('Show me pictures of the Eiffel Tower'), 'the Eiffel Tower');
+  assert.equal(photoQuery('What does a capybara look like?'), 'a capybara');
+  assert.equal(photoQuery('find photos of Tokyo at night'), 'Tokyo at night');
+  assert.equal(photoQuery('Draw a cat'), null);
+  assert.equal(photoQuery('What does it look like?'), null);
+  assert.equal(imagePrompt('Show me pictures of the Eiffel Tower'), null, 'Neon Apple stays for drawing');
+  const jpeg = new Uint8Array(2000).fill(7);
+  const fakeFetch = async (url) => {
+    const u = new URL(String(url));
+    if (u.hostname === 'api.openverse.org') {
+      assert.equal(u.searchParams.get('q'), 'Eiffel Tower');
+      return { ok: true, text: async () => JSON.stringify({ results: [{ title: 'Eiffel', thumbnail: 'https://img.example/1.jpg', foreign_landing_url: 'https://flickr.example/1', creator: 'Ann', license: 'by', license_version: '2.0' }] }) };
+    }
+    if (u.hostname === 'img.example') return { ok: true, headers: new Headers({ 'content-type': 'image/jpeg' }), arrayBuffer: async () => jpeg.buffer };
+    throw new Error(`unexpected ${u.hostname}`);
+  };
+  const { provider, photos } = await findPhotos('Eiffel Tower', fakeFetch);
+  assert.equal(provider, 'openverse');
+  assert.equal(photos.length, 1);
+  assert.match(photos[0].src, /^data:image\/jpeg;base64,/);
+  assert.equal(photos[0].credit, 'Ann · BY 2.0');
+  assert.equal(photos[0].page, 'https://flickr.example/1');
+});
