@@ -495,3 +495,6 @@ body.resizing *, body.resizing *::before, body.resizing *::after { transition: n
 .lightbox { padding: 0; border: 0; background: transparent; max-width: 96vw; max-height: 96vh; cursor: zoom-out; }
 .lightbox::backdrop { background: rgba(0, 0, 0, .8); }
 .lightbox img { display: block; max-width: 96vw; max-height: 92vh; border-radius: 12px; }
+.msg-images.photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); max-width: 640px; }
+.msg-images.photos img { width: 100%; max-width: none; height: 150px; max-height: none; object-fit: cover; }
+.msg-images.photos figcaption { font-size: 12px; color: var(--muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
