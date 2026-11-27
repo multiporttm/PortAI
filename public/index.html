@@ -69,7 +69,6 @@
           <ul id="model-menu" role="listbox" aria-label="Choose a model" hidden></ul>
         </div>
         <div class="spacer"></div>
-        <button type="button" id="web-toggle" class="web-pill" aria-pressed="false" hidden title="Web search">🌐 Auto</button>
         <label class="ghost-toggle" title="Ghost mode: this chat is never saved, not even encrypted">
           <input type="checkbox" id="ghost-toggle">
           <span class="ghost-pill">👻 Ghost</span>
@@ -78,25 +77,29 @@
 
       <section id="messages" class="messages" aria-live="polite">
         <div id="welcome" class="welcome">
-          <img src="/icon.svg" alt="" width="64" height="64">
+          <img src="/icon.svg" alt="" width="56" height="56" class="welcome-logo">
           <h2>How can I help you today?</h2>
-          <p class="muted">PortAI runs on <strong>open-source AI models</strong> with zero data retention. Your chats are never stored on our servers, and never used for ads, profiling or training.</p>
-          <div class="suggestions">
-            <button class="suggestion">Summarize the main ideas of quantum computing</button>
-            <button class="suggestion">Rédige un e-mail poli pour reporter une réunion</button>
-            <button class="suggestion">Write a Python function that validates an IBAN</button>
-            <button class="suggestion">Was sind gute Wanderwege im Berner Oberland?</button>
-          </div>
+          <p class="muted">Private AI on open-source models. No ads, no tracking, no data retention.</p>
         </div>
       </section>
 
       <div id="ghost-banner" class="ghost-banner" hidden>👻 Ghost mode — this conversation will disappear when you leave it.</div>
 
       <form id="composer" class="composer">
-        <textarea id="input" rows="1" placeholder="Message PortAI…" aria-label="Message" maxlength="32000"></textarea>
-        <button type="submit" id="send" class="send-btn" aria-label="Send">➤</button>
-        <button type="button" id="stop" class="send-btn stop" aria-label="Stop generating" hidden>■</button>
+        <textarea id="input" rows="1" placeholder="Ask anything…" aria-label="Message" maxlength="32000"></textarea>
+        <div class="composer-bar">
+          <button type="button" id="web-toggle" class="tool-pill" aria-pressed="false" hidden title="Web search">🌐 Web search</button>
+          <div class="spacer"></div>
+          <button type="submit" id="send" class="send-btn" aria-label="Send">↑</button>
+          <button type="button" id="stop" class="send-btn stop" aria-label="Stop generating" hidden>■</button>
+        </div>
       </form>
+      <div id="suggestions" class="suggestions">
+        <button type="button" class="suggestion">✍️ Help me write an email</button>
+        <button type="button" class="suggestion">💡 Explain quantum computing simply</button>
+        <button type="button" class="suggestion">🧑‍💻 Write a Python function to validate an IBAN</button>
+        <button type="button" class="suggestion">🔒 How can I protect my privacy online?</button>
+      </div>
       <p class="disclaimer">PortAI can make mistakes. Check important information. Your messages are sent to the model provider only to generate a reply and are not stored by PortAI. <span class="legal-links"><a href="https://multiportllc.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> · <a href="https://multiportllc.com/terms" target="_blank" rel="noopener noreferrer">Terms</a></span></p>
     </main>
   </div>
